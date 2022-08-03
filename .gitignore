@@ -1,4 +1,3 @@
 *.mp4
 rmpvenv/
 tabler-main/
-__pycache__/
