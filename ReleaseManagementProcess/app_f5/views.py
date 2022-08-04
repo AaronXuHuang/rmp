@@ -64,7 +64,7 @@ def AddPool(request):
     environment = request.POST.get('environment')
     server = request.POST.get('server')
 
-    exists = F5Pools.objects.filter(name=pool_name, project=project).exists()
+    exists = F5Pools.objects.filter(name=pool_name, project=project, server=server).exists()
     if not exists:
         F5Pools.objects.create(name=pool_name, project=project, server=server, environment=environment )
 
