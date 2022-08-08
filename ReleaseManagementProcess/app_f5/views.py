@@ -101,7 +101,6 @@ def GetPoolState(request):
     pool_name = request.GET.get('pool_name')
 
     pool_state = {
-        "connection": "Error",
         "curconn": "Error",
         "maxconn": "Error",
         "totconn": "Error",
@@ -117,7 +116,6 @@ def GetPoolState(request):
 
     pool_stats = pool.stats.load()
     key_name = list(pool_stats.raw["entries"].keys())[0]
-    pool_state["connection"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.curConns"]["value"]
     pool_state["curconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.curConns"]["value"]
     pool_state["maxconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.maxConns"]["value"]
     pool_state["totconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.totConns"]["value"]
@@ -157,7 +155,7 @@ def GetMemberState(request):
             "name": "",
             "curconn": "",
             "maxconn": "",
-            "totalconn": "",
+            "totconn": "",
             "state": ""
         }
         
@@ -168,8 +166,8 @@ def GetMemberState(request):
         member_state["pool"] = pool_name
         member_state["name"] = member.name
         member_state["curconn"] = entries["serverside.curConns"]["value"]
-        member_state["maxconn"] = entries["serverside.curConns"]["value"]
-        member_state["totalconn"] = entries["serverside.curConns"]["value"]
+        member_state["maxconn"] = entries["serverside.maxConns"]["value"]
+        member_state["totconn"] = entries["serverside.totConns"]["value"]
         member_state["state"] = entries["status.availabilityState"]["description"]
         members_state.append(member_state)
 

@@ -358,7 +358,7 @@
             <td id=memberstate_' + i + '>' + state + '</td>\
             <td id=membercurconn_' + i + '>' + res[i].curconn + '</td>\
             <td id=membermaxconn_' + i + '>' + res[i].maxconn + '</td>\
-            <td id=membertotalconn_' + i + '>' + res[i].totalconn + '</td></tr>'
+            <td id=membertotalconn_' + i + '>' + res[i].totconn + '</td></tr>'
         }
         $('#poolname').html(pool_name + ' updated at ' + currentTime);
         $('#membertable').html(members);
@@ -421,7 +421,7 @@
           $('#memberstate_' + i).html(state)
           $('#membercurconn_' + i).html(res[i].curconn)
           $('#membermaxconn_' + i).html(res[i].maxconn)
-          $('#membertotalconn_' + i).html(res[i].totalconn)
+          $('#membertotalconn_' + i).html(res[i].totconn)
         }
         $('#poolname').html(pool_name + ' updated at ' + currentTime);
       },
