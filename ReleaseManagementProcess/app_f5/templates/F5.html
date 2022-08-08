@@ -35,10 +35,10 @@
     <div class="page-header d-print-none">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">F5 POOL STATE</h2>
-          <div id="getstate" class="page-pretitle">
-            pool state table
-          </div>
+          <div class="page-pretitle">F5 POOL STATE</div>
+          <h2 id="getstate" class="page-title">
+            Pool state table
+          </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
           <a
@@ -139,10 +139,10 @@
     <div class="page-header d-print-none">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">F5 MEMBER STATE</h2>
-          <div id="poolname" class="page-pretitle">
-            member state table
-          </div>
+          <div class="page-pretitle">F5 MEMBER STATE</div>
+          <h2 id="poolname" class="page-title">
+            Member state table
+          </h2>
         </div>
       </div>
       </div>
@@ -273,7 +273,7 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        $('#getstate').html("pool state table updated at " + currentTime);
+        $('#getstate').html("Pool state table updated at " + currentTime);
         $('#' + server_name + '_' + pool_name + '_connection').html(res.connection);
         $('#' + server_name + '_' + pool_name + '_time').html(currentTime);
         if (res.state == 'available') {
@@ -284,7 +284,7 @@
         }
       },
       error: function(res) {
-        $('#getstate').html("pool state table updated at " + currentTime);
+        $('#getstate').html("Pool state table updated at " + currentTime);
         $('#' + server_name + '_' + pool_name + '_connection').html('Error');
         $('#' + server_name + '_' + pool_name + '_time').html(currentTime);
         $('#' + server_name + '_' + pool_name + '_state').html('<span class="badge bg-danger me-1"></span> Error ');
@@ -368,7 +368,7 @@
       },
       error: function(res) {
         $('#poolname').attr("style", "color:red;")
-        $('#poolname').html('get member error');
+        $('#poolname').html('Get member error');
       }
     })
   }

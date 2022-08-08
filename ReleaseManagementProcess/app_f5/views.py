@@ -102,6 +102,9 @@ def GetPoolState(request):
 
     pool_state = {
         "connection": "Error",
+        "curconn": "Error",
+        "maxconn": "Error",
+        "totconn": "Error",
         "state": "Error"}
 
     mgmt = GetMgmt(server_name)
@@ -115,6 +118,9 @@ def GetPoolState(request):
     pool_stats = pool.stats.load()
     key_name = list(pool_stats.raw["entries"].keys())[0]
     pool_state["connection"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.curConns"]["value"]
+    pool_state["curconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.curConns"]["value"]
+    pool_state["maxconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.maxConns"]["value"]
+    pool_state["totconn"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["serverside.totConns"]["value"]
     pool_state["state"] = pool_stats.raw["entries"][key_name]["nestedStats"]["entries"]["status.availabilityState"]["description"]
 
     #return pool_status

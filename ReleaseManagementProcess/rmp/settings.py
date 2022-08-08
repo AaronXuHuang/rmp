@@ -136,4 +136,8 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-ALLOWED_HOSTS = ['demo.rmp.nextestate.com', 'rmp.nextestate.com', 'DC1TCAGTW01']
+ALLOWED_HOSTS = [
+    'demo.rmp.nextestate.com',
+    'rmp.nextestate.com',
+    'DC1TCAGTW01',
+    '127.0.0.1']
