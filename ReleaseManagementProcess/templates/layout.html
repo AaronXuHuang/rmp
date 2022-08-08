@@ -166,7 +166,7 @@
                   </div>
                 </div>
               </li>
-              {% block item_ai %}{% endblock %}
+              {% block item_aws %}{% endblock %}
                 <a
                   class="nav-link dropdown-toggle"
                   href="#navbar-base"
@@ -198,16 +198,16 @@
                       <line x1="16" y1="5.25" x2="8" y2="9.75"></line>
                     </svg>
                   </span>
-                  <span class="nav-link-title">AWS Instance</span>
+                  <span class="nav-link-title">AWS</span>
                 </a>
                 <div class="dropdown-menu">
                   <div class="dropdown-menu-columns">
                     <div class="dropdown-menu-column">
-                      <a class="dropdown-item" href="/nopage/">
-                        DEV
+                      <a class="dropdown-item" href="/aws/instance/">
+                        Instance
                       </a>
                       <a class="dropdown-item" href="/nopage/">
-                        INT
+                        B/G Deployment
                       </a>
                     </div>
                   </div>
@@ -238,31 +238,6 @@
                     </svg>
                   </span>
                   <span class="nav-link-title">F5</span>
-                </a>
-              </li>
-              {% block item_ad %}{% endblock %}
-                <a class="nav-link" href="/nopage">
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <svg
-                      xmlns="https://www.w3.org/2000/svg"
-                      class="icon"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <polyline points="9 11 12 14 20 6"></polyline>
-                      <path
-                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span class="nav-link-title"> Admin </span>
                 </a>
               </li>
               {% block item_ci %}{% endblock %}
@@ -308,6 +283,31 @@
                     </div>
                   </div>
                 </div>
+              </li>
+              {% block item_ad %}{% endblock %}
+                <a class="nav-link" href="/nopage">
+                  <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <svg
+                      xmlns="https://www.w3.org/2000/svg"
+                      class="icon"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="currentColor"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <polyline points="9 11 12 14 20 6"></polyline>
+                      <path
+                        d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="nav-link-title"> Admin </span>
+                </a>
               </li>
               {% block item_hp %}{% endblock %}
                 <a

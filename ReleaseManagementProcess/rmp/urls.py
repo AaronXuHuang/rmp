@@ -27,4 +27,5 @@ urlpatterns = [
     path('f5/pool/state/', F5views.GetPoolState),
     path('f5/pool/action/', F5views.PoolAction),
     path('f5/member/state/', F5views.GetMemberState),
+    path('aws/instance/', AWSviews.test),
 ]

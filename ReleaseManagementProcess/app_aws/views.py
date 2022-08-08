@@ -4,3 +4,8 @@ from django.shortcuts import render
 
 def test(request):
     return render(request, 'AWS.html')
+
+
+def credentials():
+
+    return False
