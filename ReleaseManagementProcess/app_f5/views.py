@@ -7,7 +7,7 @@ from django import forms
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from f5.bigip import ManagementRoot
-from app_f5.models import F5Pools, F5PoolMembers
+from app_f5.models import F5Pools
 from app_f5.forms import PoolForm
 
 # Create your views here.

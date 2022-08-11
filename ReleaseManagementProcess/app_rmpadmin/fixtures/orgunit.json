@@ -1,0 +1,37 @@
+[
+    {
+        "model": "app_rmpadmin.Orgunit",
+        "pk": 1,
+        "fields": {
+            "name": "legacy"
+        }
+    },
+    {
+        "model": "app_rmpadmin.Orgunit",
+        "pk": 2,
+        "fields": {
+            "name": "bux"
+        }
+    },
+    {
+        "model": "app_rmpadmin.Orgunit",
+        "pk": 3,
+        "fields": {
+            "name": "fw"
+        }
+    },
+    {
+        "model": "app_rmpadmin.Orgunit",
+        "pk": 4,
+        "fields": {
+            "name": "gss"
+        }
+    },
+    {
+        "model": "app_rmpadmin.Orgunit",
+        "pk": 5,
+        "fields": {
+            "name": "gbos"
+        }
+    }
+]

@@ -29,9 +29,572 @@
 {% endblock %}
 
 {% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <div class="page-pretitle">AWS instance</div>
+            <h2 class="page-title">
+              Filter
+            </h2>
+          </div>
+          <div class="col-12 col-md-auto ms-auto d-print-none">
+            <a class="btn btn-white" onclick="resetfilter()">Reset filter</a>
+            <a class="btn btn-primary" onclick="fetchinstance()">Fetch instance</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="card">
+            <div class="card-body">
+              <div class="accordion" id="accordion-example">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-codesandbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M20 7.5v9l-4 2.25l-4 2.25l-4 -2.25l-4 -2.25v-9l4 -2.25l4 -2.25l4 2.25z"></path>
+                        <path d="M12 12l4 -2.25l4 -2.25"></path>
+                        <line x1="12" y1="12" x2="12" y2="21"></line>
+                        <path d="M12 12l-4 -2.25l-4 -2.25"></path>
+                        <path d="M20 12l-4 2v4.75"></path>
+                        <path d="M4 12l4 2l0 4.75"></path>
+                        <path d="M8 5.25l4 2.25l4 -2.25"></path>
+                      </svg>
+                      &nbsp;Environments
+                    </button>
+                  </h2>
+                  <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example" style="">
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-check-inline">
+                        <input id='env_dev' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">dev</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_int' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">int</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_prf' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">prf</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_qa' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">qa</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_pie' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">pie</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_stg' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">stg</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='env_prod' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
+                        <span class="form-check-label">prod</span>
+                      </label>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="dropdown-item form-switch">
+                        <input id='env_all' class="form-check-input m-0 me-2" type="checkbox" onclick="selectall('env')"> 
+                        Select all environments
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-palette" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 21a9 9 0 1 1 0 -18a9 8 0 0 1 9 8a4.5 4 0 0 1 -4.5 4h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25"></path>
+                        <circle cx="7.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                        <circle cx="12" cy="7.5" r=".5" fill="currentColor"></circle>
+                        <circle cx="16.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                      </svg>
+                      &nbsp;Colorstacks
+                    </button>
+                  </h2>
+                  <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-check-inline">
+                        <input id='color_blue' class="form-check-input" type="checkbox" checked="" onclick="checkstatus('color')">
+                        <span class="form-check-label">blue</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='color_green' class="form-check-input" type="checkbox" checked="" onclick="checkstatus('color')">
+                        <span class="form-check-label">green</span>
+                      </label>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="dropdown-item form-switch">
+                        <input id='color_all' class="form-check-input m-0 me-2" type="checkbox" checked="" onclick="selectall('color')"> 
+                        Select all colorstacks
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <rect x="13" y="8" width="8" height="12" rx="1"></rect>
+                        <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9"></path>
+                        <line x1="16" y1="9" x2="18" y2="9"></line>
+                      </svg>
+                      &nbsp;Instance states
+                    </button>
+                  </h2>
+                  <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-check-inline">
+                        <input id='state_pending' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
+                        <span class="form-check-label">pending</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='state_running' class="form-check-input" type="checkbox" checked="" onclick="checkstatus('state')">
+                        <span class="form-check-label">running</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='state_shutting-down' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
+                        <span class="form-check-label">shutting-down</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='state_terminated' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
+                        <span class="form-check-label">terminated</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='state_stopping' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
+                        <span class="form-check-label">stopping</span>
+                      </label>
+                      <label class="form-check form-check-inline">
+                        <input id='state_stopped' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
+                        <span class="form-check-label">stopped</span>
+                      </label>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="dropdown-item form-switch">
+                        <input id='state_all' class="form-check-input m-0 me-2" type="checkbox" onclick="selectall('state')"> 
+                        Select all instance states
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-amongus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10.646 12.774c-1.939 .396 -4.467 .317 -6.234 -.601c-2.454 -1.263 -1.537 -4.66 1.423 -4.982c2.254 -.224 3.814 -.354 5.65 .214c.835 .256 1.93 .569 1.355 3.281c-.191 1.067 -1.07 1.904 -2.194 2.088z"></path>
+                        <path d="M5.84 7.132c.083 -.564 .214 -1.12 .392 -1.661c.456 -.936 1.095 -2.068 3.985 -2.456a22.464 22.464 0 0 1 2.867 .08c1.776 .14 2.643 1.234 3.287 3.368c.339 1.157 .46 2.342 .629 3.537v11l-12.704 -.019c-.552 -2.386 -.262 -5.894 .204 -8.481"></path>
+                        <path d="M17 10c.991 .163 2.105 .383 3.069 .67c.255 .13 .52 .275 .534 .505c.264 3.434 .57 7.448 .278 9.825h-3.881"></path>
+                      </svg>
+                      &nbsp;Partners
+                    </button>
+                  </h2>
+                  <div id="collapse-4" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div id="collapse-partners" class="accordion-body pt-0">
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="dropdown-item form-switch">
+                        <input id='partner_all' class="form-check-input m-0 me-2" type="checkbox" checked="" onclick="selectall('partner')"> 
+                        &nbsp;Select all partners 
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-5">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-components" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M3 12l3 3l3 -3l-3 -3z"></path>
+                        <path d="M15 12l3 3l3 -3l-3 -3z"></path>
+                        <path d="M9 6l3 3l3 -3l-3 -3z"></path>
+                        <path d="M9 18l3 3l3 -3l-3 -3z"></path>
+                      </svg>
+                      &nbsp;Tiers
+                    </button>
+                  </h2>
+                  <div id="collapse-5" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div id="collapse-tiers" class="accordion-body pt-0">
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="dropdown-item form-switch">
+                        <input id='tier_all' class="form-check-input m-0 me-2" type="checkbox" checked="" onclick="selectall('tier')"> 
+                        Select all tiers 
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-6">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-6" aria-expanded="false">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pins" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10.828 9.828a4 4 0 1 0 -5.656 0l2.828 2.829l2.828 -2.829z"></path>
+                        <line x1="8" y1="7" x2="8" y2="7.01"></line>
+                        <path d="M18.828 17.828a4 4 0 1 0 -5.656 0l2.828 2.829l2.828 -2.829z"></path>
+                        <line x1="16" y1="15" x2="16" y2="15.01"></line>
+                      </svg>
+                      &nbsp;IP address
+                    </button>
+                  </h2>
+                  <div id="collapse-6" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div class="accordion-body pt-0">
+                      <input type="text" class="form-control" name="example-text-input" placeholder="Input IP address, use comma to split">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
 
+
+
+
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="card">
+          <div class="card-body">
+            <div id="table-default">
+            <div class="table">
+              <div class="table-responsive">
+                <table
+                  class="table card-table table-vcenter text-nowrap datatable"
+                >
+                  <thead>
+                    <tr>
+                      <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
+                      <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
+                      <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
+                      <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
+                      <th>Partner</th>
+                      <th>State</th>
+                      <th>PrivateIpAddress</th>
+                      <th>InstanceId</th>
+                      <th>LaunchTime</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody class="table-tbody">
+                    {% csrf_token %}
+                    {% for pool in pool_list %}
+                      <tr id='{{ pool.server }}_{{ pool.name }}_tr'>
+                        <td id='{{ pool.server }}_{{ pool.name }}_name' class="sort-name">{{ pool.name }}</td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_server' class="sort-server">{{ pool.server }}</td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_environment' class="sort-environment">{{ pool.get_environment_display }}</td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_project' class="sort-project">{{ pool.project }}</td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_state' >
+                          <span id='{{ pool.server }}_{{ pool.name }}_state_icon' class="badge bg-warning me-1"></span>   N/A   
+                        </td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_connection'>   N/A   </td>
+                        <td id='{{ pool.server }}_{{ pool.name }}_time'>   N/A   </td>
+                        <td>
+                          <span class="dropdown">
+                            <button
+                              class="btn dropdown-toggle align-text-top"
+                              data-bs-boundary="viewport"
+                              data-bs-toggle="dropdown"
+                            >
+                              Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                              <a class="dropdown-item" onclick="getmember('{{ pool.server }}', '{{ pool.name }}')" > Get member </a>
+                              <a class="dropdown-item" onclick="confirmaction('Do you want to enable the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'enable')" > Enable </a>
+                              <a class="dropdown-item" onclick="confirmaction('Do you want to force offline the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'forceoffline')" > Force offline </a>
+                              <a id='{{ pool.server }}_{{ pool.name }}_remove'
+                                class="dropdown-item" onclick="confirmaction('Do you want to remove the pool {{ pool.name }} from the list?', 'removepool', '{{ pool.server }}', '{{ pool.name }}')"> Remove </a>
+                            </div>
+                          </span>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  
 {% endblock %}
 
 {% block js %}
+<script>
+  const filter_name_array = [
+    'environment', 
+    'colorstack',
+    'instance state',
+    'partner',
+    'tier']
+  const environment_array = [
+    'env_dev', 
+    'env_int', 
+    'env_prf', 
+    'env_qa', 
+    'env_pie', 
+    'env_stg', 
+    'env_prod']
+  const colorstack_array = [
+    'color_blue', 
+    'color_green']
+  const instancestate_array = [
+    'state_pending', 
+    'state_running', 
+    'state_shutting-down', 
+    'state_terminated', 
+    'state_stopping', 
+    'state_stopped']
+  partner_array = []
+  tier_array = []
 
+</script>
+
+<script type='text/javascript'>
+  window.onload = function () {
+    newlabels = ""
+    $.ajax({
+      url: '/aws/instance/initdata/',
+      type: 'GET',
+      data: {
+        orgunit: 'gbos'
+      },
+      dataType: 'JSON',
+      success: function(res) {
+        newlabels = ""
+        for (let i = 0; i < res['partners'].length; i++) {
+          partner = res['partners'][i]['name']
+          newlabels += "<label class=\"form-check form-check-inline\">\
+            <input id=\"partner_" + partner + "\" \
+            class=\"form-check-input\" type=\"checkbox\" checked=\"\" \
+            onclick=\"checkstatus('partner')\">\
+            <span class=\"form-check-label\">" + partner + '</span></label>'
+          partner_array.push("partner_" + partner)
+        }
+        $('#collapse-partners').html(newlabels)
+
+        newlabels = ""
+        for (let i = 0; i < res['tiers'].length; i++) {
+          tier = res['tiers'][i]['name']
+          newlabels += "<label class=\"form-check form-check-inline\">\
+            <input id=\"tier_" + tier + "\" \
+            class=\"form-check-input\" type=\"checkbox\" checked=\"\" \
+            onclick=\"checkstatus('tier')\">\
+            <span class=\"form-check-label\">" + tier + '</span></label>'
+          tier_array.push("tier_" + tier)
+        }
+        $('#collapse-tiers').html(newlabels)
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
+  function fetchinstance() {
+    id_all_array = [
+      environment_array, 
+      colorstack_array,
+      instancestate_array,
+      partner_array,
+      tier_array
+      ]
+
+    checked_array = [
+      environments = "",
+      colorstacks = "",
+      instance_states = "",
+      partners = "",
+      tiers = "",
+      ip_addresses = ""
+      ]
+
+    for (let item = 0; item < id_all_array.length; item++) {
+      for (let i = 0; i < id_all_array[item].length; i++) {
+        if (document.getElementById(id_all_array[item][i]).checked == 1) {
+          index = id_all_array[item][i].indexOf('_')
+          value = id_all_array[item][i].substring(index + 1)
+          if (checked_array[item] == "") {
+            checked_array[item] = value
+          }
+          else {
+            checked_array[item] += ',' + value
+          }
+        }
+      }
+    }
+
+    for (let i = 0; i < filter_name_array.length; i++){
+      if (checked_array[i].length == 0) {
+        alert('No ' + filter_name_array[i] + ' selected.')
+        return
+      }
+    }
+
+    $.ajax({
+      url: '/aws/instance/filter/',
+      type: 'GET',
+      data: {
+        environments: checked_array[0],
+        colorstacks: checked_array[1],
+        instance_states: checked_array[2],
+        partners: checked_array[3],
+        tiers: checked_array[4],
+        ip_addresses: checked_array[5]
+      },
+      dataType: 'JSON',
+      success: function(res) {
+        //alert('good result')
+        console.log(res)
+      },
+      error: function(res) {
+        //alert('Incorrect filter, no result found.')
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
+    function selectall(type) {
+        switch (type) {
+            case 'env':
+            value = document.getElementById('env_all').checked
+            for (let i = 0; i < environment_array.length; i++) {
+                document.getElementById(environment_array[i]).checked = value
+            }
+            break
+
+            case 'color':
+            value = document.getElementById('color_all').checked
+            for (let i = 0; i < colorstack_array.length; i++) {
+                document.getElementById(colorstack_array[i]).checked = value
+            }
+            break
+
+            case 'state':
+            value = document.getElementById('state_all').checked
+            for (let i = 0; i < instancestate_array.length; i++) {
+                document.getElementById(instancestate_array[i]).checked = value
+            }
+            break
+
+            case 'partner':
+            value = document.getElementById('partner_all').checked
+            for (let i = 0; i < partner_array.length; i++) {
+                document.getElementById(partner_array[i]).checked = value
+            }
+            break
+
+            case 'tier':
+            value = document.getElementById('tier_all').checked
+            for (let i = 0; i < tier_array.length; i++) {
+                document.getElementById(tier_array[i]).checked = value
+            }
+            break
+        }
+    }
+</script>
+
+<script type='text/javascript'>
+    function resetfilter() {
+        id_all_array = [
+        environment_array, 
+        colorstack_array,
+        instancestate_array,
+        partner_array,
+        tier_array
+        ]
+
+        for (let i = 0; i < environment_array.length; i++) {
+            document.getElementById(environment_array[i]).checked = 0
+        }
+        for (let i = 0; i < colorstack_array.length; i++) {
+            document.getElementById(colorstack_array[i]).checked = 1
+        }
+        for (let i = 0; i < instancestate_array.length; i++) {
+            document.getElementById(instancestate_array[i]).checked = 0
+        }
+        for (let i = 0; i < partner_array.length; i++) {
+            document.getElementById(partner_array[i]).checked = 1
+        }
+        for (let i = 0; i < tier_array.length; i++) {
+            document.getElementById(tier_array[i]).checked = 1
+        }
+
+        document.getElementById('env_all').checked = 0
+        document.getElementById('color_all').checked = 1
+        document.getElementById('state_all').checked = 0
+        document.getElementById('partner_all').checked = 1
+        document.getElementById('tier_all').checked = 1
+
+        document.getElementById('state_running').checked = 1
+    }
+</script>
+
+<script type='text/javascript'>
+    function checkstatus(type) {
+        switch (type) {
+            case 'env':
+            document.getElementById('env_all').checked = 1
+            for (let i = 0; i < environment_array.length; i++) {
+                if (document.getElementById(environment_array[i]).checked == 0) {
+                    document.getElementById('env_all').checked = 0
+                    break
+                }
+            }
+            break
+
+            case 'color':
+            document.getElementById('color_all').checked = 1
+            for (let i = 0; i < colorstack_array.length; i++) {
+                if (document.getElementById(colorstack_array[i]).checked == 0 ) {
+                    document.getElementById('color_all').checked = 0
+                    break
+                }
+            }
+            break
+
+            case 'state':
+            document.getElementById('state_all').checked = 1
+            for (let i = 0; i < instancestate_array.length; i++) {
+                if (document.getElementById(instancestate_array[i]).checked == 0 ) {
+                    document.getElementById('state_all').checked = 0
+                    break
+                }
+            }
+            break
+
+            case 'partner':
+            document.getElementById('partner_all').checked = 1
+            for (let i = 0; i < partner_array.length; i++) {
+                if (document.getElementById(partner_array[i]).checked == 0 ) {
+                    document.getElementById('partner_all').checked = 0
+                    break
+                }
+            }
+            break
+
+            case 'tier':
+            document.getElementById('tier_all').checked = 1
+            for (let i = 0; i < tier_array.length; i++) {
+                if (document.getElementById(tier_array[i]).checked == 0) {
+                    document.getElementById('tier_all').checked = 0
+                    break
+                }
+            }
+            break
+        }
+    }
+</script>
 {% endblock %}

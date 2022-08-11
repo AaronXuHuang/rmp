@@ -1,0 +1,26 @@
+[
+    {
+        "model": "app_rmpadmin.Partner",
+        "pk": 1,
+        "fields": {
+            "name": "baas",
+            "orgunit": 5
+        }
+    },
+    {
+        "model": "app_rmpadmin.Partner",
+        "pk": 2,
+        "fields": {
+            "name": "gbr",
+            "orgunit": 5
+        }
+    },
+    {
+        "model": "app_rmpadmin.Partner",
+        "pk": 3,
+        "fields": {
+            "name": "intuit",
+            "orgunit": 5
+        }
+    }
+]

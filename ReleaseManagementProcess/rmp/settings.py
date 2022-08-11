@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_aws.apps.AwsappConfig',
-    'app_f5.apps.F5AppConfig'
+    'app_aws.apps.AwsConfig',
+    'app_f5.apps.F5Config',
+    'app_rmpadmin.apps.RmpAdminConfig'
 ]
 
 MIDDLEWARE = [
