@@ -65,16 +65,10 @@
                         <path d="M4 12l4 2l0 4.75"></path>
                         <path d="M8 5.25l4 2.25l4 -2.25"></path>
                       </svg>
-                      &nbsp;Environments
+                      &nbsp;Environment
                     </button>
                   </h2>
                   <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example" style="">
-                    <div class="accordion-body pt-0">
-                      <label class="form-check form-switch">
-                        <input id='env_all' class="form-check-input" type="checkbox" onclick="selectall('env')"> 
-                        select all
-                      </label>
-                    </div>
                     <div class="accordion-body pt-0">
                       <label class="form-check form-check-inline">
                         <input id='env_dev' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
@@ -104,6 +98,13 @@
                         <input id='env_prod' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
                         <span class="form-check-label">prod</span>
                       </label>
+                      <hr style='margin-top:1px;margin-bottom:1px'>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-switch">
+                        <input id='env_all' class="form-check-input" type="checkbox" onclick="selectall('env')"> 
+                        select all
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -117,16 +118,10 @@
                         <circle cx="12" cy="7.5" r=".5" fill="currentColor"></circle>
                         <circle cx="16.5" cy="10.5" r=".5" fill="currentColor"></circle>
                       </svg>
-                      &nbsp;Colorstacks
+                      &nbsp;Colorstack
                     </button>
                   </h2>
                   <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
-                    <div class="accordion-body pt-0">
-                      <label class="form-check form-switch">
-                        <input id='color_all' class="form-check-input" type="checkbox" checked="" onclick="selectall('color')"> 
-                        select all
-                      </label>
-                    </div>
                     <div class="accordion-body pt-0">
                       <label class="form-check form-check-inline">
                         <input id='color_blue' class="form-check-input" type="checkbox" checked="" onclick="checkstatus('color')">
@@ -135,6 +130,13 @@
                       <label class="form-check form-check-inline">
                         <input id='color_green' class="form-check-input" type="checkbox" checked="" onclick="checkstatus('color')">
                         <span class="form-check-label">green</span>
+                      </label>
+                      <hr style='margin-top:1px;margin-bottom:1px'>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-switch">
+                        <input id='color_all' class="form-check-input" type="checkbox" checked="" onclick="selectall('color')"> 
+                        select all
                       </label>
                     </div>
                   </div>
@@ -148,16 +150,10 @@
                         <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h9"></path>
                         <line x1="16" y1="9" x2="18" y2="9"></line>
                       </svg>
-                      &nbsp;Instance states
+                      &nbsp;Instance state
                     </button>
                   </h2>
                   <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
-                    <div class="accordion-body pt-0">
-                      <label class="form-check form-switch">
-                        <input id='state_all' class="form-check-input" type="checkbox" onclick="selectall('state')"> 
-                        select all
-                      </label>
-                    </div>
                     <div class="accordion-body pt-0">
                       <label class="form-check form-check-inline">
                         <input id='state_pending' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
@@ -183,6 +179,13 @@
                         <input id='state_stopped' class="form-check-input" type="checkbox" onclick="checkstatus('state')">
                         <span class="form-check-label">stopped</span>
                       </label>
+                      <hr style='margin-top:1px;margin-bottom:1px'>
+                    </div>
+                    <div class="accordion-body pt-0">
+                      <label class="form-check form-switch">
+                        <input id='state_all' class="form-check-input" type="checkbox" onclick="selectall('state')"> 
+                        select all
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -195,17 +198,17 @@
                         <path d="M5.84 7.132c.083 -.564 .214 -1.12 .392 -1.661c.456 -.936 1.095 -2.068 3.985 -2.456a22.464 22.464 0 0 1 2.867 .08c1.776 .14 2.643 1.234 3.287 3.368c.339 1.157 .46 2.342 .629 3.537v11l-12.704 -.019c-.552 -2.386 -.262 -5.894 .204 -8.481"></path>
                         <path d="M17 10c.991 .163 2.105 .383 3.069 .67c.255 .13 .52 .275 .534 .505c.264 3.434 .57 7.448 .278 9.825h-3.881"></path>
                       </svg>
-                      &nbsp;Partners
+                      &nbsp;Partner
                     </button>
                   </h2>
                   <div id="collapse-4" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div id="collapse-partners" class="accordion-body pt-0">
+                    </div>
                     <div class="accordion-body pt-0">
                       <label class="form-check form-switch">
                         <input id='partner_all' class="form-check-input" type="checkbox" checked="" onclick="selectall('partner')"> 
                         select all 
                       </label>
-                    </div>
-                    <div id="collapse-partners" class="accordion-body pt-0">
                     </div>
                   </div>
                 </div>
@@ -219,17 +222,17 @@
                         <path d="M9 6l3 3l3 -3l-3 -3z"></path>
                         <path d="M9 18l3 3l3 -3l-3 -3z"></path>
                       </svg>
-                      &nbsp;Tiers
+                      &nbsp;Tier
                     </button>
                   </h2>
                   <div id="collapse-5" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                    <div id="collapse-tiers" class="accordion-body pt-0">
+                    </div>
                     <div class="accordion-body pt-0">
                       <label class="form-check form-switch">
                         <input id='tier_all' class="form-check-input" type="checkbox" checked="" onclick="selectall('tier')"> 
                         select all 
                       </label>
-                    </div>
-                    <div id="collapse-tiers" class="accordion-body pt-0">
                     </div>
                   </div>
                 </div>
@@ -383,6 +386,7 @@
             <span class=\"form-check-label\">" + partner + '</span></label>'
           partner_array.push("partner_" + partner)
         }
+        newlabels += "<hr style='margin-top:1px;margin-bottom:1px'>"
         $('#collapse-partners').html(newlabels)
 
         newlabels = ""
@@ -395,6 +399,7 @@
             <span class=\"form-check-label\">" + tier + '</span></label>'
           tier_array.push("tier_" + tier)
         }
+        newlabels += "<hr style='margin-top:1px;margin-bottom:1px'>"
         $('#collapse-tiers').html(newlabels)
       }
     })
