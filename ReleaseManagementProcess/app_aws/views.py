@@ -228,6 +228,11 @@ def FilterInstance(request):
     # if no ip address set the value as *
     if not ip_addresses[0]:
         ip_addresses[0] = '*'
+    else:
+        for index in range(len(ip_addresses)):
+            ip_addresses[index] = ip_addresses[index].strip()
+            
+    print(ip_addresses)
     # partner: BAAS, GBR, Intuit
     cvt_partners = []
     for partner in partners:
@@ -253,23 +258,36 @@ def format_instances(instances):
     fmt_instances = []
 
     for reservation in instances['Reservations']:
+        instance_id = reservation['Instances'][0]['InstanceId']
+        launch_time = reservation['Instances'][0]['LaunchTime']
+        private_ipaddress = reservation['Instances'][0]['PrivateIpAddress']
+        running_state = reservation['Instances'][0]['State']['Name']
+
         fmt_instance = {
-            'InstanceId': reservation['Instances'][0]['InstanceId'],
-            'LaunchTime': reservation['Instances'][0]['LaunchTime'],
-            'PrivateIpAddress': reservation['Instances'][0]['PrivateIpAddress'],
-            'State': reservation['Instances'][0]['State']['Name']
+            'InstanceId': instance_id,
+            'LaunchTime': launch_time,
+            'PrivateIpAddress': private_ipaddress,
+            'State': running_state
             }
         for tag in reservation['Instances'][0]['Tags']:
             if tag['Key'] == 'Partner':
-                fmt_instance['Partner'] = tag['Value']
+                partner = tag['Value']
+                fmt_instance['Partner'] = partner
             if tag['Key'] == 'Environment':
-                fmt_instance['Environment'] = tag['Value']
+                environment = tag['Value']
+                fmt_instance['Environment'] = environment
             if tag['Key'] == 'Name':
-                fmt_instance['Name'] = tag['Value']
+                name = tag['Value']
+                fmt_instance['Name'] = name
             if tag['Key'] == 'Colorstack':
-                fmt_instance['Colorstack'] = tag['Value']
+                colorstack = tag['Value']
+                fmt_instance['Colorstack'] = colorstack
             if tag['Key'] == 'Tier':
-                fmt_instance['Tier'] = tag['Value']
+                tier = tag['Value']
+                fmt_instance['Tier'] = tier
+
+        host_name = name[name.index('-') + 1: -1] + instance_id[-5:]
+        fmt_instance['HostName'] = host_name
 
         fmt_instances.append(fmt_instance)
 

@@ -251,7 +251,7 @@
                   </h2>
                   <div id="collapse-6" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
                     <div class="accordion-body pt-0">
-                      <input type="text" class="form-control" name="example-text-input" placeholder="Input IP address, use comma to split">
+                      <input id="ipaddress" type="text" class="form-control" name="example-text-input" placeholder="Input IP address, comma separated list">
                     </div>
                   </div>
                 </div>
@@ -458,6 +458,9 @@
         return
       }
     }
+
+    checked_array[5] = document.getElementById("ipaddress").value
+    console.log(checked_array[5])
 
     $.ajax({
       url: '/aws/instance/filter/',
