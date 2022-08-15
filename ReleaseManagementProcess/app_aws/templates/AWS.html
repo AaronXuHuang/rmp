@@ -52,7 +52,7 @@
         <div class="card">
             <div class="card-body">
               <div class="accordion" id="accordion-example">
-                <div id="accordion-env" class="accordion-item" style="border-color: #206bc4;border-width: 1px" onclick="setborder('env')">
+                <div id="accordion-env" class="accordion-item" style="border-color: #bbdefb;border-width: 3px" onclick="setborder('env')">
                   <h2 class="accordion-header" id="heading-1">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-codesandbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -475,8 +475,10 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        //alert('good result')
-        console.log(res)
+        console.log(res.length)
+        //for (let i = 0; i < res.length; i++) {
+        //  console.log(res[i])
+        //}
       },
       error: function(res) {
         //alert('Incorrect filter, no result found.')
@@ -625,7 +627,7 @@
     
     style = document.getElementById(accordion_name).getAttribute("style")
     if (style.length == 0) {
-      document.getElementById(accordion_name).setAttribute("style", "border-color: #206bc4;border-width: 1px;border-top-style: solid")
+      document.getElementById(accordion_name).setAttribute("style", "border-color: #bbdefb;border-width: 3px;border-top-style: solid")
     }
     else {
       document.getElementById(accordion_name).setAttribute("style", "")
