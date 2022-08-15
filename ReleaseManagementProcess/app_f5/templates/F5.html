@@ -35,9 +35,9 @@
     <div class="page-header d-print-none">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <div class="page-pretitle">F5 POOL STATE</div>
+          <div class="page-pretitle">F5 STATE</div>
           <h2 id="getstate" class="page-title">
-            Pool state table
+            Pool state 
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -94,7 +94,7 @@
                 <tbody class="table-tbody">
                   {% csrf_token %}
                   {% for pool in pool_list %}
-                    <tr id='{{ pool.server }}_{{ pool.name }}_tr'>
+                    <tr id='{{ pool.server }}_{{ pool.name }}_tr' class="pool-tr">
                       <td id='{{ pool.server }}_{{ pool.name }}_name' class="sort-name">{{ pool.name }}</td>
                       <td id='{{ pool.server }}_{{ pool.name }}_server' class="sort-server">{{ pool.server }}</td>
                       <td id='{{ pool.server }}_{{ pool.name }}_environment' class="sort-environment">{{ pool.get_environment_display }}</td>
@@ -139,9 +139,9 @@
     <div class="page-header d-print-none">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <div class="page-pretitle">F5 MEMBER STATE</div>
+          <div class="page-pretitle">F5 STATE</div>
           <h2 id="poolname" class="page-title">
-            Member state table
+            Member state
           </h2>
         </div>
       </div>
@@ -318,6 +318,16 @@
 
 <script type='text/javascript'>
   function getmember(server_name, pool_name) {
+    pool_trs = document.getElementsByClassName("pool-tr")
+    for (let i = 0; i < pool_trs.length; i++) {
+      console.log(pool_trs[i].id) 
+      document.getElementById(pool_trs[i].id).style.borderColor=""
+      document.getElementById(pool_trs[i].id).style.borderWidth="" 
+    }
+
+    document.getElementById(server_name + '_' + pool_name + '_tr').style.borderColor="#bbdefb"
+    document.getElementById(server_name + '_' + pool_name + '_tr').style.borderWidth="3px"
+
     getpoolstate(server_name, pool_name)
     currentTime = moment().format('HH:mm:ss');
     members = ""
