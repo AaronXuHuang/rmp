@@ -52,7 +52,7 @@
         <div class="card">
             <div class="card-body">
               <div class="accordion" id="accordion-example">
-                <div class="accordion-item">
+                <div id="accordion-env" class="accordion-item" style="border-color: #206bc4;border-width: 1px" onclick="setborder('env')">
                   <h2 class="accordion-header" id="heading-1">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-codesandbox" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -108,7 +108,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
+                <div id="accordion-color" class="accordion-item" style="" onclick="setborder('color')">
                   <h2 class="accordion-header" id="heading-2">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-palette" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -141,7 +141,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
+                <div id="accordion-state" class="accordion-item" style="" onclick="setborder('state')">
                   <h2 class="accordion-header" id="heading-3">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -189,7 +189,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
+                <div id="accordion-partner" class="accordion-item" style="" onclick="setborder('partner')">
                   <h2 class="accordion-header" id="heading-4">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-amongus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -212,7 +212,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
+                <div id="accordion-tier" class="accordion-item" style="" onclick="setborder('tier')">
                   <h2 class="accordion-header" id="heading-5">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-5" aria-expanded="false">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-components" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -236,7 +236,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="accordion-item">
+                <div id="accordion-ip" class="accordion-item" style="" onclick="setborder('ip')">
                   <h2 class="accordion-header" id="heading-6">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-6" aria-expanded="false">
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pins" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -276,16 +276,16 @@
                 >
                   <thead>
                     <tr>
+                      <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
                       <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
                       <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
                       <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
                       <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
                       <th>Partner</th>
                       <th>State</th>
-                      <th>PrivateIpAddress</th>
+                      <th>Ip</th>
                       <th>InstanceId</th>
-                      <th>LaunchTime</th>
-                      
+                      <th>Time</th>
                     </tr>
                   </thead>
                   <tbody class="table-tbody">
@@ -616,5 +616,25 @@
             break
         }
     }
+</script>
+
+<script type='text/javascript'>
+  function setborder(type) {
+    accordion_all = ['env', 'color', 'state', 'partner', 'tier', 'ip']
+    accordion_name = ("accordion-" + type)
+    
+    style = document.getElementById(accordion_name).getAttribute("style")
+    if (style.length == 0) {
+      document.getElementById(accordion_name).setAttribute("style", "border-color: #206bc4;border-width: 1px;border-top-style: solid")
+    }
+    else {
+      document.getElementById(accordion_name).setAttribute("style", "")
+    }
+    for (let i in accordion_all) {
+      if (accordion_all[i] != type) {
+        document.getElementById("accordion-" + accordion_all[i]).setAttribute("style", "")
+      }
+    }
+  }
 </script>
 {% endblock %}
