@@ -201,7 +201,6 @@ def aws_instance_filter(filter_values):
     response = client.describe_instances(
         Filters = filter_vars
     )
-    print(response)
     return response
 
 
@@ -232,7 +231,6 @@ def FilterInstance(request):
         for index in range(len(ip_addresses)):
             ip_addresses[index] = ip_addresses[index].strip()
             
-    print(ip_addresses)
     # partner: BAAS, GBR, Intuit
     cvt_partners = []
     for partner in partners:
