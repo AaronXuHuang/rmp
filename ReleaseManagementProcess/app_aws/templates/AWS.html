@@ -70,6 +70,7 @@
                   </h2>
                   <div id="collapse-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-example" style="">
                     <div class="accordion-body pt-0">
+                      <!-- should be dynamic created from database -->
                       <label class="form-check form-check-inline">
                         <input id='env_dev' class="form-check-input" type="checkbox" onclick="checkstatus('env')">
                         <span class="form-check-label" style='width:50px'>dev</span>
@@ -261,13 +262,25 @@
       </div>
     </div>
 
-
+    <div class="container-xl">
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <div class="page-pretitle">AWS instance</div>
+            <h2 class="page-title">
+              Details
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
     <div class="page-body">
       <div class="container-xl">
         <div class="card">
           <ul id="nav-tabs" class="nav nav-tabs" data-bs-toggle="tabs">
+            <!-- should be dynamic created from database -->
             <li class="nav-item">
               <a href="#tabs-dev" class="nav-link active" data-bs-toggle="tab" style="text-transform: lowercase">dev</a>
             </li>
@@ -305,6 +318,7 @@
 
           <div class="card-body">
             <div class="tab-content">
+              <!-- should be dynamic created from database -->
               <div class="tab-pane show active" id="tabs-dev">
                 <div id="table-default">
                   <div class="table">
