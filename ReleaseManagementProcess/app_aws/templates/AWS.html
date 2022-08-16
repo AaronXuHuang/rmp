@@ -36,7 +36,7 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <div class="page-pretitle">AWS instance</div>
-            <h2 class="page-title">
+            <h2 id='title_filter' class="page-title">
               Filter
             </h2>
           </div>
@@ -267,7 +267,7 @@
         <div class="row g-2 align-items-center">
           <div class="col">
             <div class="page-pretitle">AWS instance</div>
-            <h2 class="page-title">
+            <h2 id='title_details' class="page-title">
               Details
             </h2>
           </div>
@@ -279,415 +279,27 @@
     <div class="page-body">
       <div class="container-xl">
         <div class="card">
-          <!-- should be dynamic created from database -->
-          <!--
-          <ul id="nav-tabs" class="nav nav-tabs" data-bs-toggle="tabs">
-            <li class="nav-item">
-              <a href="#tabs-dev" class="nav-link active" data-bs-toggle="tab" style="text-transform: lowercase">dev</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-int" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">int</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-prf" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">prf</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-qa" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">qa</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-pie" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">pie</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-stg" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">stg</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-stgb" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">stgb</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-stin" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">stin</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-prod" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">prod</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-pdgb" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">pdgb</a>
-            </li>
-            <li class="nav-item">
-              <a href="#tabs-pdin" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">pdin</a>
-            </li>
-          </ul>
-          -->
-
           <div class="card-body">
             <div id="table-default">
-              <div class="table">
-                <div class="table-responsive">
-                  <table class="table card-table table-vcenter text-nowrap datatable">
-                    <thead>
-                      <tr>
-                        <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                        <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                        <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                        <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                        <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                        <th>Partner</th>
-                        <th>State</th>
-                        <th>Ip</th>
-                        <th>InstanceId</th>
-                        <th>Time</th>
-                      </tr>
-                    </thead>
-                      <tbody id='tbody-instance' class="table-tbody">
-                        <!--
-                        <tr>
-                          <td> dev </td>
-                        </tr>
-                        -->
-                      </tbody>
-                    </div>
-                  </table>
-                </div>
-              </div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th><button class="table-sort asc" data-sort="sort-host">Host</button></th>
+                    <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
+                    <th><button class="table-sort asc" data-sort="sort-tier">Tier</th>
+                    <th><button class="table-sort asc" data-sort="sort-env">Env</th>
+                    <th><button class="table-sort asc" data-sort="sort-bg">b/g</th>
+                    <th><button class="table-sort asc" data-sort="sort-partner">Partner</th>
+                    <th><button class="table-sort asc" data-sort="sort-state">State</th>
+                    <th><button class="table-sort asc" data-sort="sort-ip">Ip</th>
+                    <th><button class="table-sort asc" data-sort="sort-id">InstanceId</th>
+                    <th><button class="table-sort asc" data-sort="sort-time">Time</th>
+                  </tr>
+                </thead>
+                <tbody id='tbody-instance' class="table-tbody">
+                </tbody>
+              </table>
             </div>
-            <!--div class="tab-content"-->
-              <!-- should be dynamic created from database -->
-              <!--
-              <div class="tab-pane show active" id="tabs-dev">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-dev' class="table-tbody">
-                            <tr>
-                              <td> dev </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-int">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-int' class="table-tbody">
-                            <tr>
-                              <td> int-1-1 </td>
-                              <td> int-1-2 </td>
-                            </tr>
-                            <tr>
-                              <td> int-2-1 </td>
-                              <td> int-2-2 </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-prf">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-prf' class="table-tbody">
-                            <tr>
-                              <td> prf </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-qa">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-qa' class="table-tbody">
-                            <tr>
-                              <td> qa </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-pie">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-pie' class="table-tbody">
-                            <tr>
-                              <td> pie </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-stg">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-stg' class="table-tbody">
-                            <tr>
-                              <td> stg </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-stgb">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-stgb' class="table-tbody">
-                            <tr>
-                              <td> stgb </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-stin">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-stin' class="table-tbody">
-                            <tr>
-                              <td> stin </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-prod">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-prod' class="table-tbody">
-                            <tr>
-                              <td> prod </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-pdgb">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-pdgb' class="table-tbody">
-                            <tr>
-                              <td> pdgb </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="tabs-pdin">
-                <div id="table-default">
-                  <div class="table">
-                    <div class="table-responsive">
-                      <table class="table card-table table-vcenter text-nowrap datatable">
-                        <thead>
-                          <tr>
-                            <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
-                            <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
-                            <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
-                            <th>Partner</th>
-                            <th>State</th>
-                            <th>Ip</th>
-                            <th>InstanceId</th>
-                            <th>Time</th>
-                          </tr>
-                        </thead>
-                          <tbody id='tbody-pdin' class="table-tbody">
-                            <tr>
-                              <td> pdin </td>
-                            </tr>
-                          </tbody>
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>-->
-            <!--/div-->
           </div>
         </div>
       </div>
@@ -732,7 +344,7 @@
     'state_stopped']
   partner_array = []
   tier_array = []
-
+  blueprogressbar = '<div class="progress"><div class="progress-bar progress-bar-indeterminate bg-blue"></div></div>'
 </script>
 
 <script type='text/javascript'>
@@ -744,6 +356,8 @@
 <script type='text/javascript'>
   function initdatafromdb() {
     newlabels = ""
+    $('#title_filter').html(blueprogressbar)
+
     $.ajax({
       url: '/aws/instance/initdata/',
       type: 'GET',
@@ -789,6 +403,7 @@
         }
         newlabels += "<hr style='margin-top:1px;margin-bottom:1px'>"
         $('#collapse-tiers').html(newlabels)
+        $('#title_filter').html('Filter')
       }
     })
   }
@@ -837,6 +452,9 @@
 
     checked_array[5] = document.getElementById("ipaddress").value
     //console.log(checked_array[5])
+    
+    $('#tbody-instance').html('<tr><td></td></tr>')
+    $('#title_details').html(blueprogressbar)
 
     $.ajax({
       url: '/aws/instance/filter/',
@@ -851,10 +469,47 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        $.each(res,function(index,value){
-          console.log('index: ' + index)
-          console.log(value)
+        newtr = ''
+        $.each(res,function(env,values){
+          for (let i = 0; i< values.length; i++) {
+            if (values[i]['Colorstack'] == 'blue') {
+              bg_icon = "<span class='status-dot bg-blue'></span> "
+            }
+            else {
+              bg_icon = "<span class='status-dot bg-green'></span> "
+            }
+
+            if (values[i]['State'] == 'running') {
+              state_icon = "<span class='badge bg-success me-1'></span> "
+            }
+            else {
+              state_icon = "<span class='badge bg-warning me-1'></span> "
+            }
+            
+            newtr += "<tr>"
+            newtr += "<td class='sort-host'>" + values[i]['HostName'] + "</td>"
+            newtr += "<td class='sort-name'>" + values[i]['Name'] + "</td>"
+            newtr += "<td class='sort-tier'>" + values[i]['Tier'].toLowerCase() + "</td>"
+            newtr += "<td class='sort-env'>" + values[i]['Environment'].toLowerCase() + "</td>"
+            newtr += "<td class='sort-bg'>" + bg_icon + values[i]['Colorstack'] + "</td>"
+            newtr += "<td class='sort-partner'>" + values[i]['Partner'].toLowerCase() + "</td>"
+            newtr += "<td class='sort-state'>" + state_icon + values[i]['State'] + "</td>"
+            newtr += "<td class='sort-ip'>" + values[i]['PrivateIpAddress'] + "</td>"
+            newtr += "<td class='sort-id'>" + values[i]['InstanceId'] + "</td>"
+            newtr += "<td class='sort-time'>" + values[i]['LaunchTime'] + "</td>"
+            newtr += "</tr>"
+          }
         })
+        
+        $('#tbody-instance').html(newtr)
+        $('#title_details').html('Details')
+        const sort_list = new List('table-default', {
+          sortClass: 'table-sort',
+          listClass: 'table-tbody',
+          valueNames: [ 'sort-host', 'sort-name', 'sort-tier', 
+            'sort-env', 'sort-bg', 'sort-partner', 'sort-state', 
+            'sort-ip', 'sort-id', 'sort-time']
+        });
       }
     })
   }
