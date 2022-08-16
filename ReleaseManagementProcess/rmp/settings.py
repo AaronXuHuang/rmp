@@ -141,4 +141,5 @@ ALLOWED_HOSTS = [
     'demo.rmp.nextestate.com',
     'rmp.nextestate.com',
     'DC1TCAGTW01',
-    '127.0.0.1']
+    '127.0.0.1',
+    '10.112.88.51']
