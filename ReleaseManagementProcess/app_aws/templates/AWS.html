@@ -279,8 +279,9 @@
     <div class="page-body">
       <div class="container-xl">
         <div class="card">
+          <!-- should be dynamic created from database -->
+          <!--
           <ul id="nav-tabs" class="nav nav-tabs" data-bs-toggle="tabs">
-            <!-- should be dynamic created from database -->
             <li class="nav-item">
               <a href="#tabs-dev" class="nav-link active" data-bs-toggle="tab" style="text-transform: lowercase">dev</a>
             </li>
@@ -315,10 +316,40 @@
               <a href="#tabs-pdin" class="nav-link" data-bs-toggle="tab" style="text-transform: lowercase">pdin</a>
             </li>
           </ul>
+          -->
 
           <div class="card-body">
-            <div class="tab-content">
+            <div id="table-default">
+              <div class="table">
+                <div class="table-responsive">
+                  <table class="table card-table table-vcenter text-nowrap datatable">
+                    <thead>
+                      <tr>
+                        <th><button class="table-sort asc" data-sort="sort-name">Host</button></th>
+                        <th><button class="table-sort asc" data-sort="sort-name">Name</button></th>
+                        <th><button class="table-sort asc" data-sort="sort-server">Tier</th>
+                        <th><button class="table-sort asc" data-sort="sort-environment">Environment</th>
+                        <th><button class="table-sort asc" data-sort="sort-project">Colorstack</th>
+                        <th>Partner</th>
+                        <th>State</th>
+                        <th>Ip</th>
+                        <th>InstanceId</th>
+                        <th>Time</th>
+                      </tr>
+                    </thead>
+                      <tbody id='tbody-instance' class="table-tbody">
+                        <tr>
+                          <td> dev </td>
+                        </tr>
+                      </tbody>
+                    </div>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!--div class="tab-content"-->
               <!-- should be dynamic created from database -->
+              <!--
               <div class="tab-pane show active" id="tabs-dev">
                 <div id="table-default">
                   <div class="table">
@@ -653,13 +684,13 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              </div>-->
+            <!--/div-->
           </div>
         </div>
       </div>
     </div>
+  </div>
 </div>  
 {% endblock %}
 
