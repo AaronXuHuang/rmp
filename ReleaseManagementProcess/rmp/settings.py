@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_aws.apps.AwsConfig',
-    'app_f5.apps.F5Config',
-    'app_rmpadmin.apps.RmpAdminConfig'
+    'app_aws.apps.AppAwsConfig',
+    'app_f5.apps.AppF5Config',
+    'app_rmpadmin.apps.AppRmpAdminConfig',
+    'app_jira.apps.AppJiraConfig',
+    'app_octopus.apps.AppOctopusConfig',
+    'app_releaseobject.apps.AppReleaseobjectConfig',
 ]
 
 MIDDLEWARE = [

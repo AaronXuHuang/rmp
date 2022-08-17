@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class AwsConfig(AppConfig):
+class AppAwsConfig(AppConfig):
     name = 'app_aws'
