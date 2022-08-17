@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from app_aws import views as AWSviews
 from app_f5 import views as F5views
+from app_jira import views as Jiraviews
+from app_octopus import views as Octoviews
+from app_releaseobject import views as ROviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +33,9 @@ urlpatterns = [
     path('aws/test/', AWSviews.test),
     path('aws/instance/', AWSviews.ListInstance),
     path('aws/instance/filter/', AWSviews.FilterInstance),
-    path('aws/instance/initdata/', AWSviews.GetInitData)
+    path('aws/instance/initdata/', AWSviews.GetInitData),
+    path('jira/<str:orgunit>/<str:milestone>', Jiraviews.FetchIssue),
+    path('octo/environment/<str:orgunit>/', Octoviews.FetchEnvironment),
+    path('octo/<str:orgunit>/<str:issue>', Octoviews.FetchDeployment),
+    path('ro/<str:orgunit>/<str:milestone>', ROviews.CreateRO)
 ]
