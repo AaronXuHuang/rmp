@@ -3,9 +3,8 @@ from django.db import models
 
 # Create your models here.
 class JiraProject(models.Model):
-    projectname = models.CharField(max_length=50, null=True, blank=True)
-    projectkey = models.CharField(max_length=50, null=True, blank=True)
-    projectid = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    key = models.CharField(max_length=50, null=True, blank=True)
 
 
 class JiraReleaseObject(models.Model):
