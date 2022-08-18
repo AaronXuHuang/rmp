@@ -18,14 +18,14 @@ def test(request):
 
 def UpdateJiraProject(request):
 
-    projects = GetJiraProject()
+    projects = FetchJiraProject()
     PurgeTable(JiraProject)
     SaveProjects(projects)
 
     return JsonResponse(projects)
 
 
-def GetJiraProject():
+def FetchJiraProject():
     # https://pd.nextestate.com/rest/api/2/project
 
     projects = {
@@ -57,7 +57,7 @@ def SaveProjects(projects):
     JiraProject.objects.bulk_create(bulk_data)
 
 
-def GetJiraFixVersion(request):
+def FetchJiraFixVersion(request):
     # https://pd.nextestate.com/rest/api/2/project/12500/version?maxResults=1048576
 
     fix_versions = {
@@ -82,6 +82,6 @@ def GetJiraFixVersion(request):
 
     return JsonResponse(fix_versions)
 
-def FetchIssue(request, orgunit, milestone):
+def FetchJiraIssue(request, orgunit, milestone):
     
     return HttpResponse()
