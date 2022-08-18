@@ -5,3 +5,8 @@ from django.shortcuts import render
 def FetchIssue(request, orgunit, milestone):
 
     return HttpResponse()
+
+
+def test(request):
+
+    return HttpResponse()

@@ -34,8 +34,9 @@ urlpatterns = [
     path('aws/instance/', AWSviews.ListInstance),
     path('aws/instance/filter/', AWSviews.FilterInstance),
     path('aws/instance/initdata/', AWSviews.GetInitData),
-    path('jira/<str:orgunit>/<str:milestone>', Jiraviews.FetchIssue),
+    path('jira/test/', Jiraviews.test),
+    path('jira/<str:orgunit>/<str:milestone>/', Jiraviews.FetchIssue),
     path('octo/environment/<str:orgunit>/', Octoviews.FetchEnvironment),
-    path('octo/<str:orgunit>/<str:issue>', Octoviews.FetchDeployment),
-    path('ro/<str:orgunit>/<str:milestone>', ROviews.CreateRO)
+    path('octo/<str:orgunit>/<str:issue>/', Octoviews.FetchDeployment),
+    path('ro/<str:orgunit>/<str:milestone>/', ROviews.CreateRO)
 ]
