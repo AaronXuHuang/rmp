@@ -84,4 +84,4 @@ def FetchJiraFixVersion(request):
 
 def FetchJiraIssue(request, orgunit, milestone):
     
-    return HttpResponse()
+    return JsonResponse()
