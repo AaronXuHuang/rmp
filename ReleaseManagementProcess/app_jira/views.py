@@ -25,6 +25,10 @@ def UpdateJiraProject(request):
     return JsonResponse(projects)
 
 
+def ProjectKey(project):
+      return project['key']
+
+
 def FetchJiraProject():
     # https://pd.nextestate.com/rest/api/2/project
 
@@ -42,6 +46,7 @@ def FetchJiraProject():
         }
         projects['projects'].append(project)
 
+    projects['projects'].sort(key=ProjectKey)
     return projects
 
 
@@ -55,6 +60,12 @@ def SaveProjects(projects):
     for project in projects['projects']:
         bulk_data.append(JiraProject(id=project['id'], name=project['name'], key=project['key']))
     JiraProject.objects.bulk_create(bulk_data)
+
+
+def OrderProjects():
+    project_ordered = list(JiraProject.objects.values_list('key', 'name', 'id', flat=True).json())
+    print(project_ordered)
+    return project_ordered
 
 
 def FetchJiraFixVersion(request):
