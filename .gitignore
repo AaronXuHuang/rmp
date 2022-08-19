@@ -2,3 +2,4 @@
 rmpvenv/
 __pycache__/
 migrations/
+*.pyc
