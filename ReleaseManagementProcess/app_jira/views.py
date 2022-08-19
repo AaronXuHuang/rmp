@@ -1,13 +1,13 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from .models import JiraProject, JiraReleaseObject
+from app_jira.models import JiraProject, JiraReleaseObject
 import json
 import requests
 
 # Create your views here.
-jira_user = 'svc_mcp'
-jira_pwd = 'Wa7rUxeD'
-jira_server = 'https://pd.nextestate.com'
+JIRA_USER = 'svc_mcp'
+JIRA_PWD = 'Wa7rUxeD'
+JIRA_SERVER = 'https://pd.nextestate.com'
 
 
 def test(request):
@@ -21,9 +21,9 @@ def FetchJiraProject():
     projects = {
         'projects': []
         }
-    url = jira_server + "/rest/api/2/project/"
+    url = JIRA_SERVER + "/rest/api/2/project/"
 
-    items = requests.get(url=url, auth=(jira_user, jira_pwd), verify=False).json()
+    items = requests.get(url=url, auth=(JIRA_USER, JIRA_PWD), verify=False).json()
     for item in items:
         project = {
             'id': item['id'],
@@ -45,9 +45,9 @@ def FetchJiraFixVersion(request):
         'fix_versions': []
     }
     projectid = JiraProject.objects.get(key=project).id
-    url = jira_server + "/rest/api/2/project/" + str(projectid) + '/version?maxResults=1048576'
+    url = JIRA_SERVER + "/rest/api/2/project/" + str(projectid) + '/version?maxResults=1048576'
 
-    items = requests.get(url=url, auth=(jira_user, jira_pwd), verify=False).json()
+    items = requests.get(url=url, auth=(JIRA_USER, JIRA_PWD), verify=False).json()
     for item in items['values']:
         if 'description' in item:
             fix_versions['fix_versions'].append({
@@ -76,9 +76,9 @@ def FetchJiraIssue(request):
     max_result = "maxResults=2500"
     fileds = "fields=key,customfield_12429,issuetype"
     jql_string = search + fix_version + connector + project + _and_ + max_result + _and_ + fileds
-    url = jira_server + "/rest/api/2/" + jql_string
+    url = JIRA_SERVER + "/rest/api/2/" + jql_string
     
-    items = requests.get(url=url, auth=(jira_user, jira_pwd), verify=False).json()
+    items = requests.get(url=url, auth=(JIRA_USER, JIRA_PWD), verify=False).json()
     for item in items['issues']:
         issue_key = item['key']
         issue_type = item['fields']['issuetype']['name']
@@ -99,8 +99,8 @@ def FetchJiraIssue(request):
 def UpdateJiraProject(request):
 
     projects = FetchJiraProject()
-    PurgeTable(JiraProject)
-    SaveProjects(projects)
+    JiraProject.objects.all().delete()
+    SaveProject(projects)
 
     return JsonResponse(projects)
 
@@ -109,11 +109,7 @@ def ProjectKey(project):
       return project['key']
 
 
-def PurgeTable(model):
-    model.objects.all().delete()
-
-
-def SaveProjects(projects):
+def SaveProject(projects):
     bulk_data = []
 
     for project in projects['projects']:
