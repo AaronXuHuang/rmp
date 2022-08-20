@@ -1,7 +1,10 @@
-from app_octopus.models import OctoProject, OctoSpace
+from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import requests
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # Create your views here.
 # svc_mcp api key
@@ -25,11 +28,14 @@ def UpdateProject(request):
     return JsonResponse(projects)
 
 
-def UpdateEnvironment(request, orgunit):
-    #environments = FetchEnvironment()
-    #OctoEnvironment.objects.all().delete()
-    #SaveEnvironment(environments)
-    return JsonResponse('environment')
+def UpdateEnvironment(request):
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+
+    environments = FetchEnvironment(space_id)
+    OctoEnvironment.objects.filter(spaceid=space_id).delete()
+    SaveEnvironment(environments)
+    return JsonResponse(environments)
 
 
 def FetchSpace():
@@ -52,6 +58,7 @@ def FetchSpace():
 
 
 def FetchProject(space_id):
+    # https://octopus.nextestate.com/api/Spaces-42/projects?skip=0&take=2147483647
     projects = {
         'projects': [],
     }
@@ -68,6 +75,25 @@ def FetchProject(space_id):
         })
 
     return projects
+
+
+def FetchEnvironment(space_id):
+    # https://octopus.nextestate.com/api/Spaces-42/environments?skip=0&take=2147483647
+    environments = {
+        'environments': [],
+    }
+
+    url = OCTOPUS_SERVER + "/api/" + space_id + "/environments?skip=0&take=2147483647"
+    headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
+    items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
+    for item in items['Items']:
+        environments['environments'].append({
+            'id': item['Id'],
+            'name': item['Name'],
+            'spaceid': item['SpaceId']
+        })
+
+    return environments
 
 
 def SaveSpace(spaces):
@@ -92,7 +118,15 @@ def SaveProject(projects):
     OctoProject.objects.bulk_create(bulk_data)
 
 
+def SaveEnvironment(environments):
+    bulk_data = []
 
+    for environment in environments['environments']:
+        bulk_data.append(OctoEnvironment(
+            id=environment['id'], 
+            name=environment['name'], 
+            spaceid=environment['spaceid']))
+    OctoEnvironment.objects.bulk_create(bulk_data)
 
 
 def FetchDeployment(request, orgunit, issue):
