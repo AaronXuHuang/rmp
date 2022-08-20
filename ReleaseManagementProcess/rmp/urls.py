@@ -40,7 +40,7 @@ urlpatterns = [
     path('jira/issue/fetch/', Jiraviews.FetchJiraIssue),
     path('octo/space/update/', Octoviews.UpdateSpace),
     path('octo/project/update/', Octoviews.UpdateProject),
-    path('octo/environment/<str:orgunit>/fetch/', Octoviews.FetchEnvironment),
+    path('octo/environment/update/', Octoviews.UpdateEnvironment),
     path('octo/<str:orgunit>/<str:issue>/fetch/', Octoviews.FetchDeployment),
     path('ro/<str:orgunit>/<str:milestone>/create/', ROviews.CreateRO)
 ]

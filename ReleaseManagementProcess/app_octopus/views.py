@@ -9,7 +9,6 @@ OCTOPUS_API_KEY='API-BDUFSI5UEGU3SOTLCH6IBDXFW'
 OCTOPUS_SERVER='https://octopus.nextestate.com'
 
 def UpdateSpace(request):
-    
     spaces = FetchSpace()
     OctoSpace.objects.all().delete()
     SaveSpace(spaces)
@@ -17,16 +16,20 @@ def UpdateSpace(request):
 
 
 def UpdateProject(request):
-    # Spaces-2: TPG, Spaces-22: RushCard, Spaces-22: RE
-    exclude_items = ['Spaces-2', 'Spaces-22', 'Spaces-62']
-    space_ids = list(OctoSpace.objects.values_list('id', flat=True))
-    for item in exclude_items:
-        space_ids.remove(item)
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
     
-    projects = FetchProject(space_ids)
-    OctoProject.objects.all().delete()
+    projects = FetchProject(space_id)
+    OctoProject.objects.filter(spaceid=space_id).delete()
     SaveProject(projects)
     return JsonResponse(projects)
+
+
+def UpdateEnvironment(request, orgunit):
+    #environments = FetchEnvironment()
+    #OctoEnvironment.objects.all().delete()
+    #SaveEnvironment(environments)
+    return JsonResponse('environment')
 
 
 def FetchSpace():
@@ -48,23 +51,21 @@ def FetchSpace():
     return spaces
 
 
-def FetchProject(space_ids):
+def FetchProject(space_id):
     projects = {
         'projects': [],
     }
 
-    for space_id in space_ids:
-        url = OCTOPUS_SERVER + "/api/" + space_id + "/projects?skip=0&take=2147483647"
-        headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
-        items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
-
-        for item in items['Items']:
-            projects['projects'].append({
-                'id': item['Id'],
-                'name': item['Name'],
-                'projectgroupid': item['ProjectGroupId'],
-                'spaceid': item['SpaceId']
-            })
+    url = OCTOPUS_SERVER + "/api/" + space_id + "/projects?skip=0&take=2147483647"
+    headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
+    items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
+    for item in items['Items']:
+        projects['projects'].append({
+            'id': item['Id'],
+            'name': item['Name'],
+            'projectgroupid': item['ProjectGroupId'],
+            'spaceid': item['SpaceId']
+        })
 
     return projects
 
@@ -91,9 +92,7 @@ def SaveProject(projects):
     OctoProject.objects.bulk_create(bulk_data)
 
 
-def FetchEnvironment(request, orgunit):
-    
-    return HttpResponse()
+
 
 
 def FetchDeployment(request, orgunit, issue):
