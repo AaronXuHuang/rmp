@@ -28,7 +28,7 @@ def SyncJiraFixVersions(request):
     project_id = JiraProject.objects.get(key=project).id
 
     fix_versions = FetchJiraFixVersions(project_id)
-    JiraFixVersion.objects.filter(project_id=project_id).delete()
+    JiraFixVersion.objects.filter(projectid=project_id).delete()
     SaveJiraFixVersion(fix_versions)
 
     return JsonResponse(fix_versions)
@@ -147,6 +147,6 @@ def SaveJiraFixVersion(fix_versions):
             name=fix_version['name'],
             description=fix_version['description'],
             released=fix_version['released'],
-            project=JiraProject(id=fix_version['projectid'])))
+            projectid=fix_version['projectid']))
     JiraFixVersion.objects.bulk_create(bulk_data)
 
