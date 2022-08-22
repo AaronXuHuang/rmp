@@ -11,34 +11,34 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 OCTOPUS_API_KEY='API-BDUFSI5UEGU3SOTLCH6IBDXFW'
 OCTOPUS_SERVER='https://octopus.nextestate.com'
 
-def UpdateSpace(request):
-    spaces = FetchSpace()
+def SyncOctoSpaces(request):
+    spaces = FetchSpaces()
     OctoSpace.objects.all().delete()
-    SaveSpace(spaces)
+    SaveSpaces(spaces)
     return JsonResponse(spaces)
 
 
-def UpdateProject(request):
+def SyncOctoProjects(request):
     space_name = request.GET.get('space')
     space_id = OctoSpace.objects.get(name=space_name).id
     
-    projects = FetchProject(space_id)
+    projects = FetchProjects(space_id)
     OctoProject.objects.filter(spaceid=space_id).delete()
-    SaveProject(projects)
+    SaveProjects(projects)
     return JsonResponse(projects)
 
 
-def UpdateEnvironment(request):
+def SyncOctoEnvironments(request):
     space_name = request.GET.get('space')
     space_id = OctoSpace.objects.get(name=space_name).id
 
-    environments = FetchEnvironment(space_id)
+    environments = FetchEnvironments(space_id)
     OctoEnvironment.objects.filter(spaceid=space_id).delete()
-    SaveEnvironment(environments)
+    SaveEnvironments(environments)
     return JsonResponse(environments)
 
 
-def FetchSpace():
+def FetchSpaces():
     # https://octopus.nextestate.com/api/Spaces
     spaces = {
         'spaces': []
@@ -57,7 +57,7 @@ def FetchSpace():
     return spaces
 
 
-def FetchProject(space_id):
+def FetchProjects(space_id):
     # https://octopus.nextestate.com/api/Spaces-42/projects?skip=0&take=2147483647
     projects = {
         'projects': [],
@@ -77,7 +77,7 @@ def FetchProject(space_id):
     return projects
 
 
-def FetchEnvironment(space_id):
+def FetchEnvironments(space_id):
     # https://octopus.nextestate.com/api/Spaces-42/environments?skip=0&take=2147483647
     environments = {
         'environments': [],
@@ -96,7 +96,7 @@ def FetchEnvironment(space_id):
     return environments
 
 
-def SaveSpace(spaces):
+def SaveSpaces(spaces):
     bulk_data = []
 
     for space in spaces['spaces']:
@@ -106,7 +106,7 @@ def SaveSpace(spaces):
     OctoSpace.objects.bulk_create(bulk_data)
 
 
-def SaveProject(projects):
+def SaveProjects(projects):
     bulk_data = []
 
     for project in projects['projects']:
@@ -118,7 +118,7 @@ def SaveProject(projects):
     OctoProject.objects.bulk_create(bulk_data)
 
 
-def SaveEnvironment(environments):
+def SaveEnvironments(environments):
     bulk_data = []
 
     for environment in environments['environments']:
@@ -129,6 +129,6 @@ def SaveEnvironment(environments):
     OctoEnvironment.objects.bulk_create(bulk_data)
 
 
-def FetchDeployment(request, orgunit, issue):
+def FetchDeployments(request, orgunit, issue):
     
     return HttpResponse()

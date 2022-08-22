@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from app_jira.models import JiraProject, JiraReleaseObject
+from app_jira.models import JiraFixVersion, JiraProject, JiraReleaseObject
 import json
 import requests
 
@@ -11,11 +11,39 @@ JIRA_SERVER = 'https://pd.nextestate.com'
 
 
 def test(request):
-    result = UpdateJiraProject()
+    result = SyncJiraProjects()
     return JsonResponse(result)
 
 
-def FetchJiraProject():
+def SyncJiraProjects(request):
+    projects = FetchJiraProjects()
+    JiraProject.objects.all().delete()
+    SaveJiraProjects(projects)
+
+    return JsonResponse(projects)
+
+
+def SyncJiraFixVersions(request):
+    project = request.GET.get('project')
+    project_id = JiraProject.objects.get(key=project).id
+
+    fix_versions = FetchJiraFixVersions(project_id)
+    JiraFixVersion.objects.filter(project_id=project_id).delete()
+    SaveJiraFixVersion(fix_versions)
+
+    return JsonResponse(fix_versions)
+
+
+def SyncJiraIssues(request):
+    project = request.GET.get('project')
+    fix_version = request.GET.get('fix_version')
+
+    issues = FetchJiraIssues(project, fix_version)
+    # not database operation
+    return JsonResponse(issues)
+
+
+def FetchJiraProjects():
     # https://pd.nextestate.com/rest/api/2/project
 
     projects = {
@@ -36,42 +64,44 @@ def FetchJiraProject():
     return projects
 
 
-def FetchJiraFixVersion(request):
+def FetchJiraFixVersions(project_id):
     # https://pd.nextestate.com/rest/api/2/project/12500/version?maxResults=1048576
-
-    project = request.GET.get('project')
 
     fix_versions = {
         'fix_versions': []
     }
-    projectid = JiraProject.objects.get(key=project).id
-    url = JIRA_SERVER + "/rest/api/2/project/" + str(projectid) + '/version?maxResults=1048576'
+    url = JIRA_SERVER + "/rest/api/2/project/" + str(project_id) + '/version?maxResults=1048576'
 
     items = requests.get(url=url, auth=(JIRA_USER, JIRA_PWD), verify=False).json()
     for item in items['values']:
         if 'description' in item:
             fix_versions['fix_versions'].append({
+                'id': item['id'],
                 'name': item['name'],
-                'description': item['description']
+                'description': item['description'],
+                'released': item['released'],
+                'projectid': project_id,
                 })
         else:
             fix_versions['fix_versions'].append({
+                'id': item['id'],
                 'name': item['name'],
-                'description': ""
+                'description': "N/A",
+                'released': item['released'],
+                'projectid': project_id,
                 })
 
-    return JsonResponse(fix_versions)
+    return fix_versions
 
 
-def FetchJiraIssue(request):
+def FetchJiraIssues(project, fix_version):
     # https://pd.nextestate.com/rest/api/2/search?jql=fixVersion=M113.22.08.11%20and%20project=BUX&maxResults=2500&fields=key,customfield_12429,issuetype
-
-    project = "project=" + request.GET.get('project')
-    fix_version = "fixVersion=" + request.GET.get('fix_version')
 
     issues = {'issues': []}
     search = "search?jql="
+    fix_version = "fixVersion=" + fix_version
     connector = "%20and%20"
+    project = "project=" + project
     _and_ = "&"
     max_result = "maxResults=2500"
     fileds = "fields=key,customfield_12429,issuetype"
@@ -93,25 +123,30 @@ def FetchJiraIssue(request):
                 'issuetype': issue_type,
                 'components': components})
     
-    return JsonResponse(issues)
-
-
-def UpdateJiraProject(request):
-
-    projects = FetchJiraProject()
-    JiraProject.objects.all().delete()
-    SaveProject(projects)
-
-    return JsonResponse(projects)
+    return issues
 
 
 def ProjectKey(project):
       return project['key']
 
 
-def SaveProject(projects):
+def SaveJiraProjects(projects):
     bulk_data = []
 
     for project in projects['projects']:
         bulk_data.append(JiraProject(id=project['id'], name=project['name'], key=project['key']))
     JiraProject.objects.bulk_create(bulk_data)
+
+
+def SaveJiraFixVersion(fix_versions):
+    bulk_data = []
+
+    for fix_version in fix_versions['fix_versions']:
+        bulk_data.append(JiraFixVersion(
+            id=fix_version['id'],
+            name=fix_version['name'],
+            description=fix_version['description'],
+            released=fix_version['released'],
+            project=JiraProject(id=fix_version['projectid'])))
+    JiraFixVersion.objects.bulk_create(bulk_data)
+
