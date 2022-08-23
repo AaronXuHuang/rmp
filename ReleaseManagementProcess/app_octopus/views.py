@@ -103,7 +103,7 @@ def GetOctoProjectReleaseDeploymentStates(request):
 
     releases = FetchProjectReleases(space_id, project_id)
     releases, tasks = FetchProjectReleaseDeployments(space_id, releases)
-    releases = FetchProjectReleaseDeploymentStates(space_id, releases, tasks)
+    releases = FetchProjectReleaseDeploymentStates(releases, tasks)
 
     return JsonResponse(releases)
 
@@ -218,11 +218,11 @@ def FetchProjectReleases(space_id, project_id):
 
 def FetchProjectReleaseDeployments(space_id, releases):
     # project release deployments
-    # https://octopus/api/Spaces-1/releases/Releases-150307/deployments?skip=0&take=2147483647
+    # https://octopus.nextestate.com/api/Spaces-1/releases/Releases-150307/deployments?skip=0&take=2147483647
 
     urls = []
     futures = []
-    tasks = []
+    tasks = {}
     session = FuturesSession(max_workers=WORKER)
 
     for release in releases['releases']:
@@ -241,16 +241,37 @@ def FetchProjectReleaseDeployments(space_id, releases):
                 'taskid': task,
                 'state': ''
             }
-            tasks.append(task)
+            tasks[task] = {
+                'releaseid': item['ReleaseId'],
+                'deploymentid': item['Id']
+            }
             deployments[item['Id']] = deployment
         releases['releases'][item['ReleaseId']]['deployments'] = deployments
 
     return releases, tasks
 
 
-def FetchProjectReleaseDeploymentStates(space_id, releases, task):
+def FetchProjectReleaseDeploymentStates(releases, tasks):
     # project release deployment states (deployment result: Success/Failed)
-    # https://octopus/api/tasks/ServerTasks-645703
+    # https://octopus.nextestate.com/api/tasks/ServerTasks-645703
+
+    urls = []
+    futures = []
+    session = FuturesSession(max_workers=WORKER)
+
+    for task in tasks:
+        urls.append(OCTOPUS_SERVER + "/api/tasks/" + task)
+    
+    for url in urls:
+        futures.append(session.get(url=url, headers=HEADERS, verify=False, allow_redirects=True))
+
+    for future in as_completed(futures):
+        items = json.loads(future.result().text)
+        task_id = items['Id']
+        deployment_id = items['Arguments']['DeploymentId']
+        state = items['State']
+        release_id = tasks[task_id]['releaseid']
+        releases['releases'][release_id]['deployments'][deployment_id]['state'] = state
 
     return releases
 
