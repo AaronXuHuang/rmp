@@ -53,6 +53,17 @@ def SyncOctoEnvironments(request):
     return JsonResponse(environments)
 
 
+def GetOctoChannelEnvironments(request):
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+    project_name = request.GET.get('project')
+    project_id = OctoProject.objects.get(name=project_name).id
+
+    channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
+
+    return JsonResponse(channel_environments)
+
+
 def GetDeploymentStatus(request):
     orgunit = request.GET.get('orgunit')
     jira_issues = request.GET.get('issues')
@@ -129,20 +140,20 @@ def FetchProjectChannelEnvironments(space_id, project_id):
     for item in items['ChannelEnvironments']:
         channels.append(item)
 
-    default_channel = CheckDefaultChannel(channels)
+    default_channel = CheckDefaultChannel(space_id, channels)
     channel_environments['default'] = default_channel
 
     return channel_environments
 
 
-def CheckDefaultChannel(channels):
+def CheckDefaultChannel(space_id, channels):
     # check if channel is default channel
     # https://octopus.nextestate.com/api/channels/Channels-902
 
     default_channel = ''
 
     for channel in channels:
-        url = OCTOPUS_SERVER + "/api/channels/" + channel
+        url = OCTOPUS_SERVER + "/api/"  + space_id + "/channels/" + channel
         item = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
         if item['IsDefault']:
             default_channel = channel
