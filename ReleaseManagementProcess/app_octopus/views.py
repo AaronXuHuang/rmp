@@ -1,7 +1,10 @@
 from asyncio.windows_events import NULL
+import json
 from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from requests_futures.sessions import FuturesSession
+from concurrent.futures import as_completed
 import requests
 import urllib3
 
@@ -12,6 +15,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 OCTOPUS_API_KEY='API-BDUFSI5UEGU3SOTLCH6IBDXFW'
 OCTOPUS_SERVER='https://octopus.nextestate.com'
 HEADERS = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
+WORKER = 20
 
 def test(request):
     # test begin
@@ -80,19 +84,20 @@ def GetOctoProjectReleases(request):
 
 
 def GetOctoProjectReleaseDeployments(request):
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+    project_name = request.GET.get('project')
+    project_id = OctoProject.objects.get(name=project_name).id
 
-    return JsonResponse
+    releases = FetchProjectReleases(space_id, project_id)
+    releases = FetchProjectReleaseDeployments(space_id, releases)
 
-
-def GetDeploymentStatus(request):
-    orgunit = request.GET.get('orgunit')
-    jira_issues = request.GET.get('issues')
-
-    return JsonResponse('')
+    return JsonResponse(releases)
 
 
 def FetchSpaces():
     # https://octopus.nextestate.com/api/Spaces
+
     spaces = {
         'spaces': []
         }
@@ -110,6 +115,7 @@ def FetchSpaces():
 
 def FetchProjects(space_id):
     # https://octopus.nextestate.com/api/Spaces-42/projects?skip=0&take=2147483647
+
     projects = {
         'projects': [],
     }
@@ -129,6 +135,7 @@ def FetchProjects(space_id):
 
 def FetchEnvironments(space_id):
     # https://octopus.nextestate.com/api/Spaces-42/environments?skip=0&take=2147483647
+
     environments = {
         'environments': [],
     }
@@ -148,6 +155,7 @@ def FetchEnvironments(space_id):
 def FetchProjectChannelEnvironments(space_id, project_id):
     # project channel/environment map
     # https://octopus.nextestate.com/api/Spaces-1/progression/Projects-682
+
     channel_environments = {
         'default': '',
         'channels': []
@@ -169,8 +177,9 @@ def FetchProjectChannelEnvironments(space_id, project_id):
 def FetchProjectReleases(space_id, project_id):
     # project releases
     # https://octopus.nextestate.com/api/Spaces-1/projects/Projects-682/releases
+
     releases = {
-        'releases': []
+        'releases': {}
         }
 
     url = OCTOPUS_SERVER + "/api/" + space_id + "/projects/" + project_id + "/releases?skip=0&take=2147483647"
@@ -184,14 +193,45 @@ def FetchProjectReleases(space_id, project_id):
         jira_issue = release_note[jira_issue_begin + 1: jira_issue_end]
 
         release = {
-            'id': item['Id'],
             'version': item['Version'],
             'channelid': item['ChannelId'],
-            'jiraissue': jira_issue
+            'jiraissue': jira_issue,
+            'deployments': {}
         }
-        releases['releases'].append(release)
+        releases['releases'][item['Id']] = release
 
     return releases
+
+
+def FetchProjectReleaseDeployments(space_id, releases):
+    # project release deployments
+    # https://octopus/api/Spaces-1/releases/Releases-150307/deployments?skip=0&take=2147483647
+
+    urls = []
+    futures = []
+    session = FuturesSession(max_workers=WORKER)
+
+    for release in releases['releases']:
+        urls.append(OCTOPUS_SERVER + "/api/" + space_id + "/releases/" + release + "/deployments?skip=0&take=2147483647")
+
+    for url in urls:
+        futures.append(session.get(url=url, headers=HEADERS, verify=False, allow_redirects=True))
+
+    for future in as_completed(futures):
+        deployments = {}
+        items = json.loads(future.result().text)
+        for item in items['Items']:
+            deployment = {
+                'environmentid': item['EnvironmentId'],
+                'taskid': item['TaskId'],
+                'state': ''
+            }
+            deployments[item['Id']] = deployment
+        releases['releases'][item['ReleaseId']]['deployments'] = deployments
+
+    return releases
+
+
 
 
 def CheckDefaultChannel(space_id, channels):
@@ -241,15 +281,3 @@ def SaveEnvironments(environments):
             name=environment['name'], 
             spaceid=environment['spaceid']))
     OctoEnvironment.objects.bulk_create(bulk_data)
-
-
-def FetchDeployments(request, orgunit, issue):
-    
-    return HttpResponse()
-
-
-
-# project release deployments
-# https://octopus/api/Spaces-1/releases/Releases-150307/deployments
-
-

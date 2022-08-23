@@ -45,6 +45,5 @@ urlpatterns = [
     path('octo/channel/get/', Octoviews.GetOctoProjectChannelEnvironments),
     path('octo/release/get/', Octoviews.GetOctoProjectReleases),
     path('octo/deployment/get/', Octoviews.GetOctoProjectReleaseDeployments),
-    path('octo/<str:orgunit>/<str:issue>/fetch/', Octoviews.FetchDeployments),
     path('ro/<str:orgunit>/<str:milestone>/create/', ROviews.CreateRO)
 ]
