@@ -57,7 +57,7 @@ def SyncOctoEnvironments(request):
     return JsonResponse(environments)
 
 
-def GetOctoChannelEnvironments(request):
+def GetOctoProjectChannelEnvironments(request):
     space_name = request.GET.get('space')
     space_id = OctoSpace.objects.get(name=space_name).id
     project_name = request.GET.get('project')
@@ -77,6 +77,11 @@ def GetOctoProjectReleases(request):
     releases = FetchProjectReleases(space_id, project_id)
 
     return JsonResponse(releases)
+
+
+def GetOctoProjectReleaseDeployments(request):
+
+    return JsonResponse
 
 
 def GetDeploymentStatus(request):
