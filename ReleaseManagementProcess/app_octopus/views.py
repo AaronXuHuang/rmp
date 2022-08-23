@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -30,6 +31,7 @@ def SyncOctoSpaces(request):
     spaces = FetchSpaces()
     OctoSpace.objects.all().delete()
     SaveSpaces(spaces)
+
     return JsonResponse(spaces)
 
 
@@ -40,6 +42,7 @@ def SyncOctoProjects(request):
     projects = FetchProjects(space_id)
     OctoProject.objects.filter(spaceid=space_id).delete()
     SaveProjects(projects)
+
     return JsonResponse(projects)
 
 
@@ -50,6 +53,7 @@ def SyncOctoEnvironments(request):
     environments = FetchEnvironments(space_id)
     OctoEnvironment.objects.filter(spaceid=space_id).delete()
     SaveEnvironments(environments)
+
     return JsonResponse(environments)
 
 
@@ -62,6 +66,17 @@ def GetOctoChannelEnvironments(request):
     channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
 
     return JsonResponse(channel_environments)
+
+
+def GetOctoProjectReleases(request):
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+    project_name = request.GET.get('project')
+    project_id = OctoProject.objects.get(name=project_name).id
+
+    releases = FetchProjectReleases(space_id, project_id)
+
+    return JsonResponse(releases)
 
 
 def GetDeploymentStatus(request):
@@ -146,6 +161,34 @@ def FetchProjectChannelEnvironments(space_id, project_id):
     return channel_environments
 
 
+def FetchProjectReleases(space_id, project_id):
+    # project releases
+    # https://octopus.nextestate.com/api/Spaces-1/projects/Projects-682/releases
+    releases = {
+        'releases': []
+        }
+
+    url = OCTOPUS_SERVER + "/api/" + space_id + "/projects/" + project_id + "/releases?skip=0&take=2147483647"
+    items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
+    for item in items['Items']:
+        release_note = item['ReleaseNotes']
+        if release_note is None:
+            continue
+        jira_issue_begin = release_note.index('[')
+        jira_issue_end = release_note.index(']')
+        jira_issue = release_note[jira_issue_begin + 1: jira_issue_end]
+
+        release = {
+            'id': item['Id'],
+            'version': item['Version'],
+            'channelid': item['ChannelId'],
+            'jiraissue': jira_issue
+        }
+        releases['releases'].append(release)
+
+    return releases
+
+
 def CheckDefaultChannel(space_id, channels):
     # check if channel is default channel
     # https://octopus.nextestate.com/api/channels/Channels-902
@@ -200,9 +243,6 @@ def FetchDeployments(request, orgunit, issue):
     return HttpResponse()
 
 
-
-# project releases
-# https://octopus/api/Spaces-1/projects/Projects-682/releases
 
 # project release deployments
 # https://octopus/api/Spaces-1/releases/Releases-150307/deployments
