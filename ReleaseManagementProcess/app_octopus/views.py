@@ -90,7 +90,20 @@ def GetOctoProjectReleaseDeployments(request):
     project_id = OctoProject.objects.get(name=project_name).id
 
     releases = FetchProjectReleases(space_id, project_id)
-    releases = FetchProjectReleaseDeployments(space_id, releases)
+    releases, tasks = FetchProjectReleaseDeployments(space_id, releases)
+
+    return JsonResponse(releases)
+
+
+def GetOctoProjectReleaseDeploymentStates(request):
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+    project_name = request.GET.get('project')
+    project_id = OctoProject.objects.get(name=project_name).id
+
+    releases = FetchProjectReleases(space_id, project_id)
+    releases, tasks = FetchProjectReleaseDeployments(space_id, releases)
+    releases = FetchProjectReleaseDeploymentStates(space_id, releases, tasks)
 
     return JsonResponse(releases)
 
@@ -209,6 +222,7 @@ def FetchProjectReleaseDeployments(space_id, releases):
 
     urls = []
     futures = []
+    tasks = []
     session = FuturesSession(max_workers=WORKER)
 
     for release in releases['releases']:
@@ -221,17 +235,24 @@ def FetchProjectReleaseDeployments(space_id, releases):
         deployments = {}
         items = json.loads(future.result().text)
         for item in items['Items']:
+            task = item['TaskId']
             deployment = {
                 'environmentid': item['EnvironmentId'],
-                'taskid': item['TaskId'],
+                'taskid': task,
                 'state': ''
             }
+            tasks.append(task)
             deployments[item['Id']] = deployment
         releases['releases'][item['ReleaseId']]['deployments'] = deployments
 
+    return releases, tasks
+
+
+def FetchProjectReleaseDeploymentStates(space_id, releases, task):
+    # project release deployment states (deployment result: Success/Failed)
+    # https://octopus/api/tasks/ServerTasks-645703
+
     return releases
-
-
 
 
 def CheckDefaultChannel(space_id, channels):
