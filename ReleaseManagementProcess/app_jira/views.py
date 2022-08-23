@@ -149,4 +149,3 @@ def SaveJiraFixVersion(fix_versions):
             released=fix_version['released'],
             projectid=fix_version['projectid']))
     JiraFixVersion.objects.bulk_create(bulk_data)
-

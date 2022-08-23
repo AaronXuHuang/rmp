@@ -10,6 +10,21 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # svc_mcp api key
 OCTOPUS_API_KEY='API-BDUFSI5UEGU3SOTLCH6IBDXFW'
 OCTOPUS_SERVER='https://octopus.nextestate.com'
+HEADERS = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
+
+def test(request):
+    # fetch project channel environments map and default channel
+    space_name = request.GET.get('space')
+    space_id = OctoSpace.objects.get(name=space_name).id
+    project_name = request.GET.get('project')
+    project_id = OctoProject.objects.get(name=project_name).id
+
+    channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
+
+    return JsonResponse(channel_environments)
+
+    #
+
 
 def SyncOctoSpaces(request):
     spaces = FetchSpaces()
@@ -45,9 +60,7 @@ def FetchSpaces():
         }
 
     url = OCTOPUS_SERVER + "/api/Spaces"
-    headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
-    items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
-
+    items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
     for item in items['Items']:
         spaces['spaces'].append({
             'id': item['Id'],
@@ -64,8 +77,7 @@ def FetchProjects(space_id):
     }
 
     url = OCTOPUS_SERVER + "/api/" + space_id + "/projects?skip=0&take=2147483647"
-    headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
-    items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
+    items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
     for item in items['Items']:
         projects['projects'].append({
             'id': item['Id'],
@@ -84,8 +96,7 @@ def FetchEnvironments(space_id):
     }
 
     url = OCTOPUS_SERVER + "/api/" + space_id + "/environments?skip=0&take=2147483647"
-    headers = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
-    items = requests.get(url=url, headers=headers, verify=False, allow_redirects=True).json()
+    items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
     for item in items['Items']:
         environments['environments'].append({
             'id': item['Id'],
@@ -94,6 +105,43 @@ def FetchEnvironments(space_id):
         })
 
     return environments
+
+
+def FetchProjectChannelEnvironments(space_id, project_id):
+    # project channel/environment map
+    # https://octopus.nextestate.com/api/Spaces-1/progression/Projects-682
+    channel_environments = {
+        'default': '',
+        'channels': []
+    }
+    channels = []
+
+    url = OCTOPUS_SERVER + "/api/" + space_id + "/progression/" + project_id
+    items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
+    channel_environments['channels'] = items['ChannelEnvironments']
+    for item in items['ChannelEnvironments']:
+        channels.append(item)
+
+    default_channel = CheckDefaultChannel(channels)
+    channel_environments['default'] = default_channel
+
+    return channel_environments
+
+
+def CheckDefaultChannel(channels):
+    # check if channel is default channel
+    # https://octopus.nextestate.com/api/channels/Channels-902
+
+    default_channel = ''
+
+    for channel in channels:
+        url = OCTOPUS_SERVER + "/api/channels/" + channel
+        item = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
+        if item['IsDefault']:
+            default_channel = channel
+            break
+
+    return default_channel
 
 
 def SaveSpaces(spaces):
@@ -132,3 +180,13 @@ def SaveEnvironments(environments):
 def FetchDeployments(request, orgunit, issue):
     
     return HttpResponse()
+
+
+
+# project releases
+# https://octopus/api/Spaces-1/projects/Projects-682/releases
+
+# project release deployments
+# https://octopus/api/Spaces-1/releases/Releases-150307/deployments
+
+

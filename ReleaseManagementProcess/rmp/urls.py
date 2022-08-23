@@ -38,6 +38,7 @@ urlpatterns = [
     path('jira/project/update/', Jiraviews.SyncJiraProjects),
     path('jira/fixversion/fetch/', Jiraviews.SyncJiraFixVersions),
     path('jira/issue/fetch/', Jiraviews.SyncJiraIssues),
+    path('octo/test/', Octoviews.test),
     path('octo/space/update/', Octoviews.SyncOctoSpaces),
     path('octo/project/update/', Octoviews.SyncOctoProjects),
     path('octo/environment/update/', Octoviews.SyncOctoEnvironments),
