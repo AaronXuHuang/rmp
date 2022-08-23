@@ -13,6 +13,7 @@ OCTOPUS_SERVER='https://octopus.nextestate.com'
 HEADERS = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
 
 def test(request):
+    # test begin
     # fetch project channel environments map and default channel
     space_name = request.GET.get('space')
     space_id = OctoSpace.objects.get(name=space_name).id
@@ -22,8 +23,7 @@ def test(request):
     channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
 
     return JsonResponse(channel_environments)
-
-    #
+    # test end
 
 
 def SyncOctoSpaces(request):
@@ -51,6 +51,13 @@ def SyncOctoEnvironments(request):
     OctoEnvironment.objects.filter(spaceid=space_id).delete()
     SaveEnvironments(environments)
     return JsonResponse(environments)
+
+
+def GetDeploymentStatus(request):
+    orgunit = request.GET.get('orgunit')
+    jira_issues = request.GET.get('issues')
+
+    return JsonResponse('')
 
 
 def FetchSpaces():

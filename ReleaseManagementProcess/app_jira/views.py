@@ -11,8 +11,12 @@ JIRA_SERVER = 'https://pd.nextestate.com'
 
 
 def test(request):
-    result = SyncJiraProjects()
-    return JsonResponse(result)
+    project = request.GET.get('project')
+    fix_version = request.GET.get('fix_version')
+
+    issues = FetchJiraIssues(project, fix_version)
+    # not database operation
+    return JsonResponse(issues)
 
 
 def SyncJiraProjects(request):
@@ -34,7 +38,7 @@ def SyncJiraFixVersions(request):
     return JsonResponse(fix_versions)
 
 
-def SyncJiraIssues(request):
+def GetJiraIssues(request):
     project = request.GET.get('project')
     fix_version = request.GET.get('fix_version')
 
