@@ -1,6 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from app_jira.models import JiraFixVersion, JiraProject, JiraReleaseObject
+from app_jira.models import JiraFixVersion, JiraProject
 import json
 import requests
 

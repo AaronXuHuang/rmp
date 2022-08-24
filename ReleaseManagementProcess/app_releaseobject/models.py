@@ -1,3 +1,8 @@
 from django.db import models
 
 # Create your models here.
+class ReleaseObject(models.Model):
+    releaseobject = models.TextField(null=True, blank=True)
+    version = models.CharField(max_length=50, null=True, blank=True)
+    projectid = models.CharField(max_length=50, null=True, blank=True)
+    updatetime = models.DateTimeField(auto_now_add=True)
