@@ -323,3 +323,24 @@ def SaveEnvironments(environments):
             name=environment['name'], 
             spaceid=environment['spaceid']))
     OctoEnvironment.objects.bulk_create(bulk_data)
+
+
+def GetOrgunitSpaceId(orgunit):
+    # Should move the lists to config file
+    default_space = ['LEGACY', 'BUX', 'FW', 'GSS', 'GBOS']
+    azure_space = ['CBS', 'GWA', 'FX']
+
+    if orgunit.upper() in default_space:
+        space_name = 'Default'
+    elif orgunit.upper() in azure_space:
+        space_name = 'Azure'
+
+    space_id = OctoSpace.objects.get(name=space_name).id
+
+    return space_id
+
+
+def GetProjectId(project_name):
+    project_id = OctoProject.objects.get(name=project_name).id
+
+    return project_id

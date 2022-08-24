@@ -1,5 +1,6 @@
 import json
 from platform import release
+from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from app_jira import views as Jiraviews
@@ -9,18 +10,57 @@ from app_jira.models import JiraProject, JiraFixVersion
 # Create your views here.
 def CreateRO(request):
     fix_version = request.GET.get('fixversion')
-    project = request.GET.get('project')
-
-    release_object = {fix_version: {}}
+    orgunit = request.GET.get('orgunit')
     
-
     # fetch jira issues according to the fix version
-    issues = Jiraviews.FetchJiraIssues(project, fix_version)
+    release_object = {fix_version: {}}
+    issues = Jiraviews.FetchJiraIssues(orgunit, fix_version)
     release_object = ConstructROComponent(fix_version, issues, release_object)
     release_object = ConstructROIssue(fix_version, issues, release_object)
 
-    # fetch octopus environments
+    # get octopus space id
+    octo_space_id = Octoviews.GetOrgunitSpaceId(orgunit)
 
+    # get octopus project id
+    octo_project_id_map = {}
+    for component in release_object[fix_version]:
+         project_id= Octoviews.GetProjectId(component)
+         octo_project_id_map[component] = project_id
+
+    # fetch octopus project environments
+    for project_name in octo_project_id_map:
+        channel_environments = Octoviews.FetchProjectChannelEnvironments(
+            octo_space_id,
+            octo_project_id_map[project_name])
+    default_channel = channel_environments['default']
+    environments = {}
+    for environment in channel_environments['channels'][default_channel]:
+        environments[environment['Name']] = environment['Id']
+    
+    print('begin' + str(datetime.now()))
+    for project_name in release_object[fix_version]:
+        # fetch octopus projcet release
+        project_id = octo_project_id_map[project_name]
+        releases = Octoviews.FetchProjectReleases(octo_space_id, project_id)
+
+        releases_filtered = {'releases': {}}
+        for release in releases['releases']:
+            for jira_issue in release_object[fix_version][project_name]:
+                if releases['releases'][release]['jiraissue'] == jira_issue:
+                    releases_filtered['releases'][release] = releases['releases'][release]
+
+        # fetch octopus projcet release deployment
+        releases_filtered, tasks = Octoviews.FetchProjectReleaseDeployments(octo_space_id, releases_filtered)
+
+        # fetch octopus projcet release deployment state
+        #releases = Octoviews.FetchProjectReleaseDeploymentStates(releases, tasks)
+
+        for release in releases_filtered['releases']:
+            for jira_issue in release_object[fix_version][project_name]:
+                if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
+                    release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
+
+    print('end' + str(datetime.now()))
     return JsonResponse(release_object)
 
 
@@ -54,7 +94,9 @@ def ConstructROIssue(fix_version, issues, release_object):
             index = issue.index('|')
             issue_key = issue[0: index]
             issue_type = issue[index + 1:]
-            release_object[fix_version][component][issue_key] = {'issuetype': issue_type}
+            release_object[fix_version][component][issue_key] = {
+                'issuetype': issue_type,
+                'releases': {}}
     
     return release_object
 
