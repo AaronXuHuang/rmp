@@ -40,7 +40,7 @@ def SyncJiraFixVersions(request):
 
 def GetJiraIssues(request):
     project = request.GET.get('project')
-    fix_version = request.GET.get('fix_version')
+    fix_version = request.GET.get('fixversion')
 
     issues = FetchJiraIssues(project, fix_version)
     # not database operation
