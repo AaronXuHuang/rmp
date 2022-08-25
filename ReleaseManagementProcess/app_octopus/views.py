@@ -237,6 +237,7 @@ def FetchProjectReleaseDeployments(space_id, releases):
         for item in items['Items']:
             task = item['TaskId']
             deployment = {
+                'environmentname': '',
                 'environmentid': item['EnvironmentId'],
                 'taskid': task,
                 'state': ''
