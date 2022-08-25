@@ -340,7 +340,7 @@ def GetOrgunitSpaceId(orgunit):
     return space_id
 
 
-def GetProjectId(project_name):
-    project_id = OctoProject.objects.get(name=project_name).id
+def GetProjectId(project_names):
+    project_id = list(OctoProject.objects.filter(name__in=project_names).values())
 
     return project_id

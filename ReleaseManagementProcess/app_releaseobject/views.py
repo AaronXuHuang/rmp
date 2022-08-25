@@ -15,7 +15,7 @@ def CreateRO(request):
     # fetch jira issues according to the fix version
     release_object = {fix_version: {}}
     issues = Jiraviews.FetchJiraIssues(orgunit, fix_version)
-
+    
     release_object = ConstructROComponent(fix_version, issues, release_object)
     release_object = ConstructROIssue(fix_version, issues, release_object)
 
@@ -24,15 +24,18 @@ def CreateRO(request):
 
     # get octopus project id
     octo_project_id_map = {}
+    project_names = []
     for component in release_object[fix_version]:
-         project_id= Octoviews.GetProjectId(component)
-         octo_project_id_map[component] = project_id
+        project_names.append(component)
+    octo_projects= Octoviews.GetProjectId(project_names)
+    for octo_project in octo_projects:
+        octo_project_id_map[octo_project['name']] = octo_project['id']
 
-    # fetch octopus project environments
-    for project_name in octo_project_id_map:
-        channel_environments = Octoviews.FetchProjectChannelEnvironments(
-            octo_space_id,
-            octo_project_id_map[project_name])
+    # fetch octopus project environments (run for the first component)
+    project_name = list(octo_project_id_map)[0]
+    channel_environments = Octoviews.FetchProjectChannelEnvironments(
+        octo_space_id,
+        octo_project_id_map[project_name])
     default_channel = channel_environments['default']
 
     environments = {}
