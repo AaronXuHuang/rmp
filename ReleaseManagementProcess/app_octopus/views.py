@@ -206,6 +206,7 @@ def FetchProjectReleases(space_id, project_id):
         jira_issue = release_note[jira_issue_begin + 1: jira_issue_end]
 
         release = {
+            'assembled': item['Assembled'],
             'version': item['Version'],
             'channelid': item['ChannelId'],
             'jiraissue': jira_issue,
@@ -237,10 +238,12 @@ def FetchProjectReleaseDeployments(space_id, releases):
         for item in items['Items']:
             task = item['TaskId']
             deployment = {
+                'created': item['Created'],
                 'environmentname': '',
                 'environmentid': item['EnvironmentId'],
                 'taskid': task,
-                'state': ''
+                'state': '',
+                'duration': ''
             }
             tasks[task] = {
                 'releaseid': item['ReleaseId'],
@@ -271,8 +274,10 @@ def FetchProjectReleaseDeploymentStates(releases, tasks):
         task_id = items['Id']
         deployment_id = items['Arguments']['DeploymentId']
         state = items['State']
+        duration = items['Duration']
         release_id = tasks[task_id]['releaseid']
         releases['releases'][release_id]['deployments'][deployment_id]['state'] = state
+        releases['releases'][release_id]['deployments'][deployment_id]['duration'] = duration
 
     return releases
 

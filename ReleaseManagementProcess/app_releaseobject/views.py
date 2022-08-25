@@ -42,7 +42,12 @@ def ConstructROComponent(fix_version, issues, release_object):
                 components_sort.append(component)
     components_sort.sort()
     for component in components_sort:
-        release_object[fix_version][component] = {}
+        release_object[fix_version][component] = {
+            'tier': '',
+            'latest': '',
+            'releaseversion': '',
+            'releaseassembled': ''
+        }
     
     return release_object
 
