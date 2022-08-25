@@ -11,37 +11,34 @@ from app_jira.models import JiraProject, JiraFixVersion
 def CreateRO(request):
     fix_version = request.GET.get('fixversion')
     orgunit = request.GET.get('orgunit')
-    print('start' + str(datetime.now()))
+
     # fetch jira issues according to the fix version
     release_object = {fix_version: {}}
     issues = Jiraviews.FetchJiraIssues(orgunit, fix_version)
-    print('1:' + str(datetime.now()))
+
     release_object = ConstructROComponent(fix_version, issues, release_object)
-    print('2:' + str(datetime.now()))
     release_object = ConstructROIssue(fix_version, issues, release_object)
-    print('3:' + str(datetime.now()))
 
     # get octopus space id
     octo_space_id = Octoviews.GetOrgunitSpaceId(orgunit)
-    print('4:' + str(datetime.now()))
 
     # get octopus project id
     octo_project_id_map = {}
     for component in release_object[fix_version]:
          project_id= Octoviews.GetProjectId(component)
          octo_project_id_map[component] = project_id
-    print('5:' + str(datetime.now()))
+
     # fetch octopus project environments
     for project_name in octo_project_id_map:
         channel_environments = Octoviews.FetchProjectChannelEnvironments(
             octo_space_id,
             octo_project_id_map[project_name])
     default_channel = channel_environments['default']
-    print('6:' + str(datetime.now()))
+
     environments = {}
     for environment in channel_environments['channels'][default_channel]:
         environments[environment['Name']] = environment['Id']
-    print('7:' + str(datetime.now()))
+
     for project_name in release_object[fix_version]:
         # fetch octopus projcet release
         project_id = octo_project_id_map[project_name]
@@ -59,13 +56,13 @@ def CreateRO(request):
         # not necessary to check deployments state
         # because if the deployment failed, the jira issue can not be finished
         # fetch octopus projcet release deployment state
-        releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
+        #releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
 
         for release in releases_filtered['releases']:
             for jira_issue in release_object[fix_version][project_name]:
                 if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
                     release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
-    print('8:' + str(datetime.now()))
+ 
     return JsonResponse(release_object)
 
 
