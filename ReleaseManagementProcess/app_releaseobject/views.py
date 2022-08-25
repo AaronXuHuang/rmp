@@ -56,7 +56,7 @@ def CreateRO(request):
         # not necessary to check deployments state
         # because if the deployment failed, the jira issue can not be finished
         # fetch octopus projcet release deployment state
-        #releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
+        releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
 
         for release in releases_filtered['releases']:
             for jira_issue in release_object[fix_version][project_name]:
