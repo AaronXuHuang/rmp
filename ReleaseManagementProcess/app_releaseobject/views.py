@@ -22,8 +22,8 @@ def CreateRO(request):
     # get octopus project id
     octo_project_id_map = ConstructROProjectMap(release_object, fix_version)
     # fetch octopus project environments (run for the first component)
-    environments = ConstructROEnvironmentMap(octo_space_id, octo_project_id_map)
-    release_object = ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map)
+    envs_map = ConstructROEnvMap(octo_space_id, octo_project_id_map)
+    release_object = ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map, envs_map)
  
     return JsonResponse(release_object)
 
@@ -78,19 +78,19 @@ def ConstructROProjectMap(release_object, fix_version):
     return octo_project_id_map
 
 
-def ConstructROEnvironmentMap(octo_space_id, octo_project_id_map):
-    environments = {}
+def ConstructROEnvMap(octo_space_id, octo_project_id_map):
+    envs = {}
     project_name = list(octo_project_id_map)[0]
 
-    channel_environments = Octoviews.FetchProjectChannelEnvironments(
+    channel_envs = Octoviews.FetchProjectChannelEnvironments(
         octo_space_id,
         octo_project_id_map[project_name])
-    default_channel = channel_environments['default']
+    default_channel = channel_envs['default']
 
-    for environment in channel_environments['channels'][default_channel]:
-        environments[environment['Id']] = environment['Name']
+    for env in channel_envs['channels'][default_channel]:
+        envs[env['Id']] = env['Name']
     
-    return environments
+    return envs
 
 
 def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_object, fix_version):
@@ -117,12 +117,13 @@ def ConstrucRelease(releases_filtered, release_object, fix_version, project_name
     return release_object
 
 
-def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map):
+def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map, envs_map):
     for project_name in release_object[fix_version]:
         releases_filtered = FilterRelease(octo_project_id_map, project_name, octo_space_id, release_object, fix_version)
 
         # fetch octopus projcet release deployment
         releases_filtered, tasks = Octoviews.FetchProjectReleaseDeployments(octo_space_id, releases_filtered)
+        releases_filtered = ConstructROEnvName(releases_filtered, envs_map)
 
         # not necessary to check deployments state
         # because if the deployment failed, the jira issue can not be finished
@@ -132,3 +133,12 @@ def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map)
         release_object = ConstrucRelease(releases_filtered, release_object, fix_version, project_name)
 
     return release_object
+
+
+def ConstructROEnvName(releases_filtered, envs_map):
+    for release in releases_filtered['releases']:
+        for deployment in releases_filtered['releases'][release]['deployments']:
+            env_id = releases_filtered['releases'][release]['deployments'][deployment]['environmentid']
+            releases_filtered['releases'][release]['deployments'][deployment]['environmentname'] = envs_map[env_id]
+
+    return releases_filtered
