@@ -15,7 +15,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 OCTOPUS_API_KEY='API-BDUFSI5UEGU3SOTLCH6IBDXFW'
 OCTOPUS_SERVER='https://octopus.nextestate.com'
 HEADERS = {'X-Octopus-ApiKey': OCTOPUS_API_KEY}
-WORKER = 10
+WORKER = 20
 
 def test(request):
     # test begin
