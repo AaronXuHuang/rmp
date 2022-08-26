@@ -192,8 +192,10 @@ def FetchProjectReleases(space_id, project_id):
     # https://octopus.nextestate.com/api/Spaces-1/projects/Projects-682/releases
 
     releases = {
+        'latest': '',
         'releases': {}
         }
+    latest_release = ''
 
     url = OCTOPUS_SERVER + "/api/" + space_id + "/projects/" + project_id + "/releases?skip=0&take=2147483647"
     items = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
@@ -201,6 +203,8 @@ def FetchProjectReleases(space_id, project_id):
         release_note = item['ReleaseNotes']
         if release_note is None:
             continue
+        if not latest_release:
+            latest_release = item['Version']
         jira_issue_begin = release_note.index('[')
         jira_issue_end = release_note.index(']')
         jira_issue = release_note[jira_issue_begin + 1: jira_issue_end]
@@ -212,6 +216,7 @@ def FetchProjectReleases(space_id, project_id):
             'jiraissue': jira_issue,
             'deployments': {}
         }
+        releases['latest'] = latest_release
         releases['releases'][item['Id']] = release
 
     return releases

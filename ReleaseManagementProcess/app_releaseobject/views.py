@@ -45,7 +45,7 @@ def ConstructROComponent(fix_version, issues, release_object):
     components_sort.sort()
     for component in components_sort:
         release_object[fix_version][component] = {
-            'tier': '',
+            'tier': '', # get tier from perforce or github
             'latest': '',
             'releaseversion': '',
             'releaseassembled': ''
@@ -66,6 +66,7 @@ def ConstructROIssue(fix_version, issues, release_object):
             issue_key = issue[0: index]
             issue_type = issue[index + 1:]
             release_object[fix_version][component][issue_key] = {
+                'latest': '',
                 'issuetype': issue_type,
                 'releases': {}}
     
@@ -107,7 +108,8 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
 
     releases = Octoviews.FetchProjectReleases(octo_space_id, project_id)
     
-    for release in releases['releases']:
+    releases_filtered['latest'] = releases['latest']
+    for release in releases['releases']: 
         for jira_issue in release_object[fix_version][project_name]:
             if releases['releases'][release]['jiraissue'] == jira_issue:
                 releases_filtered['releases'][release] = releases['releases'][release]
@@ -122,6 +124,9 @@ def ConstrucRelease(releases_filtered, release_object, fix_version, project_name
             release_object[fix_version][project_name]['releaseassembled'] = release_assembled
             if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
                 release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
+                latest_version = release_object[fix_version][project_name][jira_issue]['latest']
+                if not latest_version:
+                    release_object[fix_version][project_name]['latest'] = releases_filtered['latest']
 
     return release_object
 
