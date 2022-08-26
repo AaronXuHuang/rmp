@@ -1,11 +1,13 @@
 import json
 from platform import release
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from app_jira import views as Jiraviews
 from app_octopus import views as Octoviews
-from app_jira.models import JiraProject, JiraFixVersion
+
+BUX_QA = 'BUX_QA'
+BUX_PRF = 'BUX_PRF'
 
 # Create your views here.
 def CreateRO(request):
@@ -113,9 +115,11 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
     return releases_filtered
     
 
-def ConstrucRelease(releases_filtered, release_object, fix_version, project_name):
+def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled):
     for release in releases_filtered['releases']:
         for jira_issue in release_object[fix_version][project_name]:
+            release_object[fix_version][project_name]['releaseversion'] = release_version
+            release_object[fix_version][project_name]['releaseassembled'] = release_assembled
             if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
                 release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
 
@@ -135,7 +139,9 @@ def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map,
         # fetch octopus projcet release deployment state
         releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
 
-        release_object = ConstrucRelease(releases_filtered, release_object, fix_version, project_name)
+        release_version, release_assembled = ConstructROReleaseVersion(releases_filtered)
+
+        release_object = ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled)
 
     return release_object
 
@@ -147,3 +153,31 @@ def ConstructROEnvName(releases_filtered, envs_map):
             releases_filtered['releases'][release]['deployments'][deployment]['environmentname'] = envs_map[env_id]
 
     return releases_filtered
+
+
+def ConstructROReleaseVersion(releases_filtered):
+    release_version = ''
+    release_assembled = ''
+
+    for release in releases_filtered['releases']:
+        version = releases_filtered['releases'][release]['version']
+        assembled = releases_filtered['releases'][release]['assembled']
+        for deployment in releases_filtered['releases'][release]['deployments']:
+            env_name = releases_filtered['releases'][release]['deployments'][deployment]['environmentname']
+            state = releases_filtered['releases'][release]['deployments'][deployment]['state'] 
+            if env_name == BUX_QA and state == 'Success' and version > release_version:
+                release_version = version
+                release_assembled = ConvertTimeZone(assembled)
+
+    return release_version, release_assembled
+
+
+def ConvertTimeZone(assembled):
+    index = assembled.index('.')
+    assembled = assembled[0:index]
+    format = "%Y-%m-%dT%H:%M:%S"
+
+    assembled = datetime.strptime(assembled, format) + timedelta(hours=-7)
+    assembled = assembled.strftime(format)
+
+    return assembled
