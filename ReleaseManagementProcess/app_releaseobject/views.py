@@ -66,7 +66,6 @@ def ConstructROIssue(fix_version, issues, release_object):
             issue_key = issue[0: index]
             issue_type = issue[index + 1:]
             release_object[fix_version][component][issue_key] = {
-                'latest': '',
                 'issuetype': issue_type,
                 'releases': {}}
     
@@ -118,13 +117,15 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
     
 
 def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled):
+    latest_version = ''
+    
     for release in releases_filtered['releases']:
         for jira_issue in release_object[fix_version][project_name]:
             release_object[fix_version][project_name]['releaseversion'] = release_version
             release_object[fix_version][project_name]['releaseassembled'] = release_assembled
             if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
                 release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
-                latest_version = release_object[fix_version][project_name][jira_issue]['latest']
+                #latest_version = release_object[fix_version][project_name][jira_issue]['latest']
                 if not latest_version:
                     release_object[fix_version][project_name]['latest'] = releases_filtered['latest']
 
@@ -163,6 +164,7 @@ def ConstructROEnvName(releases_filtered, envs_map):
 def ConstructROReleaseVersion(releases_filtered):
     release_version = ''
     release_assembled = ''
+    last_assembled = ''
 
     for release in releases_filtered['releases']:
         version = releases_filtered['releases'][release]['version']
@@ -170,10 +172,11 @@ def ConstructROReleaseVersion(releases_filtered):
         for deployment in releases_filtered['releases'][release]['deployments']:
             env_name = releases_filtered['releases'][release]['deployments'][deployment]['environmentname']
             state = releases_filtered['releases'][release]['deployments'][deployment]['state'] 
-            if env_name == BUX_QA and state == 'Success' and version > release_version:
+            if env_name == BUX_QA and state == 'Success' and assembled > last_assembled:
                 release_version = version
+                last_assembled = assembled
                 release_assembled = ConvertTimeZone(assembled)
-
+                
     return release_version, release_assembled
 
 
