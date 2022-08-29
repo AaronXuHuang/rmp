@@ -56,15 +56,17 @@ def GetLastReleaseObject(request):
         version = release_object_query[0]['version']
         stage =  release_object_query[0]['stage']
         creator = release_object_query[0]['creator']
-        created_time = release_object_query[0]['updatetime']
+        created_time = release_object_query[0]['created']
+        last_update_time = release_object_query[0]['lastupdate']
         release_object = release_object_query[0]['releaseobject']
 
         release_object_info['information']['version'] = version
         release_object_info['information']['stage'] = stage
         release_object_info['information']['creator'] = creator
         release_object_info['information']['created time'] = created_time
+        release_object_info['information']['last update time'] = created_time
         release_object_info[fix_version] = json.loads(release_object)[fix_version]
-        
+
         return JsonResponse(release_object_info)
 
     return JsonResponse({ERROR: ERROR_NO_RELEASE_OBJECT_FOUND})
@@ -234,6 +236,6 @@ def SaveReleaseObject(orgunit, fix_version, release_object):
         releaseobject = json.dumps(release_object),
         version = str(version),
         orgunit = orgunit,
-        stage = 'creating release object',
+        stage = 'create release object',
         creator = '',
-        updatetime = datetime.utcnow())
+        created = datetime.utcnow())

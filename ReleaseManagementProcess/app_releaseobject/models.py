@@ -8,4 +8,4 @@ class ReleaseObject(models.Model):
     orgunit = models.CharField(max_length=50, null=True, blank=True)
     stage = models.CharField(max_length=50, null=True, blank=True)
     creator = models.CharField(max_length=50, null=True, blank=True)
-    updatetime = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
