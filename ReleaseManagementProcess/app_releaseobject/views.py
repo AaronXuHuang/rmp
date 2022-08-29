@@ -20,6 +20,12 @@ def test(request):
     return HttpResponse('test')
 
 
+def LoadReleaseObject(request):
+
+
+    return render(request, 'releaseobject.html')
+
+
 def CreateReleaseObject(request):
     fix_version = request.GET.get('fixversion')
     orgunit = request.GET.get('orgunit')

@@ -47,6 +47,7 @@ urlpatterns = [
     path('octo/deployment/get/', Octoviews.GetOctoProjectReleaseDeployments),
     path('octo/state/get/', Octoviews.GetOctoProjectReleaseDeploymentStates),
     path('releaseobject/test/', ROviews.test),
+    path('releaseobject/', ROviews.LoadReleaseObject),
     path('releaseobject/create/', ROviews.CreateReleaseObject),
     path('releaseobject/get/', ROviews.GetLastReleaseObject)
 ]

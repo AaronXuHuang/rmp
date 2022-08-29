@@ -1,0 +1,339 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block css %}
+<style type="text/css">
+  a:link {
+    color: gba(0,0,0);
+    font-weight: 600;
+  }
+  .ro-component {
+    background-color:#2185D0;
+    font-size: 0.71rem;
+    color:white;
+    border-radius:0.18rem;
+    border-color:#2185D0;
+    padding-top: 0.1em;
+    padding-right: 0.7em;
+    padding-bottom: 0.1em;
+    padding-left: 0.7em;
+    font-weight: 500;
+  }
+  .ro-env-span{
+    display: inline-block;
+    clear:both;
+    background-color:#767676;
+    font-size: 0.71rem;
+    color:white;
+    border-radius:0.18rem;
+    border-color:#767676;
+    padding-top: 0.1em;
+    padding-right: 0.7em;
+    padding-bottom: 0.1em;
+    padding-left: 0.7em;
+    font-weight: 550;
+    width: 80px;
+    text-align: center;
+  }
+  .ro-env-label{
+    margin: 0.2em;
+    width: 80px;
+    vertical-align: text-top;
+  }
+  .ro-env-td{
+    width: 380px;
+    border-width: 1px;
+  }
+  .ro-issue-span{
+    clear:both;
+    display: inline-block;
+    line-height: 1;
+    background-color: #E8E8E8;
+    font-size: 0.71rem;
+    color: rgb(232, 232, 232);
+    border-radius:0.18rem;
+    border-color:#767676;
+    font-weight: 640;
+    text-align: center;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    padding-right: 0.7em;
+    display: inline-block
+  }
+  .ro-issue-td{
+    width: 220px;
+  }
+  .text-muted{
+    border-width: 1px;
+    text-align: center;
+  }
+
+</style>
+{% endblock %}
+
+{% block item_rs %}
+<li class="nav-item">
+{% endblock %}
+
+{% block item_ro %}
+<li class="nav-item active">
+{% endblock %}
+
+{% block item_aws %}
+<li class="nav-item dropdown">
+{% endblock %}
+
+{% block item_f5 %}
+<li class="nav-item dropdown">
+{% endblock %}
+
+{% block item_ci %}
+<li class="nav-item dropdown">
+{% endblock %}
+
+{% block item_ad %}
+<li class="nav-item">
+{% endblock %}
+
+{% block item_hp %}
+<li class="nav-item dropdown">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="container-xl">
+    <!-- Page title -->
+    <div class="page-header d-print-none">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <div class="page-pretitle">
+            Release Object
+          </div>
+          <h2 id='title_filter' class="page-title">
+            Select
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="container-xl">
+      <div class="row row-cards">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Create New RMP Release Object</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Orgunit in Jira</label>
+                <div class="col">
+                  <select class="form-select" onchange="selectorgunit()">
+                    <option disabled selected style="display:none"></option>
+                    <option value="1">BUX</option>
+                    <option value="2">CBS</option>
+                    <option value="3">GWA</option>
+                  </select>
+                  <small class="form-hint">select orgunit to create new release object.</small>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Fix version in Jira</label>
+                <div class="col">
+                  <select class="form-select"  onchange="selectfixversion()">
+                    <option disabled selected value style="display:none"></option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                  <small class="form-hint">select fix version to create new release object.</small>
+                </div>
+              </div>
+              <div class="form-footer">
+                <div class="row align-items-center">
+                  <div class="col"></div>
+                  <div class="col-auto">
+                    <button class="btn btn-primary">Create</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Load Existing RMP Release Object</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Orgunit in Jira</label>
+                <div class="col">
+                  <select class="form-select" onchange="selectorgunit()">
+                    <option disabled selected value style="display:none"> </option>
+                    <option value="1">BUX</option>
+                    <option value="2">CBS</option>
+                    <option value="3">GWA</option>
+                  </select>
+                  <small class="form-hint">select orgunit to load existing release object.</small>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Fix version in Jira</label>
+                <div class="col">
+                  <select class="form-select"  onchange="selectfixversion()">
+                    <option disabled selected style="display:none"> </option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                  <small class="form-hint">select fix version to load existing release object.</small>
+                </div>
+              </div>
+              <div class="form-footer">
+                <div class="row align-items-center">
+                  <div class="col"></div>
+                  <div class="col-auto">
+                    <button class="btn btn-primary">Load</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-body">
+    <div class="container-xl">
+      <div class="row row-cards">
+        <div class="col-12">
+          <div class="card">
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table">
+                <thead>
+                  <tr>
+                    <th style="text-align: center">Component</th>
+                    <th style="text-align: center">Release Version</th>
+                    <th style="text-align: center">Assembled</th>
+                    <th style="text-align: center">Environments</th>
+                    <th style="text-align: center">Latest</th>
+                    <th style="text-align: center">Issues</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="ro-component">
+                        <a href=https://pd.nextestate.com/browse/BUX-40358 style="color:white">
+                          BUX_BaaSGateway
+                        </a>
+                      </span>
+                    </td>
+                    <td class="text-muted">
+                      <a href="https://octopus.nextestate.com/app#/Spaces-1/projects/gbos-cnutilityprocessor/deployments/releases/1.0.80" style="color:#25782b; font-size: .8em">
+                        1.0.3380
+                      </a>
+                    </td>
+                    <td class="text-muted" style="font-size: .9em">08/22/2022 03:37:20</td>
+                    <td class="ro-env-td">
+                      <label class="ro-env-label">
+                        <span class="ro-env-span" style="background-color:#21BA45">BUX_QA</span>
+                        <span class="ro-env-span" style="background-color:#21BA45">BUX_PRF</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_PIE</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_STG1</span>
+                        <span class="ro-env-span">BUX_STG2</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_PROD1</span>
+                        <span class="ro-env-span">BUX_PROD2</span>
+                      </label>
+                    <td class="text-muted">yes</td>
+                    <td class="ro-issue-td">
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                    </td>
+                    <!--td class="text-muted">BUX-40358</td-->
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="ro-component">
+                        <a href=https://pd.nextestate.com/browse/BUX-40358 style="color:white">
+                          BUX_BaaSGateway
+                        </a>
+                      </span>
+                    </td>
+                    <td class="text-muted">
+                      <a href="https://octopus.nextestate.com/app#/Spaces-1/projects/gbos-cnutilityprocessor/deployments/releases/1.0.80" style="color:#25782b; font-size: .8em">
+                        1.0.3380
+                      </a>
+                    </td>
+                    <td class="text-muted" style="font-size: .9em">08/22/2022 03:37:20</td>
+                    <td class="ro-env-td">
+                      <label class="ro-env-label">
+                        <span class="ro-env-span" style="background-color:#21BA45">BUX_QA</span>
+                        <span class="ro-env-span" style="background-color:#21BA45">BUX_PRF</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_PIE</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_STG1</span>
+                        <span class="ro-env-span">BUX_STG2</span>
+                      </label>
+                      <label class="ro-env-label">
+                        <span class="ro-env-span">BUX_PROD1</span>
+                        <span class="ro-env-span">BUX_PROD2</span>
+                      </label>
+                    <td class="text-muted">yes</td>
+                    <td class="ro-issue-td">
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span>
+                      <span class="ro-issue-span"><a href=https://pd.nextestate.com/browse/BUX-40358><img src="{% static 'img/viewavatar.svg' %}">  BUX-40358</a></span><br>
+                    </td>
+                    <!--td class="text-muted">BUX-40358</td-->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type='text/javascript'>
+  function selectorgunit() {
+  }
+
+</script>
+
+<script type='text/javascript'>
+  function selectfixversion() {
+  }
+
+</script>
+{% endblock %}
