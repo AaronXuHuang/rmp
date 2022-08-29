@@ -57,7 +57,6 @@ def GetLastReleaseObject(request):
         stage =  release_object_query[0]['stage']
         creator = release_object_query[0]['creator']
         created_time = release_object_query[0]['created']
-        last_update_time = release_object_query[0]['lastupdate']
         release_object = release_object_query[0]['releaseobject']
 
         release_object_info['information']['version'] = version
