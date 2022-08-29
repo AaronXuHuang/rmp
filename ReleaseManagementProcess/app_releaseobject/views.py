@@ -5,12 +5,22 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from app_jira import views as Jiraviews
 from app_octopus import views as Octoviews
+from app_releaseobject.models import ReleaseObject
 
 BUX_QA = 'BUX_QA'
 BUX_PRF = 'BUX_PRF'
+ERROR = 'error'
+ERROR_NO_RELEASE_OBJECT_FOUND = 'no corresponding release object found'
 
 # Create your views here.
-def CreateRO(request):
+def test(request):
+    fix_version = request.GET.get('fixversion')
+    orgunit = request.GET.get('orgunit')
+
+    return HttpResponse('test')
+
+
+def CreateReleaseObject(request):
     fix_version = request.GET.get('fixversion')
     orgunit = request.GET.get('orgunit')
 
@@ -26,13 +36,38 @@ def CreateRO(request):
     # fetch octopus project environments (run for the first component)
     envs_map = ConstructROEnvMap(octo_space_id, octo_project_id_map)
     release_object = ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map, envs_map)
+
+    SaveReleaseObject(orgunit, fix_version, release_object)
  
     return JsonResponse(release_object)
 
 
-def GetRO(request):
-    
-    return HttpResponse()
+def GetLastReleaseObject(request):
+    fix_version = request.GET.get('fixversion')
+    orgunit = request.GET.get('orgunit')
+
+    release_object_info = {'information': {}}
+
+    release_object_count_query = ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version)
+    count = release_object_count_query.count()
+    if count != 0:
+        release_object_query = ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version, version=count).values()
+
+        version = release_object_query[0]['version']
+        stage =  release_object_query[0]['stage']
+        creator = release_object_query[0]['creator']
+        created_time = release_object_query[0]['updatetime']
+        release_object = release_object_query[0]['releaseobject']
+
+        release_object_info['information']['version'] = version
+        release_object_info['information']['stage'] = stage
+        release_object_info['information']['creator'] = creator
+        release_object_info['information']['created time'] = created_time
+        release_object_info[fix_version] = json.loads(release_object)[fix_version]
+        
+        return JsonResponse(release_object_info)
+
+    return JsonResponse({ERROR: ERROR_NO_RELEASE_OBJECT_FOUND})
 
 
 def ConstructROComponent(fix_version, issues, release_object):
@@ -45,7 +80,7 @@ def ConstructROComponent(fix_version, issues, release_object):
     components_sort.sort()
     for component in components_sort:
         release_object[fix_version][component] = {
-            'tier': '', # get tier from perforce or github
+            'tier': 'n/a', # get tier from perforce or github
             'latest': '',
             'releaseversion': '',
             'releaseassembled': ''
@@ -118,7 +153,7 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
 
 def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled):
     latest_version = ''
-    
+
     for release in releases_filtered['releases']:
         for jira_issue in release_object[fix_version][project_name]:
             release_object[fix_version][project_name]['releaseversion'] = release_version
@@ -189,3 +224,16 @@ def ConvertTimeZone(assembled):
     assembled = assembled.strftime(format)
 
     return assembled
+
+
+def SaveReleaseObject(orgunit, fix_version, release_object):
+    version = ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version).count()
+    version += 1
+    ReleaseObject.objects.create(
+        fixversion = fix_version,
+        releaseobject = json.dumps(release_object),
+        version = str(version),
+        orgunit = orgunit,
+        stage = 'creating release object',
+        creator = '',
+        updatetime = datetime.utcnow())
