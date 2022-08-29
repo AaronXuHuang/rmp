@@ -63,7 +63,6 @@ def GetLastReleaseObject(request):
         release_object_info['information']['stage'] = stage
         release_object_info['information']['creator'] = creator
         release_object_info['information']['created time'] = created_time
-        release_object_info['information']['last update time'] = created_time
         release_object_info[fix_version] = json.loads(release_object)[fix_version]
 
         return JsonResponse(release_object_info)
