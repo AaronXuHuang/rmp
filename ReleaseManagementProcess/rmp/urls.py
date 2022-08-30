@@ -50,5 +50,6 @@ urlpatterns = [
     path('releaseobject/test/', ROviews.test),
     path('releaseobject/', ROviews.LoadReleaseObject),
     path('releaseobject/create/', ROviews.CreateReleaseObject),
-    path('releaseobject/get/', ROviews.GetLastReleaseObject)
+    path('releaseobject/get/', ROviews.GetLastReleaseObject),
+    path('releaseobject/fixversion/get/', ROviews.GetReleaseObjectFixVersion)
 ]

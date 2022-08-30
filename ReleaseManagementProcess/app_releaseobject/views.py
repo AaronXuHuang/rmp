@@ -76,6 +76,14 @@ def GetLastReleaseObject(request):
     return JsonResponse({ERROR: ERROR_NO_RELEASE_OBJECT_FOUND})
 
 
+def GetReleaseObjectFixVersion(request):
+    orgunit = request.GET.get('orgunit')
+
+    fix_versions_list = list(ReleaseObject.objects.filter(orgunit=orgunit).values('fixversion').order_by('-id'))
+    fix_versions = ConstructROFixVersion(fix_versions_list)
+    return JsonResponse(fix_versions)
+
+
 def ConstructROComponent(fix_version, issues, release_object):
     components_sort = []
 
@@ -219,6 +227,16 @@ def ConstructROReleaseVersion(releases_filtered):
                 release_assembled = ConvertTimeZone(assembled)
                 
     return release_version, release_assembled
+
+
+def ConstructROFixVersion(fix_versions_list):
+    fix_versions = {'fix_versions': []}
+
+    for fix_version in fix_versions_list:
+        fix_versions['fix_versions'].append(
+            fix_version['fixversion']
+        )
+    return fix_versions
 
 
 def ConvertTimeZone(assembled):

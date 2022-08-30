@@ -138,8 +138,8 @@
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Jira fix version</label>
-                <div id="jira_fix_version_select" class="col">
-                  <select id="jira_fix_version" class="form-select"  onchange="selectfixversion()" disabled="">
+                <div class="col">
+                  <select id="jira_fix_version" class="form-select" onchange="select_jira_fix_version()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to create new release object.</small>
                 </div>
@@ -164,11 +164,11 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">RMP orgunit</label>
                 <div class="col">
-                  <select class="form-select" onchange="selectorgunit()">
+                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_orgunit()">
                     <option disabled selected value style="display:none"> </option>
-                    <option value="1">BUX</option>
-                    <option value="2">CBS</option>
-                    <option value="3">GWA</option>
+                    <option value="BUX">BUX</option>
+                    <option value="CBS">CBS</option>
+                    <option value="GWA">GWA</option>
                   </select>
                   <small class="form-hint">select orgunit to load existing release object.</small>
                 </div>
@@ -176,11 +176,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">RMP fix version</label>
                 <div class="col">
-                  <select class="form-select"  onchange="selectfixversion()">
-                    <option disabled selected style="display:none"> </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <select id="rmp_fix_version" class="form-select"  onchange="select_rmp_fix_version()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to load existing release object.</small>
                 </div>
@@ -341,6 +337,7 @@
       success: function(res) {
         jira_fix_version = '<option disabled selected value style="display:none"></option>'
         fix_versions = res['fix_versions']
+
         if (fix_versions.length > 0){
           $('#jira_fix_version').prop('disabled', false)
         }
@@ -348,11 +345,39 @@
           $('#jira_fix_version').prop('disabled', true)
         }
         for (let i = 0; i < fix_versions.length; i++) {
-          console.log(fix_versions[i].name)
           fix_version_name = fix_versions[i].name
           jira_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
         }
         $('#jira_fix_version').html(jira_fix_version)
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
+  function read_rmp_orgunit() {
+    orgunit = $("#rmp_orgunit").val()
+    $.ajax({
+      url: '/releaseobject/fixversion/get/',
+      type: 'GET',
+      data: {
+        orgunit: orgunit
+      },
+      dataType: 'JSON',
+      success: function(res) {
+        rmp_fix_version = '<option disabled selected value style="display:none"></option>'
+        fix_versions = res['fix_versions']
+        if (fix_versions.length > 0){
+          $('#rmp_fix_version').prop('disabled', false)
+        }
+        else{
+          $('#rmp_fix_version').prop('disabled', true)
+        }
+        for (let i = 0; i < fix_versions.length; i++) {
+          fix_version_name = fix_versions[i]
+          rmp_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
+        }
+        $('#rmp_fix_version').html(rmp_fix_version)
       }
     })
   }
@@ -364,7 +389,12 @@
 </script>
 
 <script type='text/javascript'>
-  function selectfixversion() {
+  function select_jira_fix_version() {
+  }
+</script>
+
+<script type='text/javascript'>
+  function select_rmp_fix_version() {
   }
 </script>
 {% endblock %}
