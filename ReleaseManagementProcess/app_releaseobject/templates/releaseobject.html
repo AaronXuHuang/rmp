@@ -144,6 +144,15 @@
                   <small class="form-hint">select fix version to create new release object.</small>
                 </div>
               </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Options</label>
+                <div class="col">
+                  <label class="form-check" style="margin-top: .5rem">
+                    <input id="jira_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_jira_fix_version()">
+                    <small class="form-hint">non-released only</small>
+                  </label>
+                </div>
+              </div>
               <div class="form-footer">
                 <div class="row align-items-center">
                   <div class="col"></div>
@@ -179,6 +188,15 @@
                   <select id="rmp_fix_version" class="form-select"  onchange="select_rmp_fix_version()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to load existing release object.</small>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Options</label>
+                <div class="col">
+                  <label class="form-check" style="margin-top: .5rem">
+                    <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
+                    <small class="form-hint">non-released only</small>
+                  </label>
                 </div>
               </div>
               <div class="form-footer">
@@ -326,12 +344,14 @@
 <script type='text/javascript'>
   function read_jira_fix_version() {
     project = $("#jira_project").val()
+    released = document.getElementById("jira_released_only").checked
+    alert(released)
     $.ajax({
       url: '/jira/fixversion/get/',
       type: 'GET',
       data: {
         project: project,
-        released: 'false'
+        released: !released
       },
       dataType: 'JSON',
       success: function(res) {
