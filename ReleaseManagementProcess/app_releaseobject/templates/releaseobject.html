@@ -125,7 +125,7 @@
             </div>
             <div class="card-body">
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Orgunit in Jira</label>
+                <label class="form-label col-3 col-form-label">Jira project</label>
                 <div class="col">
                   <select class="form-select" onchange="selectorgunit()">
                     <option disabled selected style="display:none"></option>
@@ -133,17 +133,17 @@
                     <option value="2">CBS</option>
                     <option value="3">GWA</option>
                   </select>
-                  <small class="form-hint">select orgunit to create new release object.</small>
+                  <small class="form-hint">select project to create new release object.</small>
                 </div>
               </div>
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Fix version in Jira</label>
+                <label class="form-label col-3 col-form-label">Jira fix version</label>
                 <div class="col">
-                  <select class="form-select"  onchange="selectfixversion()">
-                    <option disabled selected value style="display:none"></option>
+                  <select id="jira_fix_version" class="form-select"  onchange="selectfixversion()">
+                    <!--option disabled selected value style="display:none"></option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option value="3">Three</option-->
                   </select>
                   <small class="form-hint">select fix version to create new release object.</small>
                 </div>
@@ -166,7 +166,7 @@
             </div>
             <div class="card-body">
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Orgunit in RMP</label>
+                <label class="form-label col-3 col-form-label">RMP orgunit</label>
                 <div class="col">
                   <select class="form-select" onchange="selectorgunit()">
                     <option disabled selected value style="display:none"> </option>
@@ -178,7 +178,7 @@
                 </div>
               </div>
               <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Fix version in RMP</label>
+                <label class="form-label col-3 col-form-label">RMP fix version</label>
                 <div class="col">
                   <select class="form-select"  onchange="selectfixversion()">
                     <option disabled selected style="display:none"> </option>
@@ -326,14 +326,44 @@
 
 {% block js %}
 <script type='text/javascript'>
+  window.onload = function () {
+    read_data_from_db()
+    }
+</script>
+
+<script type='text/javascript'>
+  function read_data_from_db() {
+    //alert('Fake data in the page!')
+
+    $.ajax({
+      url: '/jira/fixversion/get/',
+      type: 'GET',
+      data: {
+        project: 'bux',
+        released: 'false'
+      },
+      dataType: 'JSON',
+      success: function(res) {
+        jira_fix_version = '<option disabled selected value style="display:none"></option>'
+        fix_versions = res['fix_versions']
+        for (let i = 0; i < fix_versions.length; i++) {
+          console.log(fix_versions[i].name)
+          fix_version_name = fix_versions[i].name
+          jira_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
+        }
+        $('#jira_fix_version').html(jira_fix_version)
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
   function selectorgunit() {
   }
-
 </script>
 
 <script type='text/javascript'>
   function selectfixversion() {
   }
-
 </script>
 {% endblock %}

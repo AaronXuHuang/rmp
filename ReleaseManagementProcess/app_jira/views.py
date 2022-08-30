@@ -1,3 +1,5 @@
+from platform import release
+from unicodedata import name
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from app_jira.models import JiraFixVersion, JiraProject
@@ -29,10 +31,9 @@ def SyncJiraProjects(request):
 
 def SyncJiraFixVersions(request):
     project = request.GET.get('project')
-    project_id = JiraProject.objects.get(key=project).id
 
-    fix_versions = FetchJiraFixVersions(project_id)
-    JiraFixVersion.objects.filter(projectid=project_id).delete()
+    fix_versions = FetchJiraFixVersions(project)
+    JiraFixVersion.objects.filter(project=project).delete()
     SaveJiraFixVersion(fix_versions)
 
     return JsonResponse(fix_versions)
@@ -45,6 +46,15 @@ def GetJiraIssues(request):
     issues = FetchJiraIssues(project, fix_version)
     # not database operation
     return JsonResponse(issues)
+
+
+def GetJiraFixVersions(request):
+    project = request.GET.get('project')
+    released = request.GET.get('released')
+
+    fix_versions = ReadJiraFixVersions(project, released)
+
+    return JsonResponse(fix_versions)
 
 
 def FetchJiraProjects():
@@ -68,12 +78,13 @@ def FetchJiraProjects():
     return projects
 
 
-def FetchJiraFixVersions(project_id):
+def FetchJiraFixVersions(project):
     # https://pd.nextestate.com/rest/api/2/project/12500/version?maxResults=1048576
 
     fix_versions = {
         'fix_versions': []
     }
+    project_id = JiraProject.objects.get(key=project).id
     url = JIRA_SERVER + "/rest/api/2/project/" + str(project_id) + '/version?maxResults=1048576'
 
     items = requests.get(url=url, auth=(JIRA_USER, JIRA_PWD), verify=False).json()
@@ -85,6 +96,7 @@ def FetchJiraFixVersions(project_id):
                 'description': item['description'],
                 'released': item['released'],
                 'projectid': project_id,
+                'project': project
                 })
         else:
             fix_versions['fix_versions'].append({
@@ -93,6 +105,7 @@ def FetchJiraFixVersions(project_id):
                 'description': "N/A",
                 'released': item['released'],
                 'projectid': project_id,
+                'project': project
                 })
 
     return fix_versions
@@ -147,9 +160,37 @@ def SaveJiraFixVersion(fix_versions):
 
     for fix_version in fix_versions['fix_versions']:
         bulk_data.append(JiraFixVersion(
-            id=fix_version['id'],
-            name=fix_version['name'],
-            description=fix_version['description'],
-            released=fix_version['released'],
-            projectid=fix_version['projectid']))
+            id = fix_version['id'],
+            name = fix_version['name'],
+            description = fix_version['description'],
+            released = fix_version['released'],
+            projectid = fix_version['projectid'],
+            project = fix_version['project']))
     JiraFixVersion.objects.bulk_create(bulk_data)
+
+
+def ReadJiraFixVersions(project, released):
+    if released == 'all':
+        fix_versions_list = list(JiraFixVersion.objects.filter(project=project).values().order_by('-id'))
+    else:
+        fix_versions_list =  list(JiraFixVersion.objects.filter(project=project, released=released.lower()).values().order_by('-id'))
+
+    fix_versions = ConstructFixVersion(fix_versions_list)
+
+    return fix_versions
+
+
+def ConstructFixVersion(fix_versions_list):
+    fix_versions = {'fix_versions': []}
+
+    for fix_version in fix_versions_list:
+        fix_versions['fix_versions'].append({
+            'id': fix_version['id'],
+            'name': fix_version['name'],
+            'description': fix_version['description'],
+            'released': fix_version['released'],
+            'projectid': fix_version['projectid'],
+            'project': fix_version['project']
+            })
+
+    return fix_versions

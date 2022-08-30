@@ -10,6 +10,7 @@ class JiraProject(models.Model):
 class JiraFixVersion(models.Model):
     id = models.CharField(max_length=50, primary_key=True)
     name = models.CharField(max_length=50, null=True, blank=True)
+    project = models.CharField(max_length=50, null=True, blank=True)
     projectid = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
     released = models.CharField(max_length=200, null=True, blank=True)

@@ -37,6 +37,7 @@ urlpatterns = [
     path('jira/test/', Jiraviews.test),
     path('jira/project/sync/', Jiraviews.SyncJiraProjects),
     path('jira/fixversion/sync/', Jiraviews.SyncJiraFixVersions),
+    path('jira/fixversion/get/', Jiraviews.GetJiraFixVersions),
     path('jira/issue/get/', Jiraviews.GetJiraIssues),
     path('octo/test/', Octoviews.test),
     path('octo/space/sync/', Octoviews.SyncOctoSpaces),
