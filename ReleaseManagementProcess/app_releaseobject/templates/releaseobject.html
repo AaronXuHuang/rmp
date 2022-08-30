@@ -164,7 +164,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">RMP orgunit</label>
                 <div class="col">
-                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_orgunit()">
+                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_fix_version()">
                     <option disabled selected value style="display:none"> </option>
                     <option value="BUX">BUX</option>
                     <option value="CBS">CBS</option>
@@ -355,7 +355,7 @@
 </script>
 
 <script type='text/javascript'>
-  function read_rmp_orgunit() {
+  function read_rmp_fix_version() {
     orgunit = $("#rmp_orgunit").val()
     $.ajax({
       url: '/releaseobject/fixversion/get/',
