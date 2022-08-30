@@ -127,23 +127,19 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Jira project</label>
                 <div class="col">
-                  <select class="form-select" onchange="selectorgunit()">
+                  <select id="jira_project" class="form-select" onchange="read_jira_fix_version()">
                     <option disabled selected style="display:none"></option>
-                    <option value="1">BUX</option>
-                    <option value="2">CBS</option>
-                    <option value="3">GWA</option>
+                    <option value="BUX">BUX</option>
+                    <option value="CBS">CBS</option>
+                    <option value="GWA">GWA</option>
                   </select>
                   <small class="form-hint">select project to create new release object.</small>
                 </div>
               </div>
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Jira fix version</label>
-                <div class="col">
-                  <select id="jira_fix_version" class="form-select"  onchange="selectfixversion()">
-                    <!--option disabled selected value style="display:none"></option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option-->
+                <div id="jira_fix_version_select" class="col">
+                  <select id="jira_fix_version" class="form-select"  onchange="selectfixversion()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to create new release object.</small>
                 </div>
@@ -327,25 +323,30 @@
 {% block js %}
 <script type='text/javascript'>
   window.onload = function () {
-    read_data_from_db()
+    //read_data_from_db()
     }
 </script>
 
 <script type='text/javascript'>
-  function read_data_from_db() {
-    //alert('Fake data in the page!')
-
+  function read_jira_fix_version() {
+    project = $("#jira_project").val()
     $.ajax({
       url: '/jira/fixversion/get/',
       type: 'GET',
       data: {
-        project: 'bux',
+        project: project,
         released: 'false'
       },
       dataType: 'JSON',
       success: function(res) {
         jira_fix_version = '<option disabled selected value style="display:none"></option>'
         fix_versions = res['fix_versions']
+        if (fix_versions.length > 0){
+          $('#jira_fix_version').prop('disabled', false)
+        }
+        else{
+          $('#jira_fix_version').prop('disabled', true)
+        }
         for (let i = 0; i < fix_versions.length; i++) {
           console.log(fix_versions[i].name)
           fix_version_name = fix_versions[i].name
