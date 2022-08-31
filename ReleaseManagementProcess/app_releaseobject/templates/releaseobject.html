@@ -157,7 +157,7 @@
                 <div class="row align-items-center">
                   <div class="col"></div>
                   <div class="col-auto">
-                    <button class="btn btn-primary">Create</button>
+                    <button class="btn btn-primary" onclick="create_ro()">Create</button>
                   </div>
                 </div>
               </div>
@@ -313,9 +313,33 @@
 </script>
 
 <script type='text/javascript'>
-  function load_ro() {
-    orgunit = $("#rmp_orgunit").val()
-    fix_version = $("#rmp_fix_version").val()
+  function create_ro() {
+    orgunit = $("#jira_project").val()
+    fix_version = $("#jira_fix_version").val()
+
+    $.ajax({
+      url: '/releaseobject/create/',
+      type: 'GET',
+      data: {
+        orgunit: orgunit,
+        fixversion: fix_version
+      },
+      dataType: 'JSON',
+      success: function(res) {
+        console.log(res)
+        load_ro(orgunit, fix_version)
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
+  function load_ro(orgunit, fix_version) {
+    if ((typeof(orgunit)=='undefined') || (typeof(fix_version)=='undefined')){
+      orgunit = $("#rmp_orgunit").val()
+      fix_version = $("#rmp_fix_version").val()
+    }
+
     $.ajax({
       url: '/releaseobject/get/',
       type: 'GET',
@@ -437,11 +461,12 @@
 
 <script type='text/javascript'>
   function create_latest(release_version, latest) {
-    result = 'no'
-    td = '<td class=\"text-muted\" style=\"background-color:#ffebe6\">' + result + '</td>'
+    result = 'false'
+    td = '<td class=\"text-muted\" style=\"background-color:#ffebe6; font-size: 0.72rem\">'
+      + result + '</td>'
     if (release_version == latest) {
-      result = 'yes'
-      td = '<td class=\"text-muted\">' + result + '</td>'
+      result = 'true'
+      td = '<td class=\"text-muted\" style=\"font-size: 0.72rem\">' + result + '</td>'
     }
     return td
   }
