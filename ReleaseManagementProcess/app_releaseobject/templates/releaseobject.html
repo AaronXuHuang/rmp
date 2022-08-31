@@ -127,7 +127,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Jira project</label>
                 <div class="col">
-                  <select id="jira_project" class="form-select">
+                  <select id="jira_project" class="form-select" onchange="read_jira_fix_version()">
                     <option disabled selected style="display:none"></option>
                     <option value="BUX">BUX</option>
                     <option value="CBS">CBS</option>
@@ -139,7 +139,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">Jira fix version</label>
                 <div class="col">
-                  <select id="jira_fix_version" class="form-select" onclick="read_jira_fix_version()">
+                  <select id="jira_fix_version" class="form-select" onchange="select_jira_fix_version()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to create new release object.</small>
                 </div>
@@ -173,7 +173,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">RMP orgunit</label>
                 <div class="col">
-                  <select id="rmp_orgunit" class="form-select">
+                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_fix_version()">
                     <option disabled selected value style="display:none"> </option>
                     <option value="BUX">BUX</option>
                     <option value="CBS">CBS</option>
@@ -185,7 +185,7 @@
               <div class="form-group mb-3 row">
                 <label class="form-label col-3 col-form-label">RMP fix version</label>
                 <div class="col">
-                  <select id="rmp_fix_version" class="form-select"  onclick="read_rmp_fix_version()">
+                  <select id="rmp_fix_version" class="form-select"  onchange="select_rmp_fix_version()" disabled="">
                   </select>
                   <small class="form-hint">select fix version to load existing release object.</small>
                 </div>
@@ -357,6 +357,12 @@
         jira_fix_version = '<option disabled selected value style="display:none"></option>'
         fix_versions = res['fix_versions']
 
+        if (fix_versions.length > 0){
+          $('#jira_fix_version').prop('disabled', false)
+        }
+        else{
+          $('#jira_fix_version').prop('disabled', true)
+        }
         for (let i = 0; i < fix_versions.length; i++) {
           fix_version_name = fix_versions[i].name
           jira_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
@@ -380,7 +386,12 @@
       success: function(res) {
         rmp_fix_version = '<option disabled selected value style="display:none"></option>'
         fix_versions = res['fix_versions']
-
+        if (fix_versions.length > 0){
+          $('#rmp_fix_version').prop('disabled', false)
+        }
+        else{
+          $('#rmp_fix_version').prop('disabled', true)
+        }
         for (let i = 0; i < fix_versions.length; i++) {
           fix_version_name = fix_versions[i]
           rmp_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
