@@ -345,11 +345,6 @@
   function read_jira_fix_version() {
     project = $("#jira_project").val()
     released = document.getElementById("jira_released_only").checked
-
-    jira_fix_version = '<option disabled selected value style="display:none"></option>'
-    jira_fix_version += '<option>Loading...</option>'
-    $('#jira_fix_version').html(jira_fix_version)
-
     $.ajax({
       url: '/jira/fixversion/get/',
       type: 'GET',
@@ -375,10 +370,6 @@
 <script type='text/javascript'>
   function read_rmp_fix_version() {
     orgunit = $("#rmp_orgunit").val()
-    rmp_fix_version = '<option disabled selected value style="display:none"></option>'
-    rmp_fix_version += '<option>Loading...</option>'
-    $('#rmp_fix_version').html(rmp_fix_version)
-    
     $.ajax({
       url: '/releaseobject/fixversion/get/',
       type: 'GET',
