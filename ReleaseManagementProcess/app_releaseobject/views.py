@@ -48,7 +48,7 @@ def CreateReleaseObject(request):
     return JsonResponse(release_object)
 
 
-def GetLastReleaseObject(request):
+def GetReleaseObject(request):
     fix_version = request.GET.get('fixversion')
     orgunit = request.GET.get('orgunit')
 
@@ -59,16 +59,14 @@ def GetLastReleaseObject(request):
     if count != 0:
         release_object_query = ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version, version=count).values()
 
-        version = release_object_query[0]['version']
-        stage =  release_object_query[0]['stage']
-        creator = release_object_query[0]['creator']
-        created_time = release_object_query[0]['created']
+        # append more information
         release_object = release_object_query[0]['releaseobject']
-
-        release_object_info['information']['version'] = version
-        release_object_info['information']['stage'] = stage
-        release_object_info['information']['creator'] = creator
-        release_object_info['information']['created time'] = created_time
+        release_object_info['information']['fixversion'] = fix_version
+        release_object_info['information']['version'] = release_object_query[0]['version']
+        release_object_info['information']['stage'] = release_object_query[0]['stage']
+        release_object_info['information']['creator'] = release_object_query[0]['creator']
+        release_object_info['information']['created time'] = release_object_query[0]['created']
+        release_object_info['information']['release'] = release_object_query[0]['released']
         release_object_info[fix_version] = json.loads(release_object)[fix_version]
 
         return JsonResponse(release_object_info)
@@ -98,7 +96,8 @@ def ConstructROComponent(fix_version, issues, release_object):
             'latest': '',
             'releaseversion': '',
             'releaseassembled': '',
-            'environments': {}
+            'environments': {},
+            'issues': {}
         }
     
     return release_object
@@ -115,7 +114,7 @@ def ConstructROIssue(fix_version, issues, release_object):
             index = issue.index('|')
             issue_key = issue[0: index]
             issue_type = issue[index + 1:]
-            release_object[fix_version][component][issue_key] = {
+            release_object[fix_version][component]['issues'][issue_key] = {
                 'issuetype': issue_type,
                 'releases': {}}
     
@@ -159,7 +158,7 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
     
     releases_filtered['latest'] = releases['latest']
     for release_name, release in releases['releases'].items(): 
-        for jira_issue in release_object[fix_version][project_name]:
+        for jira_issue in release_object[fix_version][project_name]['issues']:
             if release['jiraissue'] == jira_issue:
                 releases_filtered['releases'][release_name] = release
 
@@ -174,7 +173,7 @@ def ConstrucRelease(releases_filtered, release_object, fix_version, project_name
     project['environments'] = env_states
 
     for release_name, release in releases_filtered['releases'].items():
-        for key, jira_issue in project.items():
+        for key, jira_issue in project['issues'].items():
             if release['jiraissue'] == key:
                 jira_issue['releases'][release_name] = release
                 if not latest_version:

@@ -129,6 +129,8 @@ def FetchJiraIssues(project, fix_version):
     for item in items['issues']:
         issue_key = item['key']
         issue_type = item['fields']['issuetype']['name']
+        if issue_type == 'Server Config':
+            continue
         custom_field = item['fields']['customfield_12429']
         if issue_type != 'Release' and custom_field:
             components_ver_map = json.loads(custom_field)
