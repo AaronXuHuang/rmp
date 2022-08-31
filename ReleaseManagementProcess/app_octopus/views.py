@@ -355,3 +355,15 @@ def GetProjectId(project_names):
     project_id = list(OctoProject.objects.filter(name__in=project_names).values())
 
     return project_id
+
+
+def SpaceMap(project_name):
+    space_1 = ['BUX', 'FW', 'GBOS', 'GSS']
+    space_42 = ['CBS', 'GWA']
+
+    if project_name in space_1:
+        space = 'Spaces-1'
+    elif project_name in space_42:
+        space = 'Spaces-42'
+    
+    return space

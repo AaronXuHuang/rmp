@@ -33,7 +33,7 @@ def CreateReleaseObject(request):
     # fetch jira issues according to the fix version
     release_object = {fix_version: {}}
     issues = Jiraviews.FetchJiraIssues(orgunit, fix_version)
-    release_object = ConstructROComponent(fix_version, issues, release_object)
+    release_object = ConstructROComponent(orgunit, fix_version, issues, release_object)
     release_object = ConstructROIssue(fix_version, issues, release_object)
     # get octopus space id
     octo_space_id = Octoviews.GetOrgunitSpaceId(orgunit)
@@ -67,6 +67,8 @@ def GetReleaseObject(request):
         release_object_info['information']['creator'] = release_object_query[0]['creator']
         release_object_info['information']['created time'] = release_object_query[0]['created']
         release_object_info['information']['release'] = release_object_query[0]['released']
+        release_object_info['information']['orgunit'] = release_object_query[0]['orgunit']
+        release_object_info['information']['space'] = Octoviews.SpaceMap(orgunit)
         release_object_info[fix_version] = json.loads(release_object)[fix_version]
 
         return JsonResponse(release_object_info)
@@ -82,7 +84,7 @@ def GetReleaseObjectFixVersion(request):
     return JsonResponse(fix_versions)
 
 
-def ConstructROComponent(fix_version, issues, release_object):
+def ConstructROComponent(orgunit, fix_version, issues, release_object):
     components_sort = []
 
     for issue in issues['issues']:

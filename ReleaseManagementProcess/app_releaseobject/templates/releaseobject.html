@@ -325,7 +325,6 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        console.log(res)
         create_ro_table(res)
       }
     })
@@ -335,9 +334,9 @@
 <script type='text/javascript'>
   function create_ro_table(ro) {
     $('#ro-table').html('')
-
     fix_version = ro['information']['fixversion']
-    console.log(fix_version)
+    orgunit = ro['information']['orgunit']
+    octo_space = ro['information']['space']
 
     for (component_name in ro[fix_version]) {
       release_version = ro[fix_version][component_name]['releaseversion']
@@ -346,14 +345,13 @@
       latest = ro[fix_version][component_name]['latest']
       issues = ro[fix_version][component_name]['issues']
 
-      td = create_component(component_name)
-      td += create_release_version(release_version)
+      td = create_component(component_name, octo_space)
+      td += create_release_version(component_name, release_version, octo_space)
       td += create_assembled(assembled)
       td += create_environments(environments)
       td += create_latest(release_version, latest)
       td += create_issues(issues)
       tr = '<tr>' + td + '</tr>'
-      console.log(ro[fix_version][component_name])
 
       $('#ro-table').append(tr)
     }
@@ -361,12 +359,13 @@
 </script>
 
 <script type='text/javascript'>
-  function create_component(component_name) {
+  function create_component(component_name, octo_space) {
     octo_project_name = component_name.replace('_', '-')
     td = '\
       <td>\
         <span class=\"ro-component\">\
-          <a href=https://octopus.nextestate.com/app#/Spaces-1/projects/'
+          <a href=https://octopus.nextestate.com/app#/'
+          + octo_space + '/projects/'
           + octo_project_name + '/deployments style=\"color:white\">'
             + component_name +
           '</a>\
@@ -377,10 +376,14 @@
 </script>
 
 <script type='text/javascript'>
-  function create_release_version(release_version) {
+  function create_release_version(component_name, release_version, octo_space) {
+    octo_project_name = component_name.replace('_', '-')
     td = '\
     <td class=\"text-muted\">\
-      <a href=\"https://octopus.nextestate.com/app#/Spaces-1/projects/gbos-cnutilityprocessor/deployments/releases/1.0.80\" style=\"color:#25782b; font-size: .8em\">'
+      <a href=\"https://octopus.nextestate.com/app#/'
+      + octo_space + '/projects/'
+      + octo_project_name + '/deployments/releases/'
+      + release_version + '\" style=\"color:#25782b; font-size: .8em\">'
         + release_version +
       '</a>\
     </td>'
