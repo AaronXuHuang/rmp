@@ -97,7 +97,8 @@ def ConstructROComponent(fix_version, issues, release_object):
             'tier': 'n/a', # get tier from perforce or github
             'latest': '',
             'releaseversion': '',
-            'releaseassembled': ''
+            'releaseassembled': '',
+            'environments': {}
         }
     
     return release_object
@@ -157,55 +158,70 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
     releases = Octoviews.FetchProjectReleases(octo_space_id, project_id)
     
     releases_filtered['latest'] = releases['latest']
-    for release in releases['releases']: 
+    for release_name, release in releases['releases'].items(): 
         for jira_issue in release_object[fix_version][project_name]:
-            if releases['releases'][release]['jiraissue'] == jira_issue:
-                releases_filtered['releases'][release] = releases['releases'][release]
-    
+            if release['jiraissue'] == jira_issue:
+                releases_filtered['releases'][release_name] = release
+
     return releases_filtered
     
 
-def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled):
+def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled, env_states):
     latest_version = ''
+    project = release_object[fix_version][project_name]
+    project['releaseversion'] = release_version
+    project['releaseassembled'] = release_assembled
+    project['environments'] = env_states
 
-    for release in releases_filtered['releases']:
-        for jira_issue in release_object[fix_version][project_name]:
-            release_object[fix_version][project_name]['releaseversion'] = release_version
-            release_object[fix_version][project_name]['releaseassembled'] = release_assembled
-            if releases_filtered['releases'][release]['jiraissue'] == jira_issue:
-                release_object[fix_version][project_name][jira_issue]['releases'][release] = releases_filtered['releases'][release]
-                #latest_version = release_object[fix_version][project_name][jira_issue]['latest']
+    for release_name, release in releases_filtered['releases'].items():
+        for key, jira_issue in project.items():
+            if release['jiraissue'] == key:
+                jira_issue['releases'][release_name] = release
                 if not latest_version:
-                    release_object[fix_version][project_name]['latest'] = releases_filtered['latest']
+                    project['latest'] = releases_filtered['latest']
 
     return release_object
 
 
 def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map, envs_map):
     for project_name in release_object[fix_version]:
-        releases_filtered = FilterRelease(octo_project_id_map, project_name, octo_space_id, release_object, fix_version)
+        releases_filtered = FilterRelease(
+            octo_project_id_map,
+            project_name,
+            octo_space_id,
+            release_object,
+            fix_version)
 
         # fetch octopus projcet release deployment
         releases_filtered, tasks = Octoviews.FetchProjectReleaseDeployments(octo_space_id, releases_filtered)
         releases_filtered = ConstructROEnvName(releases_filtered, envs_map)
 
-        # not necessary to check deployments state
-        # because if the deployment failed, the jira issue can not be finished
-        # fetch octopus projcet release deployment state
         releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
 
         release_version, release_assembled = ConstructROReleaseVersion(releases_filtered)
 
-        release_object = ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled)
+        env_states = ConstructROReleaseEnvironmentState(
+            releases_filtered,
+            envs_map,
+            release_version)
+
+        release_object = ConstrucRelease(
+            releases_filtered,
+            release_object,
+            fix_version,
+            project_name,
+            release_version,
+            release_assembled,
+            env_states)
 
     return release_object
 
 
 def ConstructROEnvName(releases_filtered, envs_map):
-    for release in releases_filtered['releases']:
-        for deployment in releases_filtered['releases'][release]['deployments']:
-            env_id = releases_filtered['releases'][release]['deployments'][deployment]['environmentid']
-            releases_filtered['releases'][release]['deployments'][deployment]['environmentname'] = envs_map[env_id]
+    for release in releases_filtered['releases'].values():
+        for deployment in release['deployments'].values():
+            env_id = deployment['environmentid']
+            deployment['environmentname'] = envs_map[env_id]
 
     return releases_filtered
 
@@ -214,18 +230,18 @@ def ConstructROReleaseVersion(releases_filtered):
     release_version = ''
     release_assembled = ''
     last_assembled = ''
-
-    for release in releases_filtered['releases']:
-        version = releases_filtered['releases'][release]['version']
-        assembled = releases_filtered['releases'][release]['assembled']
-        for deployment in releases_filtered['releases'][release]['deployments']:
-            env_name = releases_filtered['releases'][release]['deployments'][deployment]['environmentname']
-            state = releases_filtered['releases'][release]['deployments'][deployment]['state'] 
+                
+    for release in releases_filtered['releases'].values():
+        version = release['version']
+        assembled = release['assembled']
+        for deployment in release['deployments'].values():
+            env_name = deployment['environmentname']
+            state = deployment['state']
             if env_name == BUX_QA and state == 'Success' and assembled > last_assembled:
                 release_version = version
                 last_assembled = assembled
                 release_assembled = ConvertTimeZone(assembled)
-                
+
     return release_version, release_assembled
 
 
@@ -237,6 +253,20 @@ def ConstructROFixVersion(fix_versions_list):
             fix_version['fixversion']
         )
     return fix_versions
+
+
+def ConstructROReleaseEnvironmentState(releases_filtered, envs_map, release_version):
+    env_states = {}
+
+    for env in envs_map:
+        env_states[envs_map[env]] = 'none'
+
+    for release in releases_filtered['releases'].values():
+        if release['version'] == release_version:
+            for  deployment in release['deployments'].values():
+                env_states[deployment['environmentname']] = deployment['state']
+
+    return env_states
 
 
 def ConvertTimeZone(assembled):
@@ -251,12 +281,11 @@ def ConvertTimeZone(assembled):
 
 
 def SaveReleaseObject(orgunit, fix_version, release_object):
-    version = ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version).count()
-    version += 1
+    ReleaseObject.objects.filter(orgunit=orgunit, fixversion=fix_version).delete()
     ReleaseObject.objects.create(
         fixversion = fix_version,
         releaseobject = json.dumps(release_object),
-        version = str(version),
+        version = '1',
         orgunit = orgunit,
         stage = 'create release object',
         creator = '',

@@ -9,3 +9,4 @@ class ReleaseObject(models.Model):
     stage = models.CharField(max_length=50, null=True, blank=True)
     creator = models.CharField(max_length=50, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    released = models.BooleanField(default=False)

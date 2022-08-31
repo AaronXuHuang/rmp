@@ -345,7 +345,6 @@
   function read_jira_fix_version() {
     project = $("#jira_project").val()
     released = document.getElementById("jira_released_only").checked
-    alert(released)
     $.ajax({
       url: '/jira/fixversion/get/',
       type: 'GET',
