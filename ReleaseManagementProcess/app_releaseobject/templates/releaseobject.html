@@ -109,7 +109,7 @@
             Release Object
           </div>
           <h2 id='title_filter' class="page-title">
-            Select
+            Selection
           </h2>
         </div>
       </div>
@@ -149,7 +149,7 @@
                 <div class="col">
                   <label class="form-check" style="margin-top: .5rem">
                     <input id="jira_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_jira_fix_version()">
-                    <small class="form-hint">non-released only</small>
+                    <small class="form-hint">unreleased only</small>
                   </label>
                 </div>
               </div>
@@ -157,7 +157,7 @@
                 <div class="row align-items-center">
                   <div class="col"></div>
                   <div class="col-auto">
-                    <button class="btn btn-primary" onclick="create_ro()">Create</button>
+                    <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="create_ro()">Create</button>
                   </div>
                 </div>
               </div>
@@ -195,7 +195,7 @@
                 <div class="col">
                   <label class="form-check" style="margin-top: .5rem">
                     <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
-                    <small class="form-hint">non-released only</small>
+                    <small class="form-hint">unreleased only</small>
                   </label>
                 </div>
               </div>
@@ -203,12 +203,31 @@
                 <div class="row align-items-center">
                   <div class="col"></div>
                   <div class="col-auto">
-                    <button class="btn btn-primary" onclick="load_ro()">Load</button>
+                    <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="load_ro()">Load</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-xl">
+    <div class="page-header d-print-none">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <div class="page-pretitle">
+            Release Object
+          </div>
+          <h2 id='title_filter' class="page-title">
+            Details
+          </h2>
+        </div>
+        <div class="col-12 col-md-auto ms-auto d-print-none">
+          <button class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+            Show progress
+          </button>
         </div>
       </div>
     </div>
@@ -241,13 +260,30 @@
   </div>
 </div>
 
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="visibility: visible;" aria-modal="true" role="dialog">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title" id="offcanvasTopLabel">RMP Release Object progress</h2>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="ro_progress_text">
+      No RMP Release Object running
+    </div>
+    <div id="ro_progress_bar">
+    </div>
+    <div class="mt-3">
+      <button class="btn" type="button" data-bs-dismiss="offcanvas">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 
 {% block js %}
 <script type='text/javascript'>
   window.onload = function () {
-    //read_data_from_db()
     }
 </script>
 
@@ -316,6 +352,14 @@
   function create_ro() {
     orgunit = $("#jira_project").val()
     fix_version = $("#jira_fix_version").val()
+    if ((orgunit==null) || (fix_version==null)){
+      update_progress_bar('error', 'Wrong input parameters. \
+      Please select Jira project and fix version.')
+      return
+    }
+
+    $('#ro-table').html('')
+    update_progress_bar('running', 'Generating Release Object')
 
     $.ajax({
       url: '/releaseobject/create/',
@@ -326,7 +370,6 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        console.log(res)
         load_ro(orgunit, fix_version)
       }
     })
@@ -339,6 +382,15 @@
       orgunit = $("#rmp_orgunit").val()
       fix_version = $("#rmp_fix_version").val()
     }
+    
+    if ((orgunit==null) || (fix_version==null)){
+      update_progress_bar('error', 'Wrong input parameters. \
+      Please select RMP orgunit and fix version.')
+      return
+    }
+
+    $('#ro-table').html('')
+    update_progress_bar('running', 'Generating Release Object')
 
     $.ajax({
       url: '/releaseobject/get/',
@@ -350,6 +402,7 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
+        update_progress_bar('done', 'Completed')
       }
     })
   }
@@ -357,7 +410,6 @@
 
 <script type='text/javascript'>
   function create_ro_table(ro) {
-    $('#ro-table').html('')
     fix_version = ro['information']['fixversion']
     orgunit = ro['information']['orgunit']
     octo_space = ro['information']['space']
@@ -503,6 +555,40 @@
     '</td>'
 
     return td
+  }
+</script>
+
+<script type='text/javascript'>
+  function update_progress_bar(step, text) {
+    
+    running_progress = '\
+    <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
+      <div class="progress-bar progress-bar-indeterminate bg-blue">\
+      </div>\
+    </div>'
+    completed_progress = '\
+    <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
+      <div class="progress-bar" style="width: 100%" role="progressbar">\
+      </div>\
+    </div>'
+    error_progress = ''
+
+    if (step == 'running') {
+      ro_progress_bar = running_progress
+    }
+    else if (step == 'done') {
+      ro_progress_bar = completed_progress
+    }
+    else if (step == 'error') {
+      text = '\
+      <div style="color:red">'
+        + text +
+      '</div>'
+      ro_progress_bar = error_progress
+    }
+    
+    $('#ro_progress_text').html(text)
+    $('#ro_progress_bar').html(ro_progress_bar)
   }
 </script>
 

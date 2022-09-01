@@ -52,7 +52,11 @@ def GetJiraFixVersions(request):
     project = request.GET.get('project')
     released = request.GET.get('released')
 
-    fix_versions = ReadJiraFixVersions(project, released)
+    print(released)
+    if released == 'false':
+        fix_versions = ReadJiraFixVersions(project, released)
+    else:
+        fix_versions = ReadJiraFixVersions(project, 'all')
 
     return JsonResponse(fix_versions)
 
