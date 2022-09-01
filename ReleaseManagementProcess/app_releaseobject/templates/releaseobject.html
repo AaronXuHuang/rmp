@@ -225,8 +225,8 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
-            Show progress
+          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+            Show progress bar
           </button>
         </div>
       </div>
@@ -258,6 +258,20 @@
       </div>
     </div>
   </div>
+  <div class="container-xl">
+    <div class="page-header d-print-none">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <div class="page-pretitle">
+            Release Object
+          </div>
+          <h2 id='title_filter' class="page-title">
+            Release Process
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="visibility: visible;" aria-modal="true" role="dialog">
@@ -284,7 +298,26 @@
 {% block js %}
 <script type='text/javascript'>
   window.onload = function () {
-    }
+    opacity = 10;
+    interval = 1
+    op='plus'
+      timeId = setInterval(function () {
+        if (op=='plus') {
+          opacity = opacity - interval
+        }
+        else {
+          opacity = opacity + interval
+        }
+        if (opacity == 0) {
+          //clearInterval(timeId);
+          op = 'minor'
+        }
+        if (opacity == 10) {
+          op='plus'
+        }
+        $("#test").css({'opacity':opacity/10})
+      }, 100);
+  }
 </script>
 
 <script type='text/javascript'>
