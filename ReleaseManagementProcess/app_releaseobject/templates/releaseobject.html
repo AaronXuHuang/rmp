@@ -66,6 +66,29 @@
     border-width: 1px;
     text-align: center;
   }
+  .btn-ro-release{
+    background-color: #767676;
+    font-size: 0.81rem;
+    color:white;
+    border-radius: 0.18rem;
+    border-color: #767676;
+    padding-top: 0.1em;
+    padding-right: 0.5em;
+    padding-bottom: 0.1em;
+    padding-left: 0.5em;
+    font-weight: 550;
+    width: 120px;
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px
+  }
+  .ro-env-name{
+    width: 40px;
+    background-color: rgba(75,84,98,.03);
+    border-radius: 0.18rem;
+    font-size: 0.61rem;
+    text-align: center;
+  }
 
 </style>
 {% endblock %}
@@ -272,6 +295,102 @@
       </div>
     </div>
   </div>
+  <div class="page-body">
+    <div class="container-xl">
+      <div class="card">
+        <div class="card-body">
+          <div class="accordion" id="accordion-example">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-1">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="false">
+                  BUX_PIE Process
+                </button>
+              </h2>
+              <div id="collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                <div class="accordion-body pt-0">
+                  <div>
+                    <button id="pie-start" class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <label class="ro-env-name">PIE</label>
+                    <button class="btn btn-ro-release" disabled=true>Deploy</button><br>
+                    <label class="ro-env-name">PIE</label>
+                    <button class="btn btn-ro-release" disabled=true>PIE Test</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-2">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
+                  BUX_STG Process
+                </button>
+              </h2>
+              <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                <div class="accordion-body pt-0">
+                  <div>
+                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <label class="ro-env-name">STG2</label>
+                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <label class="ro-env-name">STG1</label>
+                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <label class="ro-env-name">STG</label>
+                    <button class="btn btn-ro-release" disabled=true>STG Test</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-3">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
+                  BUX_PROD Process
+                </button>
+              </h2>
+              <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                <div class="accordion-body pt-0">
+                  <div>
+                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <label class="ro-env-name">DC2</label>
+                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <label class="ro-env-name">DC1</label>
+                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
+                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <label class="ro-env-name">PROD</label>
+                    <button class="btn btn-ro-release" disabled=true>PROD Test</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="visibility: visible;" aria-modal="true" role="dialog">
@@ -289,6 +408,24 @@
       <button class="btn" type="button" data-bs-dismiss="offcanvas">
         Close
       </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-simple" tabindex="-1" style="display: none;" aria-modal="false" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Ready to start deployment for PIE?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Not yet</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Start</button>
+      </div>
     </div>
   </div>
 </div>
