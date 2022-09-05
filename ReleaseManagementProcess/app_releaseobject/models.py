@@ -10,3 +10,9 @@ class ReleaseObject(models.Model):
     creator = models.CharField(max_length=50, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     released = models.BooleanField(default=False)
+
+
+class ReleaseProcess(models.Model):
+    orgunit = models.CharField(max_length=50, primary_key=True)
+    environment = models.CharField(max_length=50, null=True, blank=True)
+    process = models.TextField(null=True, blank=True)
