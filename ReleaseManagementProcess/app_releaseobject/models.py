@@ -13,6 +13,7 @@ class ReleaseObject(models.Model):
 
 
 class ReleaseProcess(models.Model):
-    orgunit = models.CharField(max_length=50, primary_key=True)
+    orgunit = models.CharField(max_length=50, null=True, blank=True)
+    fixversion = models.CharField(max_length=50, null=True, blank=True)
     environment = models.CharField(max_length=50, null=True, blank=True)
-    process = models.TextField(null=True, blank=True)
+    state = models.TextField(max_length=50, null=True, blank=True)

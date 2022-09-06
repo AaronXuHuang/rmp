@@ -131,7 +131,7 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_filter' class="page-title">
+          <h2 id='title_selection' class="page-title">
             Selection
           </h2>
         </div>
@@ -243,8 +243,8 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_filter' class="page-title">
-            Details
+          <h2 id='title_details' class="page-title">
+            Load RMP Release Object to show details
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -288,8 +288,8 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_filter' class="page-title">
-            Release Process
+          <h2 id='title_release_process' class="page-title">
+            Load RMP Release Object to show release process
           </h2>
         </div>
       </div>
@@ -298,21 +298,21 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="card">
-        <div class="card-body">
-          <div class="accordion" id="accordion-example">
+        <div id="release_process_table" class="card-body">
+          <div class="accordion" id="accordion-bux" style="display: none">
             <div class="accordion-item">
               <h2 class="accordion-header" id="heading-1">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="false">
                   BUX_PIE Process
                 </button>
               </h2>
-              <div id="collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+              <div id="collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-start" class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <button id="pie-start" class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('PIE')">Start</button><br>
                     <label class="ro-env-name">PIE</label>
-                    <button class="btn btn-ro-release" disabled=true>Deploy</button><br>
+                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
                     <button class="btn btn-ro-release" disabled=true>PIE Test</button>
                   </div>
@@ -325,11 +325,11 @@
                   BUX_STG Process
                 </button>
               </h2>
-              <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+              <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">STG</label>
-                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('STG')">Start</button><br>
                     <label class="ro-env-name">STG2</label>
                     <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
                     <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
@@ -356,11 +356,11 @@
                   BUX_PROD Process
                 </button>
               </h2>
-              <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+              <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PROD</label>
-                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-simple">Start</button><br>
+                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('PROD')">Start</button><br>
                     <label class="ro-env-name">DC2</label>
                     <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
                     <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
@@ -411,19 +411,19 @@
   </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-simple" tabindex="-1" style="display: none;" aria-modal="false" role="dialog">
+<div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none;" aria-modal="false" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Are you sure?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div id="modal-content" class="modal-body">
         Ready to start deployment for PIE?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Not yet</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Start</button>
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancel</button>
+        <button id="confirm-yes" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
       </div>
     </div>
   </div>
@@ -539,7 +539,7 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        load_ro(orgunit, fix_version)
+        //load_ro(orgunit, fix_version)
       }
     })
   }
@@ -572,6 +572,11 @@
       success: function(res) {
         create_ro_table(res)
         update_progress_bar('done', 'Completed')
+        load_release_process_table(orgunit)
+        details_text = orgunit + '-' + fix_version + '-Details'
+        release_process = orgunit + '-' + fix_version + '-Release Process'
+        $('#title_details').text(details_text)
+        $('#title_release_process').text(release_process)
       }
     })
   }
@@ -761,4 +766,61 @@
   }
 </script>
 
+<script type='text/javascript'>
+  function update_confirmation_text(env) {
+    if (env == "PIE") {
+      $('#modal-content').text("Start release process on PIE.")
+      $('#confirm-yes').text('Yes, start on PIE')
+      $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
+    }
+    else if (env == "STG") {
+      $('#modal-content').text("Start release process on STG.")
+      $('#confirm-yes').text('Yes, start on PIE')
+    }
+    else if (env == "PROD") {
+      $('#modal-content').text("Start release process on PROD.")
+      $('#confirm-yes').text('Yes, start on PIE')
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function get_details_orgunit() {
+    details_text = $("#title_details").text()
+    index = details_text.indexOf('-')
+    orgunit = details_text.substring(0, index)
+
+    return orgunit
+  }
+</script>
+
+<script type='text/javascript'>
+  function load_release_process_table(orgunit) {
+    if (orgunit == 'BUX') {
+      $('#accordion-bux').css({'display': 'block'})
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function release_process_bux(env, state) {
+    $('#pie-start').text("Running")
+    $('#pie-start').attr("disabled", "true")
+    $('#pie-deploy').text("Deploying")
+    $.ajax({
+      url: '/releaseobject/process/',
+      type: 'GET',
+      dataType: 'JSON',
+      data: {
+        orgunit: orgunit,
+        fixversion: fix_version,
+        env: env,
+        state: state
+      },
+      success: function(res) {
+        // a timer to send request for state update
+      }
+    })
+  }
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from app_jira import views as Jiraviews
 from app_octopus import views as Octoviews
-from app_releaseobject.models import ReleaseObject
+from app_releaseobject.models import ReleaseObject, ReleaseProcess
 
 BUX_QA = 'BUX_QA'
 BUX_PRF = 'BUX_PRF'
@@ -291,3 +291,81 @@ def SaveReleaseObject(orgunit, fix_version, release_object):
         stage = 'create release object',
         creator = '',
         created = datetime.utcnow())
+
+
+def RunReleaseProcess(request):
+    orgunit = request.GET.get('orgunit')
+    fix_version = request.GET.get('fixversion')
+    env = request.GET.get('env')
+    state = request.GET.get('state')
+
+    if orgunit == 'BUX':
+        RunReleaseProcess_BUX(fix_version, env)
+
+    return HttpResponse()
+
+def RunReleaseProcess_BUX(fix_version, env):
+    orgunit = 'BUX'
+
+    if env  == 'PIE':
+        sub_env = 'PIE'
+        RP_Deploy(orgunit, fix_version, sub_env)
+    if env  == 'STG':
+        sub_envs = ['STG2', 'STG1']
+        for sub_env in sub_envs:
+            RP_F5(orgunit, fix_version, sub_env, 'disable', 'prt')
+            RP_F5(orgunit, fix_version, sub_env, 'disable', 'non-prt')
+            RP_IISReset(orgunit, fix_version, sub_env)
+            RP_Deploy(orgunit, fix_version, sub_env)
+            RP_F5(orgunit, fix_version, sub_env, 'enable', 'non-prt')
+            RP_F5(orgunit, fix_version, sub_env, 'enable', 'prt')
+    if env  == 'PROD':
+        sub_envs = ['DC2', 'DC1']
+        for sub_env in sub_envs:
+            RP_F5(orgunit, fix_version, sub_env, 'disable', 'prt')
+            RP_F5(orgunit, fix_version, sub_env, 'drain', 'prt')
+            RP_F5(orgunit, fix_version, sub_env, 'disable', 'non-prt')
+            RP_F5(orgunit, fix_version, sub_env, 'drain', 'non-prt')
+            RP_IISReset(orgunit, fix_version, sub_env)
+            RP_Deploy(orgunit, fix_version, sub_env)
+            RP_F5(orgunit, fix_version, sub_env, 'enable', 'non-prt')
+            RP_F5(orgunit, fix_version, sub_env, 'enable', 'prt')
+
+    print('RunReleaseProcess_BUX')
+
+def RP_UpdateState(orgunit, fix_version, env, state):
+    #ReleaseProcess.objects.update_or_create()
+    print('')
+
+
+def RP_Deploy(orgunit, fix_version, env):
+    RP_UpdateState(orgunit, fix_version, env, 'Deploying')
+    # todo
+    RP_UpdateState(orgunit, fix_version, env, 'Deployed')
+
+    print('RP_Deploy')
+
+
+def RP_F5(orgunit, fix_version, env, action, tier):
+    if action == 'disable':
+        RP_UpdateState(orgunit, fix_version, env, 'Disabling ' + tier)
+        # todo
+        RP_UpdateState(orgunit, fix_version, env, 'Disabled ' + tier)
+    elif action == 'enable':
+        RP_UpdateState(orgunit, fix_version, env, 'Enabling ' + tier)
+        # todo
+        RP_UpdateState(orgunit, fix_version, env, 'Disabled ' + tier)
+    elif action == 'drain':
+        RP_UpdateState(orgunit, fix_version, env, 'Draining ' + tier)
+        # todo
+        RP_UpdateState(orgunit, fix_version, env, 'Drained ' + tier)
+
+    print('RP_F5')
+
+
+def RP_IISReset(orgunit, fix_version, env):
+    RP_UpdateState(orgunit, fix_version, env, 'IIS Reseting')
+    # todo
+    RP_UpdateState(orgunit, fix_version, env, 'IIS Reseted')
+    print('RP_IISReset')
+

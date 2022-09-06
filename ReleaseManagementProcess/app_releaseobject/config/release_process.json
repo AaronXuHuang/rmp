@@ -15,7 +15,7 @@
                 "deployment": [
                     ["Disable PRT", "Disabling PRT", "Disabled PRT"],
                     ["Disable Non-PRT", "Disabling Non-PRT", "Disabled Non-PRT"],
-                    ["IIS reset", "IIS reseting", "IIS reseted"],
+                    ["IIS Reset", "IIS Reseting", "IIS Reseted"],
                     ["Deploy", "Deploying", "Deployed"],
                     ["Enable Non-PRT", "Enabling Non-PRT", "Enabled Non-PRT"],
                     ["Enable PRT", "Enabling PRT", "Enabled PRT"]
@@ -32,7 +32,7 @@
                     ["Drain PRT", "Draining PRT", "Drained PRT"],
                     ["Disable Non-PRT", "Disabling Non-PRT", "Disabled Non-PRT"],
                     ["Drain Non-PRT", "Draining Non-PRT", "Drained Non-PRT"],
-                    ["IIS reset", "IIS reseting", "IIS reseted"],
+                    ["IIS Reset", "IIS Reseting", "IIS Reseted"],
                     ["Deploy", "Deploying", "Deployed"],
                     ["Enable Non-PRT", "Enabling Non-PRT", "Enabled Non-PRT"],
                     ["Enable PRT", "Enabling PRT", "Enabled PRT"]
