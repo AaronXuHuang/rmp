@@ -432,27 +432,31 @@
 {% endblock %}
 
 {% block js %}
+<script>
+  state_timeId = ''
+</script>
+
 <script type='text/javascript'>
   window.onload = function () {
     opacity = 10;
     interval = 1
     op='plus'
-      timeId = setInterval(function () {
-        if (op=='plus') {
-          opacity = opacity - interval
-        }
-        else {
-          opacity = opacity + interval
-        }
-        if (opacity == 0) {
-          //clearInterval(timeId);
-          op = 'minor'
-        }
-        if (opacity == 10) {
-          op='plus'
-        }
-        $("#test").css({'opacity':opacity/10})
-      }, 100);
+    timeId = setInterval(function () {
+      if (op=='plus') {
+        opacity = opacity - interval
+      }
+      else {
+        opacity = opacity + interval
+      }
+      if (opacity == 0) {
+        //clearInterval(timeId);
+        op = 'minor'
+      }
+      if (opacity == 10) {
+        op='plus'
+      }
+      $("#test").css({'opacity':opacity/10})
+    }, 100);
   }
 </script>
 
@@ -807,6 +811,10 @@
     $('#pie-start').text("Running")
     $('#pie-start').attr("disabled", "true")
     $('#pie-deploy').text("Deploying")
+
+    console.log('start timer')
+    state_timeId = setInterval(get_release_process_state, 5000)
+
     $.ajax({
       url: '/releaseobject/process/run/',
       type: 'GET',
@@ -818,9 +826,31 @@
         state: state
       },
       success: function(res) {
-        // a timer to send request for state update
+        
       }
     })
   }
 </script>
+
+<script type='text/javascript'>
+  function get_release_process_state () {
+    $.ajax({
+      url: '/releaseobject/process/get/',
+      type: 'GET',
+      dataType: 'JSON',
+      data: {
+        orgunit: orgunit,
+        fixversion: fix_version
+      },
+      success: function(res) {
+        console.log(res)
+        if ((res['env'] == 'PIE') && (res['state'] == 'Deployed')){
+          clearInterval(state_timeId)
+          console.log('timer stopped')
+        }
+      }
+    })
+  }
+</script>
+
 {% endblock %}
