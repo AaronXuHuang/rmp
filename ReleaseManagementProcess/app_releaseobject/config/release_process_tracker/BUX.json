@@ -1,0 +1,278 @@
+{
+    "BUX": {
+        "PIE": [
+            {
+                "state": "Deploying",
+                "time": null
+            },
+            {
+                "state": "Deployed",
+                "time": null
+            }
+        ],
+        "PIE_TEST": [
+            {
+                "state": "PIE Testing",
+                "time": null
+            },
+            {
+                "state": "PIE Tested",
+                "time": null
+            }
+        ],
+        "STG2": [
+            {
+                "state": "Disabling PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled PRT",
+                "time": null
+            },
+            {
+                "state": "Disabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "IIS Reseting",
+                "time": null
+            },
+            {
+                "state": "IIS Reseted",
+                "time": null
+            },
+            {
+                "state": "Deploying",
+                "time": null
+            },
+            {
+                "state": "Deployed",
+                "time": null
+            },
+            {
+                "state": "Enabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabling PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled PRT",
+                "time": null
+            }
+        ],
+        "STG1": [
+            {
+                "state": "Disabling PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled PRT",
+                "time": null
+            },
+            {
+                "state": "Disabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "IIS Reseting",
+                "time": null
+            },
+            {
+                "state": "IIS Reseted",
+                "time": null
+            },
+            {
+                "state": "Deploying",
+                "time": null
+            },
+            {
+                "state": "Deployed",
+                "time": null
+            },
+            {
+                "state": "Enabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabling PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled PRT",
+                "time": null
+            }
+        ],
+        "STG_TEST": [
+            {
+                "env": "STG",
+                "state": "STG Testing",
+                "time": null
+            },
+            {
+                "env": "STG",
+                "state": "STG Tested",
+                "time": null
+            }
+        ],
+        "DC2": [
+            {
+                "state": "Disabling PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled PRT",
+                "time": null
+            },
+            {
+                "state": "Draining PRT",
+                "time": null
+            },
+            {
+                "state": "Drained PRT",
+                "time": null
+            },
+            {
+                "state": "Disabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Draining Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Drained Non-PRT",
+                "time": null
+            },
+            {
+                "state": "IIS Reseting",
+                "time": null
+            },
+            {
+                "state": "IIS Reseted",
+                "time": null
+            },
+            {
+                "state": "Deploying",
+                "time": null
+            },
+            {
+                "state": "Deployed",
+                "time": null
+            },
+            {
+                "state": "Enabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabling PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled PRT",
+                "time": null
+            }
+        ],
+        "DC1": [
+            {
+                "state": "Disabling PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled PRT",
+                "time": null
+            },
+            {
+                "state": "Draining PRT",
+                "time": null
+            },
+            {
+                "state": "Drained PRT",
+                "time": null
+            },
+            {
+                "state": "Disabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Disabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Draining Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Drained Non-PRT",
+                "time": null
+            },
+            {
+                "state": "IIS Reseting",
+                "time": null
+            },
+            {
+                "state": "IIS Reseted",
+                "time": null
+            },
+            {
+                "state": "Deploying",
+                "time": null
+            },
+            {
+                "state": "Deployed",
+                "time": null
+            },
+            {
+                "state": "Enabling Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled Non-PRT",
+                "time": null
+            },
+            {
+                "state": "Enabling PRT",
+                "time": null
+            },
+            {
+                "state": "Enabled PRT",
+                "time": null
+            }
+        ],
+        "PROD_TEST": [
+            {
+                "state": "PROD Testing",
+                "time": null
+            },
+            {
+                "state": "PROD Tested",
+                "time": null
+            }
+        ]
+    }
+}
