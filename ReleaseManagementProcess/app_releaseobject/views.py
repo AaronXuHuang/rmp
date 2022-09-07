@@ -1,4 +1,4 @@
-import json
+
 from platform import release
 from datetime import datetime, timedelta
 from django.http import HttpResponse, JsonResponse
@@ -6,6 +6,9 @@ from django.shortcuts import render
 from app_jira import views as Jiraviews
 from app_octopus import views as Octoviews
 from app_releaseobject.models import ReleaseObject, ReleaseProcess
+from threading import Thread
+import json
+import time
 
 BUX_QA = 'BUX_QA'
 BUX_PRF = 'BUX_PRF'
@@ -300,7 +303,10 @@ def RunReleaseProcess(request):
     state = request.GET.get('state')
 
     if orgunit == 'BUX':
-        RunReleaseProcess_BUX(fix_version, env)
+        #RunReleaseProcess_BUX(fix_version, env)
+        print('thread run_rp_bux')
+        run_rp_bux = Thread(target=RunReleaseProcess_BUX, args=(fix_version, env))
+        run_rp_bux.start()
 
     return HttpResponse()
 
@@ -331,16 +337,16 @@ def RunReleaseProcess_BUX(fix_version, env):
             RP_F5(orgunit, fix_version, sub_env, 'enable', 'non-prt')
             RP_F5(orgunit, fix_version, sub_env, 'enable', 'prt')
 
-    print('RunReleaseProcess_BUX')
+    print('RunReleaseProcess_BUX done')
+
 
 def RP_UpdateState(orgunit, fix_version, env, state):
-    #ReleaseProcess.objects.update_or_create()
-    print('')
+    ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'environment':env, 'state':state})
 
 
 def RP_Deploy(orgunit, fix_version, env):
     RP_UpdateState(orgunit, fix_version, env, 'Deploying')
-    # todo
+    time.sleep(30)
     RP_UpdateState(orgunit, fix_version, env, 'Deployed')
 
     print('RP_Deploy')
