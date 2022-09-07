@@ -344,6 +344,17 @@ def RP_UpdateState(orgunit, fix_version, env, state):
     ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'environment':env, 'state':state})
 
 
+def RP_GetState(orgunit, fix_version):
+    object = ReleaseProcess.objects.get(orgunit=orgunit, fixversion=fix_version)
+    env = object.environment
+    state = object.state
+    cur_process = {
+        'env': env,
+        'state': state
+        }
+    return cur_process
+
+
 def RP_Deploy(orgunit, fix_version, env):
     RP_UpdateState(orgunit, fix_version, env, 'Deploying')
     time.sleep(30)
@@ -374,4 +385,12 @@ def RP_IISReset(orgunit, fix_version, env):
     # todo
     RP_UpdateState(orgunit, fix_version, env, 'IIS Reseted')
     print('RP_IISReset')
+
+
+def GetReleaseProcessState(request):
+    orgunit = request.GET.get('orgunit')
+    fix_version = request.GET.get('fixversion')
+
+    cur_process = RP_GetState(orgunit, fix_version)
+    return JsonResponse(cur_process)
 
