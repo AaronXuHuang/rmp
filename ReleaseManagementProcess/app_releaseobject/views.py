@@ -303,87 +303,115 @@ def RunReleaseProcess(request):
     state = request.GET.get('state')
 
     if orgunit == 'BUX':
-        #RunReleaseProcess_BUX(fix_version, env)
         print('thread run_rp_bux')
+        RP_InitState(orgunit, fix_version, state)
         run_rp_bux = Thread(target=RunReleaseProcess_BUX, args=(fix_version, env))
         run_rp_bux.start()
 
-    return HttpResponse()
+    return JsonResponse({'result': 'ok'})
 
 def RunReleaseProcess_BUX(fix_version, env):
     orgunit = 'BUX'
 
     if env  == 'PIE':
         sub_env = 'PIE'
-        RP_Deploy(orgunit, fix_version, sub_env)
+        RP_Deploy(orgunit, fix_version, env, sub_env)
+        RP_Test(orgunit, fix_version, sub_env)
     if env  == 'STG':
         sub_envs = ['STG2', 'STG1']
         for sub_env in sub_envs:
-            RP_F5(orgunit, fix_version, sub_env, 'disable', 'prt')
-            RP_F5(orgunit, fix_version, sub_env, 'disable', 'non-prt')
-            RP_IISReset(orgunit, fix_version, sub_env)
-            RP_Deploy(orgunit, fix_version, sub_env)
-            RP_F5(orgunit, fix_version, sub_env, 'enable', 'non-prt')
-            RP_F5(orgunit, fix_version, sub_env, 'enable', 'prt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'disable', 'prt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'disable', 'nonprt')
+            RP_IISReset(orgunit, fix_version, env, sub_env)
+            RP_Deploy(orgunit, fix_version, env, sub_env)
+            RP_F5(orgunit, fix_version, env, sub_env, 'enable', 'nonprt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'enable', 'prt')
+        RP_Test(orgunit, fix_version, env)
     if env  == 'PROD':
         sub_envs = ['DC2', 'DC1']
         for sub_env in sub_envs:
-            RP_F5(orgunit, fix_version, sub_env, 'disable', 'prt')
-            RP_F5(orgunit, fix_version, sub_env, 'drain', 'prt')
-            RP_F5(orgunit, fix_version, sub_env, 'disable', 'non-prt')
-            RP_F5(orgunit, fix_version, sub_env, 'drain', 'non-prt')
-            RP_IISReset(orgunit, fix_version, sub_env)
-            RP_Deploy(orgunit, fix_version, sub_env)
-            RP_F5(orgunit, fix_version, sub_env, 'enable', 'non-prt')
-            RP_F5(orgunit, fix_version, sub_env, 'enable', 'prt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'disable', 'prt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'drain', 'prt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'disable', 'nonprt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'drain', 'nonprt')
+            RP_IISReset(orgunit, fix_version, env, sub_env)
+            RP_Deploy(orgunit, fix_version, env, sub_env)
+            RP_F5(orgunit, fix_version, env, sub_env, 'enable', 'nonprt')
+            RP_F5(orgunit, fix_version, env, sub_env, 'enable', 'prt')
+        RP_Test(orgunit, fix_version, env)
 
     print('RunReleaseProcess_BUX done')
 
 
-def RP_UpdateState(orgunit, fix_version, env, state):
-    ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'environment':env, 'state':state})
+def RP_InitState(orgunit, fix_version, state):
+    if state == 'start':
+        if orgunit == 'BUX':
+            file_path = './app_releaseobject/config/release_process_tracker/BUX.json'
+        temp_file = open(file_path)
+        tracker = json.load(temp_file)
+        temp_file.close()
+        ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'tracker':json.dumps(tracker)})
+
+
+def RP_UpdateState(orgunit, fix_version, env, id, text, time_item, state):
+    format = "%Y-%m-%dT%H:%M:%S"
+    time = datetime.utcnow() + timedelta(hours=-7)
+    time = time.strftime(format)
+
+    object = ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).values()
+    tracker = json.loads(object[0]['tracker'])
+    tracker[orgunit][env][id]['text'] = text
+    tracker[orgunit][env][id][time_item] = time
+    tracker[orgunit][env][id]['status'] = state
+    ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'tracker':json.dumps(tracker)})
 
 
 def RP_GetState(orgunit, fix_version):
-    object = ReleaseProcess.objects.get(orgunit=orgunit, fixversion=fix_version)
-    env = object.environment
-    state = object.state
-    cur_process = {
-        'env': env,
-        'state': state
-        }
-    return cur_process
+    object = ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).values()
+    tracker = json.loads(object[0]['tracker'])
+
+    return tracker
 
 
-def RP_Deploy(orgunit, fix_version, env):
-    RP_UpdateState(orgunit, fix_version, env, 'Deploying')
+def RP_Deploy(orgunit, fix_version, env, sub_env):
+    RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-deploy', 'Deploying', 'start', 'running')
+    # todo
     time.sleep(30)
-    RP_UpdateState(orgunit, fix_version, env, 'Deployed')
+    RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-deploy', 'Deployed', 'complete', 'done')
 
     print('RP_Deploy')
 
 
-def RP_F5(orgunit, fix_version, env, action, tier):
+def RP_Test(orgunit, fix_version, env):
+    RP_UpdateState(orgunit, fix_version, env, env.lower() + '-test', env + ' testing', 'start', 'running')
+    print('RP_Test')
+
+
+def RP_F5(orgunit, fix_version, env, sub_env, action, tier):
     if action == 'disable':
-        RP_UpdateState(orgunit, fix_version, env, 'Disabling ' + tier)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-disabled-' + tier, 'Disabling ' + tier, 'start', 'running')
         # todo
-        RP_UpdateState(orgunit, fix_version, env, 'Disabled ' + tier)
+        time.sleep(10)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-disabled-' + tier, 'Disabled ' + tier, 'complete', 'done')
     elif action == 'enable':
-        RP_UpdateState(orgunit, fix_version, env, 'Enabling ' + tier)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-enabled-' + tier, 'Enabling ' + tier, 'start', 'running')
         # todo
-        RP_UpdateState(orgunit, fix_version, env, 'Disabled ' + tier)
+        time.sleep(10)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-enabled-' + tier, 'Enabled ' + tier, 'complete', 'done')
     elif action == 'drain':
-        RP_UpdateState(orgunit, fix_version, env, 'Draining ' + tier)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-drain-' + tier, 'Draining ' + tier, 'start', 'running')
         # todo
-        RP_UpdateState(orgunit, fix_version, env, 'Drained ' + tier)
+        time.sleep(10)
+        RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-drain-' + tier, 'Drained ' + tier, 'complete', 'done')
 
     print('RP_F5')
 
 
-def RP_IISReset(orgunit, fix_version, env):
-    RP_UpdateState(orgunit, fix_version, env, 'IIS Reseting')
+def RP_IISReset(orgunit, fix_version, env, sub_env):
+    RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-iisreset', 'IIS reseting', 'start', 'running')
     # todo
-    RP_UpdateState(orgunit, fix_version, env, 'IIS Reseted')
+    time.sleep(30)
+    RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-iisreset', 'IIS reseted', 'complete', 'done')
     print('RP_IISReset')
 
 
@@ -391,6 +419,6 @@ def GetReleaseProcessState(request):
     orgunit = request.GET.get('orgunit')
     fix_version = request.GET.get('fixversion')
 
-    cur_process = RP_GetState(orgunit, fix_version)
-    return JsonResponse(cur_process)
+    tracker = RP_GetState(orgunit, fix_version)
+    return JsonResponse(tracker)
 

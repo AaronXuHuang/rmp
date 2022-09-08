@@ -15,5 +15,5 @@ class ReleaseObject(models.Model):
 class ReleaseProcess(models.Model):
     orgunit = models.CharField(max_length=50, null=True, blank=True)
     fixversion = models.CharField(max_length=50, null=True, blank=True)
-    environment = models.CharField(max_length=50, null=True, blank=True)
-    state = models.TextField(max_length=50, null=True, blank=True)
+    tracker = models.TextField(max_length=50, null=True, blank=True)
+    

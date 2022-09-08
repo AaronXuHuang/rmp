@@ -292,6 +292,11 @@
             Load RMP Release Object to show release process
           </h2>
         </div>
+        <div class="col-12 col-md-auto ms-auto d-print-none">
+          <button id="start-release" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text()">
+            Start Release on PIE
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -310,11 +315,9 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-start" class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('PIE')">Start</button><br>
-                    <label class="ro-env-name">PIE</label>
                     <button id="pie-deploy" class="btn btn-ro-release" disabled=true>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
-                    <button class="btn btn-ro-release" disabled=true>PIE Test</button>
+                    <button id="pie-test" class="btn btn-ro-release" disabled=true>PIE test</button>
                   </div>
                 </div>
               </div>
@@ -328,24 +331,22 @@
               <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
                 <div class="accordion-body pt-0">
                   <div>
-                    <label class="ro-env-name">STG</label>
-                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('STG')">Start</button><br>
                     <label class="ro-env-name">STG2</label>
-                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <button id="stg2-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
+                    <button id="stg2-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="stg2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button id="stg2-deploy" class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button id="stg2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
+                    <button id="stg2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">STG1</label>
-                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <button id="stg1-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
+                    <button id="stg1-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="stg1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button id="stg1-deploy" class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button id="stg1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
+                    <button id="stg1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">STG</label>
-                    <button class="btn btn-ro-release" disabled=true>STG Test</button>
+                    <button id="stg-test" class="btn btn-ro-release" disabled=true>STG test</button>
                   </div>
                 </div>
               </div>
@@ -359,28 +360,26 @@
               <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
                 <div class="accordion-body pt-0">
                   <div>
-                    <label class="ro-env-name">PROD</label>
-                    <button class="btn btn-ro-release" style="background-color:#206bc4;border-color:#206bc4" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text('PROD')">Start</button><br>
                     <label class="ro-env-name">DC2</label>
-                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <button id="dc2-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
+                    <button id="dc2-drain-prt" class="btn btn-ro-release" disabled=true>Drain PRT</button>
+                    <button id="dc2-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="dc2-drain-nonprt" class="btn btn-ro-release" disabled=true>Drain nonprt</button>
+                    <button id="dc2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button id="dc2-deploy" class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button id="dc2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
+                    <button id="dc2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">DC1</label>
-                    <button class="btn btn-ro-release" disabled=true>Disable PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Drain PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Disable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Drain Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button class="btn btn-ro-release" disabled=true>Deploy</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable Non-PRT</button>
-                    <button class="btn btn-ro-release" disabled=true>Enable PRT</button><br>
+                    <button id="dc1-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
+                    <button id="dc1-drain-prt" class="btn btn-ro-release" disabled=true>Drain prt</button>
+                    <button id="dc1-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="dc1-drain-nonprt" class="btn btn-ro-release" disabled=true>Drain nonprt</button>
+                    <button id="dc1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
+                    <button id="dc1-deploy" class="btn btn-ro-release" disabled=true>Deploy</button>
+                    <button id="dc1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
+                    <button id="dc1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">PROD</label>
-                    <button class="btn btn-ro-release" disabled=true>PROD Test</button>
+                    <button id="prod-test" class="btn btn-ro-release" disabled=true>PROD test</button>
                   </div>
                 </div>
               </div>
@@ -433,6 +432,7 @@
 
 {% block js %}
 <script>
+  env = 'PIE'
   state_timeId = ''
 </script>
 
@@ -738,7 +738,6 @@
 
 <script type='text/javascript'>
   function update_progress_bar(step, text) {
-    
     running_progress = '\
     <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
       <div class="progress-bar progress-bar-indeterminate bg-blue">\
@@ -771,19 +770,23 @@
 </script>
 
 <script type='text/javascript'>
-  function update_confirmation_text(env) {
-    if (env == "PIE") {
-      $('#modal-content').text("Start release process on PIE.")
-      $('#confirm-yes').text('Yes, start on PIE')
-      $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
-    }
-    else if (env == "STG") {
-      $('#modal-content').text("Start release process on STG.")
-      $('#confirm-yes').text('Yes, start on PIE')
-    }
-    else if (env == "PROD") {
-      $('#modal-content').text("Start release process on PROD.")
-      $('#confirm-yes').text('Yes, start on PIE')
+  function update_confirmation_text() {
+    if (orgunit == 'BUX') {
+      if (env == "PIE") {
+        $('#modal-content').text("Start BUX release process on PIE.")
+        $('#confirm-yes').text('Yes, start on PIE')
+        $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
+      }
+      else if (env == "STG") {
+        $('#modal-content').text("Start BUX release process on STG.")
+        $('#confirm-yes').text('Yes, start on STG')
+        $('#confirm-yes').attr("onclick", "release_process_bux('STG')")
+      }
+      else if (env == "PROD") {
+        $('#modal-content').text("Start BUX release process on PROD.")
+        $('#confirm-yes').text('Yes, start on PROD')
+        $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
+      }
     }
   }
 </script>
@@ -808,12 +811,9 @@
 
 <script type='text/javascript'>
   function release_process_bux(env, state) {
-    $('#pie-start').text("Running")
-    $('#pie-start').attr("disabled", "true")
+    $('#start-release').text("Release on PIE running")
     $('#pie-deploy').text("Deploying")
-
-    console.log('start timer')
-    state_timeId = setInterval(get_release_process_state, 5000)
+    $('#pie-deploy').css({'background-color': '#206bc4', 'border-color': '#206bc4'})
 
     $.ajax({
       url: '/releaseobject/process/run/',
@@ -826,7 +826,9 @@
         state: state
       },
       success: function(res) {
-        
+        console.log('success')
+        console.log('start timer')
+      state_timeId = setInterval(get_release_process_state, 5000)
       }
     })
   }
@@ -843,14 +845,50 @@
         fixversion: fix_version
       },
       success: function(res) {
-        console.log(res)
-        if ((res['env'] == 'PIE') && (res['state'] == 'Deployed')){
-          clearInterval(state_timeId)
-          console.log('timer stopped')
+        console.log(res[orgunit][env])
+        if (env == 'PIE') {
+          update_step_buttons(res[orgunit][env])
+          if (res[orgunit][env]['pie-test']['status'] == 'running') {
+            env = 'STG'
+            clearInterval(state_timeId)
+            console.log('timer stopped')
+          }
+        }
+        else if (env == 'STG') {
+          update_step_buttons(res[orgunit][env])
+          if (res[orgunit][env]['stg-test']['status'] == 'running') {
+            env = 'PROD'
+            clearInterval(state_timeId)
+            console.log('timer stopped')
+          }
+        }
+        else if (env == 'PROD') {
+          update_step_buttons(res[orgunit][env])
+          if (res[orgunit][env]['prod-test']['status'] == 'running') {
+            env = ''
+            clearInterval(state_timeId)
+            console.log('timer stopped')
+          }
         }
       }
     })
   }
 </script>
 
+<script type='text/javascript'>
+  function update_step_buttons(items) {
+    for (key in items) {
+      //console.log(items[key])
+      $('#' + key).text(items[key]['text'])
+      if (items[key]['status'] == 'running') {
+        $('#' + key).attr("disabled", false)
+        $('#' + key).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+      }
+      else{
+        $('#' + key).attr("disabled", true)
+        $('#' + key).css({'background-color': '#767676', 'border-color': '#767676'})
+      }
+    }
+  }
+</script>
 {% endblock %}
