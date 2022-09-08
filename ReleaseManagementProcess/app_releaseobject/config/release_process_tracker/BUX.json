@@ -8,7 +8,7 @@
                 "status": "notstart"
             },
             "pie-test": {
-                "text": "PIE Test",
+                "text": "PIE test",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -16,13 +16,13 @@
         },
         "STG": {
             "stg2-disabled-prt": {
-                "text": "Disable PRT",
+                "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg2-disabled-nonprt": {
-                "text": "Disable Non-PRT",
+                "text": "Disable non-prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -40,25 +40,25 @@
                 "status": "notstart"
             },
             "stg2-enabled-nonprt": {
-                "text": "Enable Non-PRT",
+                "text": "Enable non-prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg2-enabled-prt": {
-                "text": "Enable PRT",
+                "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg1-disabled-prt": {
-                "text": "Disable PRT",
+                "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg1-disabled-nonprt": {
-                "text": "Disable Non-PRT",
+                "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -76,19 +76,19 @@
                 "status": "notstart"
             },
             "stg1-enabled-nonprt": {
-                "text": "Enable Non-PRT",
+                "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg1-enabled-prt": {
-                "text": "Enable PRT",
+                "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "stg-test": {
-                "text": "STG Test",
+                "text": "STG test",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -96,25 +96,25 @@
         },
         "PROD": {
             "dc2-disabled-prt": {
-                "text": "Disable PRT",
+                "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc2-drain-prt": {
-                "text": "Draining PRT",
+                "text": "Drain prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc2-disabled-nonprt": {
-                "text": "Disable Non-PRT",
+                "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc2-drain-nonprt": {
-                "text": "Draining Non-PRT",
+                "text": "Drain nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -132,37 +132,37 @@
                 "status": "notstart"
             },
             "dc2-enabled-nonprt": {
-                "text": "Enable Non-PRT",
+                "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc2-enabled-prt": {
-                "text": "Enable PRT",
+                "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc1-disabled-prt": {
-                "text": "Disable PRT",
+                "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc1-drain-prt": {
-                "text": "Draining PRT",
+                "text": "Drain prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc1-disabled-nonprt": {
-                "text": "Disable Non-PRT",
+                "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc1-drain-nonprt": {
-                "text": "Draining Non-PRT",
+                "text": "Drain nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -180,19 +180,19 @@
                 "status": "notstart"
             },
             "dc1-enabled-nonprt": {
-                "text": "Enable Non-PRT",
+                "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "dc1-enabled-prt": {
-                "text": "Enable PRT",
+                "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
             },
             "prod-test": {
-                "text": "PROD Test",
+                "text": "PROD test",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
