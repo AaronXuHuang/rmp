@@ -422,3 +422,11 @@ def GetReleaseProcessState(request):
     tracker = RP_GetState(orgunit, fix_version)
     return JsonResponse(tracker)
 
+def UpdateReleaseProcessTest(request):
+    orgunit = request.GET.get('orgunit')
+    fix_version = request.GET.get('fixversion')
+    env = request.GET.get('env')
+
+    RP_UpdateState(orgunit, fix_version, env, env.lower() + '-test', env + ' tested', 'complete', 'done')
+
+    return JsonResponse({'result': 'ok'})

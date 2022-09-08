@@ -293,7 +293,7 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id="start-release" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text()">
+          <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text()">
             Start Release on PIE
           </button>
         </div>
@@ -317,7 +317,7 @@
                     <label class="ro-env-name">PIE</label>
                     <button id="pie-deploy" class="btn btn-ro-release" disabled=true>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-test" class="btn btn-ro-release" disabled=true>PIE test</button>
+                    <button id="pie-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PIE test</button>
                   </div>
                 </div>
               </div>
@@ -346,7 +346,7 @@
                     <button id="stg1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="stg1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">STG</label>
-                    <button id="stg-test" class="btn btn-ro-release" disabled=true>STG test</button>
+                    <button id="stg-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">STG test</button>
                   </div>
                 </div>
               </div>
@@ -379,7 +379,7 @@
                     <button id="dc1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="dc1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">PROD</label>
-                    <button id="prod-test" class="btn btn-ro-release" disabled=true>PROD test</button>
+                    <button id="prod-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PROD test</button>
                   </div>
                 </div>
               </div>
@@ -410,7 +410,7 @@
   </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none;" aria-modal="false" role="dialog">
+<div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -423,6 +423,34 @@
       <div class="modal-footer">
         <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancel</button>
         <button id="confirm-yes" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-success" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-success"></div>
+      <div class="modal-body text-center py-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2l4 -4"></path></svg>
+        <h3 id='test-pass'></h3>
+        <div class="text-muted">Click Test Passed button and continue the release</div>
+      </div>
+      <div class="modal-footer">
+        <div class="w-100">
+          <div class="row">
+            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
+                Cancel
+              </a></div>
+            <div class="col">
+              <button class="btn btn-success w-100" data-bs-dismiss="modal" onclick="update_test_success()">
+                Test passed
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -581,6 +609,7 @@
         release_process = orgunit + '-' + fix_version + '-Release Process'
         $('#title_details').text(details_text)
         $('#title_release_process').text(release_process)
+        $('#start-release').attr('disabled', false)
       }
     })
   }
@@ -770,7 +799,7 @@
 </script>
 
 <script type='text/javascript'>
-  function update_confirmation_text() {
+  function update_confirmation_text(start) {
     if (orgunit == 'BUX') {
       if (env == "PIE") {
         $('#modal-content').text("Start BUX release process on PIE.")
@@ -785,6 +814,11 @@
       else if (env == "PROD") {
         $('#modal-content').text("Start BUX release process on PROD.")
         $('#confirm-yes').text('Yes, start on PROD')
+        $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
+      }
+      else if (env == "RELEASED") {
+        $('#modal-content').text("Close BUX release, and RMP Release Object will be locked")
+        $('#confirm-yes').text('Yes, close release')
         $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
       }
     }
@@ -811,9 +845,22 @@
 
 <script type='text/javascript'>
   function release_process_bux(env, state) {
-    $('#start-release').text("Release on PIE running")
-    $('#pie-deploy').text("Deploying")
-    $('#pie-deploy').css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+    if (env == 'PIE') {
+      $('#start-release').text("Release on PIE running")
+      $('#start-release').attr("disabled", true)
+    }
+    else if (env == 'STG') {
+      $('#start-release').text("Release on STG running")
+      $('#start-release').attr("disabled", true)
+    }
+    else if (env == 'PROD') {
+      $('#start-release').text("Release on PROD running")
+      $('#start-release').attr("disabled", true)
+    }
+    else if (env == 'RELEASED') {
+      $('#start-release').text("Release closed")
+      $('#start-release').attr("disabled", true)
+    }
 
     $.ajax({
       url: '/releaseobject/process/run/',
@@ -826,9 +873,7 @@
         state: state
       },
       success: function(res) {
-        console.log('success')
-        console.log('start timer')
-      state_timeId = setInterval(get_release_process_state, 5000)
+      state_timeId = setInterval(get_release_process_state, 2000)
       }
     })
   }
@@ -845,30 +890,9 @@
         fixversion: fix_version
       },
       success: function(res) {
-        console.log(res[orgunit][env])
-        if (env == 'PIE') {
-          update_step_buttons(res[orgunit][env])
-          if (res[orgunit][env]['pie-test']['status'] == 'running') {
-            env = 'STG'
-            clearInterval(state_timeId)
-            console.log('timer stopped')
-          }
-        }
-        else if (env == 'STG') {
-          update_step_buttons(res[orgunit][env])
-          if (res[orgunit][env]['stg-test']['status'] == 'running') {
-            env = 'PROD'
-            clearInterval(state_timeId)
-            console.log('timer stopped')
-          }
-        }
-        else if (env == 'PROD') {
-          update_step_buttons(res[orgunit][env])
-          if (res[orgunit][env]['prod-test']['status'] == 'running') {
-            env = ''
-            clearInterval(state_timeId)
-            console.log('timer stopped')
-          }
+        update_step_buttons(res[orgunit][env])
+        if (res[orgunit][env][env.toLowerCase() + '-test']['status'] == 'running') {
+          clearInterval(state_timeId)
         }
       }
     })
@@ -878,11 +902,17 @@
 <script type='text/javascript'>
   function update_step_buttons(items) {
     for (key in items) {
-      //console.log(items[key])
       $('#' + key).text(items[key]['text'])
+      if (key == 'pie-test') {
+        console.log(key)
+      }
       if (items[key]['status'] == 'running') {
         $('#' + key).attr("disabled", false)
         $('#' + key).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+      }
+      else if (items[key]['status'] == 'done') {
+        $('#' + key).attr("disabled", true)
+        $('#' + key).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
       }
       else{
         $('#' + key).attr("disabled", true)
@@ -891,4 +921,49 @@
     }
   }
 </script>
+
+<script type='text/javascript'>
+  function update_test_success() {
+    $.ajax({
+      url: '/releaseobject/process/test/update/',
+      type: 'GET',
+      dataType: 'JSON',
+      data: {
+        orgunit: orgunit,
+        fixversion: fix_version,
+        env: env
+      }
+    })
+    if (env == 'PIE') {
+      env = 'STG'
+      $('#start-release').text("Start Release on STG")
+      $('#start-release').attr("disabled", false)
+    }
+    else if (env == 'STG') {
+      env = 'PROD'
+      $('#start-release').text("Start Release on PROD")
+      $('#start-release').attr("disabled", false)
+    }
+    else if (env == 'PROD') {
+      env = 'RELEASED'
+      $('#start-release').text("Close Release")
+      $('#start-release').attr("disabled", false)
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function update_success_text() {
+    if (env == 'PIE') {
+      $('#test-pass').text("Test done on BUX PIE")
+    }
+    else if (env == 'STG') {
+      $('#test-pass').text("Test done on BUX STG")
+    }
+    else if (env == 'PROD') {
+      $('#test-pass').text("Test done on BUX PROD")
+    }
+  }
+</script>
+
 {% endblock %}
