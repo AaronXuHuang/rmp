@@ -293,7 +293,7 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="update_confirmation_text()">
+          <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="start_next_env_test()">
             Start Release on PIE
           </button>
         </div>
@@ -799,7 +799,7 @@
 </script>
 
 <script type='text/javascript'>
-  function update_confirmation_text(start) {
+  function start_next_env_test(start) {
     if (orgunit == 'BUX') {
       if (env == "PIE") {
         $('#modal-content').text("Start BUX release process on PIE.")
@@ -819,7 +819,7 @@
       else if (env == "RELEASED") {
         $('#modal-content').text("Close BUX release, and RMP Release Object will be locked")
         $('#confirm-yes').text('Yes, close release')
-        $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
+        $('#confirm-yes').attr("onclick", "release_process_bux('RELEASED')")
       }
     }
   }
@@ -845,6 +845,12 @@
 
 <script type='text/javascript'>
   function release_process_bux(env, state) {
+    if (env == 'RELEASED') {
+      $('#start-release').text("Release closed")
+      $('#start-release').attr("disabled", false)
+      return
+    }
+
     if (env == 'PIE') {
       $('#start-release').text("Release on PIE running")
       $('#start-release').attr("disabled", true)
@@ -855,10 +861,6 @@
     }
     else if (env == 'PROD') {
       $('#start-release').text("Release on PROD running")
-      $('#start-release').attr("disabled", true)
-    }
-    else if (env == 'RELEASED') {
-      $('#start-release').text("Release closed")
       $('#start-release').attr("disabled", true)
     }
 
@@ -911,7 +913,7 @@
         $('#' + key).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
       }
       else if (items[key]['status'] == 'done') {
-        $('#' + key).attr("disabled", true)
+        $('#' + key).attr("disabled", false)
         $('#' + key).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
       }
       else{
@@ -924,6 +926,9 @@
 
 <script type='text/javascript'>
   function update_test_success() {
+    var start_button_text
+    var test_button
+    var test_button_text
     $.ajax({
       url: '/releaseobject/process/test/update/',
       type: 'GET',
@@ -936,19 +941,26 @@
     })
     if (env == 'PIE') {
       env = 'STG'
-      $('#start-release').text("Start Release on STG")
-      $('#start-release').attr("disabled", false)
+      start_button_text = "Start Release on STG"
+      test_button = "#pie-test"
+      test_button_text = "PIE tested"
     }
     else if (env == 'STG') {
       env = 'PROD'
-      $('#start-release').text("Start Release on PROD")
-      $('#start-release').attr("disabled", false)
+      start_button_text = "Start Release on PROD"
+      test_button = "#stg-test"
+      test_button_text = "STG tested"
     }
     else if (env == 'PROD') {
       env = 'RELEASED'
-      $('#start-release').text("Close Release")
-      $('#start-release').attr("disabled", false)
+      start_button_text = "Close Release"
+      test_button = "#prod-test"
+      test_button_text = "PROD tested"
     }
+    $('#start-release').text(start_button_text)
+    $('#start-release').attr("disabled", false)
+    $(test_button).text(test_button_text)
+    $(test_button).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
   }
 </script>
 
