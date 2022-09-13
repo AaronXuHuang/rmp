@@ -132,13 +132,62 @@
             Release Object
           </div>
           <h2 id='title_selection' class="page-title">
-            Selection
+            Load RMP Release Object
           </h2>
+        </div>
+        <div class="col-12 col-md-auto ms-auto d-print-none">
+          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+            Create from Jira
+          </button>
+          <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop"  onclick="load_ro()">
+            Load Release Object
+          </button>
         </div>
       </div>
     </div>
   </div>
   <div class="page-body">
+    <div class="container-xl">
+      <div class="row row-cards">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">RMP orgunit</label>
+                <div class="col">
+                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_fix_version()">
+                    <option disabled selected value style="display:none"> </option>
+                    <option value="BUX">BUX</option>
+                    <option value="CBS">CBS</option>
+                    <option value="GWA">GWA</option>
+                  </select>
+                  <small class="form-hint">select orgunit to load existing release object.</small>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">RMP fix version</label>
+                <div class="col">
+                  <select id="rmp_fix_version" class="form-select" disabled="">
+                  </select>
+                  <small class="form-hint">select fix version to load existing release object.</small>
+                </div>
+              </div>
+              <div class="form-group mb-3 row">
+                <label class="form-label col-3 col-form-label">Options</label>
+                <div class="col">
+                  <label class="form-check" style="margin-top: .5rem">
+                    <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
+                    <small class="form-hint">unreleased only</small>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-body"  style="display:none">
     <div class="container-xl">
       <div class="row row-cards">
         <div class="col-md-6">
@@ -181,52 +230,6 @@
                   <div class="col"></div>
                   <div class="col-auto">
                     <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="create_ro()">Create</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Load Existing RMP Release Object</h3>
-            </div>
-            <div class="card-body">
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">RMP orgunit</label>
-                <div class="col">
-                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_fix_version()">
-                    <option disabled selected value style="display:none"> </option>
-                    <option value="BUX">BUX</option>
-                    <option value="CBS">CBS</option>
-                    <option value="GWA">GWA</option>
-                  </select>
-                  <small class="form-hint">select orgunit to load existing release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">RMP fix version</label>
-                <div class="col">
-                  <select id="rmp_fix_version" class="form-select" disabled="">
-                  </select>
-                  <small class="form-hint">select fix version to load existing release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Options</label>
-                <div class="col">
-                  <label class="form-check" style="margin-top: .5rem">
-                    <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
-                    <small class="form-hint">unreleased only</small>
-                  </label>
-                </div>
-              </div>
-              <div class="form-footer">
-                <div class="row align-items-center">
-                  <div class="col"></div>
-                  <div class="col-auto">
-                    <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="load_ro()">Load</button>
                   </div>
                 </div>
               </div>
@@ -462,29 +465,17 @@
 <script>
   env = 'PIE'
   state_timeId = ''
+  running_id = ''
+  bux_test = {
+    'PIE': '',
+    'STG': '',
+    'PROD': ''
+  }
 </script>
 
 <script type='text/javascript'>
   window.onload = function () {
-    opacity = 10;
-    interval = 1
-    op='plus'
-    timeId = setInterval(function () {
-      if (op=='plus') {
-        opacity = opacity - interval
-      }
-      else {
-        opacity = opacity + interval
-      }
-      if (opacity == 0) {
-        //clearInterval(timeId);
-        op = 'minor'
-      }
-      if (opacity == 10) {
-        op='plus'
-      }
-      $("#test").css({'opacity':opacity/10})
-    }, 100);
+
   }
 </script>
 
@@ -820,6 +811,11 @@
         $('#modal-content').text("Close BUX release, and RMP Release Object will be locked")
         $('#confirm-yes').text('Yes, close release')
         $('#confirm-yes').attr("onclick", "release_process_bux('RELEASED')")
+        env = "CLOSED"
+      }
+      else if (env == "CLOSED") {
+        $('#modal-content').text("BUX release has been closed")
+        $('#confirm-yes').text('Close')
       }
     }
   }
@@ -904,21 +900,25 @@
 <script type='text/javascript'>
   function update_step_buttons(items) {
     for (key in items) {
-      $('#' + key).text(items[key]['text'])
-      if (key == 'pie-test') {
-        console.log(key)
-      }
+      var button_id = '#' + key
+      $(button_id).text(items[key]['text'])
       if (items[key]['status'] == 'running') {
-        $('#' + key).attr("disabled", false)
-        $('#' + key).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+        $(button_id).attr("disabled", false)
+        $(button_id).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+        if ('' == running_id) {
+          button_flash(button_id, 'start')
+        }
       }
       else if (items[key]['status'] == 'done') {
-        $('#' + key).attr("disabled", false)
-        $('#' + key).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
+        $(button_id).attr("disabled", false)
+        $(button_id).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
+        if (button_id == running_id) {
+          button_flash(button_id, 'stop')
+        }
       }
       else{
-        $('#' + key).attr("disabled", true)
-        $('#' + key).css({'background-color': '#767676', 'border-color': '#767676'})
+        $(button_id).attr("disabled", true)
+        $(button_id).css({'background-color': '#767676', 'border-color': '#767676'})
       }
     }
   }
@@ -929,6 +929,7 @@
     var start_button_text
     var test_button
     var test_button_text
+    var cur_env
     $.ajax({
       url: '/releaseobject/process/test/update/',
       type: 'GET',
@@ -939,6 +940,7 @@
         env: env
       }
     })
+    cur_env = env
     if (env == 'PIE') {
       env = 'STG'
       start_button_text = "Start Release on STG"
@@ -957,10 +959,16 @@
       test_button = "#prod-test"
       test_button_text = "PROD tested"
     }
-    $('#start-release').text(start_button_text)
-    $('#start-release').attr("disabled", false)
-    $(test_button).text(test_button_text)
-    $(test_button).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
+    if (bux_test[cur_env] == '') {
+      $('#start-release').text(start_button_text)
+      $('#start-release').attr("disabled", false)
+      $(test_button).text(test_button_text)
+      $(test_button).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
+      $(test_button).attr("data-bs-toggle", "")
+      $(test_button).attr("data-bs-target", "")
+      button_flash(test_button, 'stop')
+      bux_test[cur_env] = 'tested'
+    }
   }
 </script>
 
@@ -974,6 +982,31 @@
     }
     else if (env == 'PROD') {
       $('#test-pass').text("Test done on BUX PROD")
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function button_flash(id, action) {
+    if (action == 'stop') {
+      running_id = ''
+      clearInterval(timeId)
+      $(id).css({'opacity': 1})
+    }
+    else {
+      var opacity = 0
+      var interval = 1
+      timeId = setInterval(function () {
+        running_id = id
+        opacity = opacity + interval
+        if (opacity == 0) {
+          interval = 1
+        }
+        if (opacity == 10) {
+          interval = -1
+        }
+        $(id).css({'opacity':opacity/10})
+      }, 100)
     }
   }
 </script>
