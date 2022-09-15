@@ -563,6 +563,10 @@
     $('#ro-table').html('')
     update_progress_bar('running', 'Generating Release Object')
 
+    $('#detail-table').css({'display': 'none'})
+    $('#ro-process-title').css({'display': 'none'})
+    $('#ro-process-flow').css({'display': 'none'})
+
     $.ajax({
       url: '/releaseobject/get/',
       type: 'GET',
