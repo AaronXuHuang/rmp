@@ -136,7 +136,7 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
             Create from Jira
           </button>
           <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop"  onclick="load_ro()">
@@ -179,58 +179,6 @@
                     <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
                     <small class="form-hint">unreleased only</small>
                   </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="page-body"  style="display:none">
-    <div class="container-xl">
-      <div class="row row-cards">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Create New RMP Release Object</h3>
-            </div>
-            <div class="card-body">
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Jira project</label>
-                <div class="col">
-                  <select id="jira_project" class="form-select" onchange="read_jira_fix_version()">
-                    <option disabled selected style="display:none"></option>
-                    <option value="BUX">BUX</option>
-                    <option value="CBS">CBS</option>
-                    <option value="GWA">GWA</option>
-                  </select>
-                  <small class="form-hint">select project to create new release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Jira fix version</label>
-                <div class="col">
-                  <select id="jira_fix_version" class="form-select" disabled="">
-                  </select>
-                  <small class="form-hint">select fix version to create new release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Options</label>
-                <div class="col">
-                  <label class="form-check" style="margin-top: .5rem">
-                    <input id="jira_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_jira_fix_version()">
-                    <small class="form-hint">unreleased only</small>
-                  </label>
-                </div>
-              </div>
-              <div class="form-footer">
-                <div class="row align-items-center">
-                  <div class="col"></div>
-                  <div class="col-auto">
-                    <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="create_ro()">Create</button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -451,6 +399,56 @@
               <button class="btn btn-success w-100" data-bs-dismiss="modal" onclick="update_test_success()">
                 Test passed
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-report" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create RMP Release Object from Jira</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-3 row">
+          <label class="form-label col-3 col-form-label">Jira project</label>
+          <div class="col">
+            <select id="jira_project" class="form-select" onchange="read_jira_fix_version()">
+              <option disabled selected style="display:none"></option>
+              <option value="BUX">BUX</option>
+              <option value="CBS">CBS</option>
+              <option value="GWA">GWA</option>
+            </select>
+            <small class="form-hint">select project to create new release object.</small>
+          </div>
+        </div>
+        <div class="form-group mb-3 row">
+          <label class="form-label col-3 col-form-label">Jira fix version</label>
+          <div class="col">
+            <select id="jira_fix_version" class="form-select" disabled="">
+            </select>
+            <small class="form-hint">select fix version to create new release object.</small>
+          </div>
+        </div>
+        <div class="form-group mb-3 row">
+          <label class="form-label col-3 col-form-label">Options</label>
+          <div class="col">
+            <label class="form-check" style="margin-top: .5rem">
+              <input id="jira_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_jira_fix_version()">
+              <small class="form-hint">unreleased only</small>
+            </label>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="row align-items-center">
+            <div class="col"></div>
+            <div class="col-auto">
+              <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="create_ro()">Create</button>
             </div>
           </div>
         </div>
