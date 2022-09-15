@@ -131,11 +131,14 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_selection' class="page-title">
-            Load RMP Release Object
+          <h2 id='title_details' class="page-title">
+            RMP Release Object Details
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
+          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+            Show progress bar
+          </button>
           <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
             Create from Jira
           </button>
@@ -186,28 +189,7 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="container-xl">
-    <div class="page-header d-print-none">
-      <div class="row g-2 align-items-center">
-        <div class="col">
-          <div class="page-pretitle">
-            Release Object
-          </div>
-          <h2 id='title_details' class="page-title">
-            Load RMP Release Object to show details
-          </h2>
-        </div>
-        <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
-            Show progress bar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="page-body">
-    <div class="container-xl">
+    <div id="detail-table" class="container-xl" style="display: none">
       <div class="row row-cards">
         <div class="col-12">
           <div class="card">
@@ -232,7 +214,7 @@
       </div>
     </div>
   </div>
-  <div class="container-xl">
+  <div id="ro-process-title" class="container-xl" style="display: none">
     <div class="page-header d-print-none">
       <div class="row g-2 align-items-center">
         <div class="col">
@@ -240,7 +222,6 @@
             Release Object
           </div>
           <h2 id='title_release_process' class="page-title">
-            Load RMP Release Object to show release process
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -251,7 +232,7 @@
       </div>
     </div>
   </div>
-  <div class="page-body">
+  <div id="ro-process-flow" class="page-body" style="display: none">
     <div class="container-xl">
       <div class="card">
         <div id="release_process_table" class="card-body">
@@ -599,6 +580,9 @@
         $('#title_details').text(details_text)
         $('#title_release_process').text(release_process)
         $('#start-release').attr('disabled', false)
+        $('#detail-table').css({'display': 'block'})
+        $('#ro-process-title').css({'display': 'block'})
+        $('#ro-process-flow').css({'display': 'block'})
       }
     })
   }
