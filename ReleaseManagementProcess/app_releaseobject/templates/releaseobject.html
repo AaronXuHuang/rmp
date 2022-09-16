@@ -136,13 +136,13 @@
           </h2>
         </div>
         <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id='test' class="btn" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop">
+          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-load-bar">
             Show progress bar
           </button>
-          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-report">
+          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
             Create from Jira
           </button>
-          <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop"  onclick="load_ro()">
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-load-bar" role="button" onclick="load_ro()">
             Load Release Object
           </button>
         </div>
@@ -323,6 +323,7 @@
   </div>
 </div>
 
+<!--
 <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="visibility: visible;" aria-modal="true" role="dialog">
   <div class="offcanvas-header">
     <h2 class="offcanvas-title" id="offcanvasTopLabel">RMP Release Object progress</h2>
@@ -341,6 +342,7 @@
     </div>
   </div>
 </div>
+-->
 
 <div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -388,7 +390,7 @@
   </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-report" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
+<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -438,6 +440,23 @@
   </div>
 </div>
 
+<div class="modal modal-blur fade" id="modal-load-bar" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Loading</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="ro_progress_text" class="modal-body">
+      </div>
+      <div id="ro_progress_bar">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -454,7 +473,12 @@
 
 <script type='text/javascript'>
   window.onload = function () {
-
+    $('#modal-confirmaction').modal({ backdrop: false, keyboard: false })
+    $('#modal-success').modal({ backdrop: false, keyboard: false })
+    $('#modal-fail').modal({ backdrop: false, keyboard: false })
+    $('#modal-error').modal({ backdrop: false, keyboard: false })
+    $('#modal-create').modal({ backdrop: false, keyboard: false })
+    $('#modal-load-bar').modal({ backdrop: false, keyboard: false })
   }
 </script>
 
