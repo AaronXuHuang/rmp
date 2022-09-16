@@ -372,7 +372,6 @@
 <div class="modal modal-blur fade" id="modal-error" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
       <div class="modal-body text-center py-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
@@ -446,14 +445,14 @@
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Loading</h5>
+        <h5 class="modal-title">Load RMP Release Object</h5>
       </div>
       <div id="ro_progress_text" class="modal-body">
       </div>
       <div id="ro_progress_bar">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+        <button id="load-close" type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -575,6 +574,8 @@
   function load_ro(orgunit, fix_version) {
     $('#load-ro-button').attr('disabled', true)
     $('#create-ro-button').attr('disabled', true)
+    $('#load-close').attr('disabled', true)
+
     if ((typeof(orgunit)=='undefined') || (typeof(fix_version)=='undefined')){
       orgunit = $("#rmp_orgunit").val()
       fix_version = $("#rmp_fix_version").val()
@@ -587,12 +588,17 @@
       $('#modal-error').modal('show')
       $('#load-ro-button').attr('disabled', false)
       $('#create-ro-button').attr('disabled', false)
+      $('#load-close').attr('disabled', false)
       return
     }
 
+    ro_name = orgunit + '-' + fix_version
+    details_text = ro_name + ' Details'
+    release_process = ro_name + ' Release Process'
+
     $('#modal-load-bar').modal('show')
     $('#ro-table').html('')
-    update_progress_bar('running', 'Generating Release Object')
+    update_progress_bar('running', 'Loading RMP Release Object ' + ro_name)
 
     $('#detail-table').css({'display': 'none'})
     $('#ro-process-title').css({'display': 'none'})
@@ -608,10 +614,8 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
-        update_progress_bar('done', 'Completed')
+        update_progress_bar('done', 'RMP Release Object ' + ro_name + ' has been loaded')
         load_release_process_table(orgunit)
-        details_text = orgunit + '-' + fix_version + '-Details'
-        release_process = orgunit + '-' + fix_version + '-Release Process'
         $('#title_details').text(details_text)
         $('#title_release_process').text(release_process)
         $('#start-release').attr('disabled', false)
@@ -620,6 +624,7 @@
         $('#ro-process-flow').css({'display': 'block'})
         $('#load-ro-button').attr('disabled', false)
         $('#create-ro-button').attr('disabled', false)
+        $('#load-close').attr('disabled', false)
       }
     })
   }
@@ -795,15 +800,8 @@
     else if (step == 'done') {
       ro_progress_bar = completed_progress
     }
-    else if (step == 'error') {
-      text = '\
-      <div style="color:red">'
-        + text +
-      '</div>'
-      ro_progress_bar = error_progress
-    }
     
-    $('#ro_progress_text').html(text)
+    $('#ro_progress_text').html('<strong>' + text + '</strong>')
     $('#ro_progress_bar').html(ro_progress_bar)
   }
 </script>
