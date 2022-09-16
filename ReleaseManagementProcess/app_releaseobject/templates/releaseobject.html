@@ -432,7 +432,7 @@
           <div class="row align-items-center">
             <div class="col"></div>
             <div class="col-auto">
-              <button class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasTop" role="button" aria-controls="offcanvasTop" onclick="create_ro()">Create</button>
+              <button class="btn btn-primary" onclick="create_ro()">Create</button>
             </div>
           </div>
         </div>
@@ -445,7 +445,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Load RMP Release Object</h5>
+        <h5 class="modal-title">RMP Release Object</h5>
       </div>
       <div id="ro_progress_text" class="modal-body">
       </div>
@@ -494,8 +494,8 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        jira_fix_version = ''
-        fix_versions = res['fix_versions']
+        var jira_fix_version = '<option disabled selected style="display:none"></option>'
+        var fix_versions = res['fix_versions']
 
         if (fix_versions.length > 0){
           $('#jira_fix_version').prop('disabled', false)
@@ -504,7 +504,7 @@
           $('#jira_fix_version').prop('disabled', true)
         }
         for (let i = 0; i < fix_versions.length; i++) {
-          fix_version_name = fix_versions[i].name
+          var fix_version_name = fix_versions[i].name
           jira_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
         }
         $('#jira_fix_version').html(jira_fix_version)
@@ -524,8 +524,8 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        rmp_fix_version = ''
-        fix_versions = res['fix_versions']
+        var rmp_fix_version = '<option disabled selected style="display:none"></option>'
+        var fix_versions = res['fix_versions']
         if (fix_versions.length > 0){
           $('#rmp_fix_version').prop('disabled', false)
         }
@@ -533,7 +533,7 @@
           $('#rmp_fix_version').prop('disabled', true)
         }
         for (let i = 0; i < fix_versions.length; i++) {
-          fix_version_name = fix_versions[i]
+          var fix_version_name = fix_versions[i]
           rmp_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
         }
         $('#rmp_fix_version').html(rmp_fix_version)
@@ -544,27 +544,48 @@
 
 <script type='text/javascript'>
   function create_ro() {
-    orgunit = $("#jira_project").val()
-    fix_version = $("#jira_fix_version").val()
-    if ((orgunit==null) || (fix_version==null)){
-      update_progress_bar('error', 'Wrong input parameters. \
-      Please select Jira project and fix version.')
+    $('#load-ro-button').attr('disabled', true)
+    $('#create-ro-button').attr('disabled', true)
+    $('#load-close').attr('disabled', true)
+
+    jira_project = $("#jira_project").val()
+    jira_fix_version = $("#jira_fix_version").val()
+    if ((jira_project==null) || (jira_fix_version==null)){
+      $('#error-title').text('Error!')
+      $('#error-text').html('<strong>Orgunit</strong> or <strong>fix version</strong> is empty!')
+      $('#modal-create').modal('hide')
+      $('#modal-error').modal('show')
+      $('#load-ro-button').attr('disabled', false)
+      $('#create-ro-button').attr('disabled', false)
       return
     }
 
+    var ro_name = jira_project + '-' + jira_fix_version
+
     $('#ro-table').html('')
-    update_progress_bar('running', 'Generating Release Object')
+    $('#modal-create').modal('hide')
+    $('#modal-load-bar').modal('show')
+    $('#detail-table').css({'display': 'none'})
+    $('#ro-process-title').css({'display': 'none'})
+    $('#ro-process-flow').css({'display': 'none'})
+    update_progress_bar('running', 'Creating RMP Release Object ' + ro_name)
 
     $.ajax({
       url: '/releaseobject/create/',
       type: 'GET',
       data: {
-        orgunit: orgunit,
-        fixversion: fix_version
+        orgunit: jira_project,
+        fixversion: jira_fix_version
       },
       dataType: 'JSON',
       success: function(res) {
-        //load_ro(orgunit, fix_version)
+        update_progress_bar('done', 'RMP Release Object ' + ro_name + ' has been created')
+        $('#load-ro-button').attr('disabled', false)
+        $('#create-ro-button').attr('disabled', false)
+        $('#load-close').attr('disabled', false)
+        $("#rmp_orgunit ").get(0).selectedIndex=0
+        $("#rmp_fix_version ").get(0).selectedIndex=0
+        $("#rmp_fix_version ").attr('disabled', true)
       }
     })
   }
@@ -592,17 +613,16 @@
       return
     }
 
-    ro_name = orgunit + '-' + fix_version
-    details_text = ro_name + ' Details'
-    release_process = ro_name + ' Release Process'
+    var ro_name = orgunit + '-' + fix_version
+    var details_text = ro_name + ' Details'
+    var release_process = ro_name + ' Release Process'
 
-    $('#modal-load-bar').modal('show')
     $('#ro-table').html('')
-    update_progress_bar('running', 'Loading RMP Release Object ' + ro_name)
-
+    $('#modal-load-bar').modal('show')
     $('#detail-table').css({'display': 'none'})
     $('#ro-process-title').css({'display': 'none'})
     $('#ro-process-flow').css({'display': 'none'})
+    update_progress_bar('running', 'Loading RMP Release Object ' + ro_name)
 
     $.ajax({
       url: '/releaseobject/get/',
