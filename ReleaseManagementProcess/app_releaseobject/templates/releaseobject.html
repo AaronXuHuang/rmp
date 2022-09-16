@@ -131,20 +131,19 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_details' class="page-title">
-            RMP Release Object Details
-          </h2>
-        </div>
-        <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-load-bar">
-            Show progress bar
-          </button>
-          <button id='test' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
-            Create from Jira
-          </button>
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-load-bar" role="button" onclick="load_ro()">
-            Load Release Object
-          </button>
+          <div class="card-header">
+            <h2 id='title_details' class="card-title">
+              RMP Release Object Details
+            </h2>
+            <div class="col-12 col-md-auto ms-auto d-print-none">
+              <button id='create-ro-button' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
+                Create from Jira
+              </button>
+              <button id="load-ro-button" class="btn btn-primary" onclick="load_ro()">
+                Load Release Object
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -221,13 +220,14 @@
           <div class="page-pretitle">
             Release Object
           </div>
-          <h2 id='title_release_process' class="page-title">
-          </h2>
-        </div>
-        <div class="col-12 col-md-auto ms-auto d-print-none">
-          <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="start_next_env_test()">
-            Start Release on PIE
-          </button>
+          <div class="card-header">
+            <h2 id='title_release_process' class="card-title"></h2>
+            <div class="col-12 col-md-auto ms-auto d-print-none">
+              <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="start_next_env_test()">
+                Start Release on PIE
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -323,27 +323,6 @@
   </div>
 </div>
 
-<!--
-<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="visibility: visible;" aria-modal="true" role="dialog">
-  <div class="offcanvas-header">
-    <h2 class="offcanvas-title" id="offcanvasTopLabel">RMP Release Object progress</h2>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div id="ro_progress_text">
-      No RMP Release Object running
-    </div>
-    <div id="ro_progress_bar">
-    </div>
-    <div class="mt-3">
-      <button class="btn" type="button" data-bs-dismiss="offcanvas">
-        Close
-      </button>
-    </div>
-  </div>
-</div>
--->
-
 <div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -383,6 +362,29 @@
                 Test passed
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-error" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-danger"></div>
+      <div class="modal-body text-center py-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
+        <h3 id="error-title"></h3>
+        <div id="error-text" class="text-muted"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="w-100">
+          <div class="row">
+            <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                Close
+              </a></div>
           </div>
         </div>
       </div>
@@ -445,7 +447,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Loading</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div id="ro_progress_text" class="modal-body">
       </div>
@@ -475,7 +476,6 @@
   window.onload = function () {
     $('#modal-confirmaction').modal({ backdrop: false, keyboard: false })
     $('#modal-success').modal({ backdrop: false, keyboard: false })
-    $('#modal-fail').modal({ backdrop: false, keyboard: false })
     $('#modal-error').modal({ backdrop: false, keyboard: false })
     $('#modal-create').modal({ backdrop: false, keyboard: false })
     $('#modal-load-bar').modal({ backdrop: false, keyboard: false })
@@ -573,17 +573,24 @@
 
 <script type='text/javascript'>
   function load_ro(orgunit, fix_version) {
+    $('#load-ro-button').attr('disabled', true)
+    $('#create-ro-button').attr('disabled', true)
     if ((typeof(orgunit)=='undefined') || (typeof(fix_version)=='undefined')){
       orgunit = $("#rmp_orgunit").val()
       fix_version = $("#rmp_fix_version").val()
     }
     
     if ((orgunit==null) || (fix_version==null)){
-      update_progress_bar('error', 'Wrong input parameters. \
-      Please select RMP orgunit and fix version.')
+      $('#error-title').text('Error!')
+      $('#error-text').html('<strong>Orgunit</strong> or <strong>fix version</strong> is empty!')
+      $('#modal-load-bar').modal('hide')
+      $('#modal-error').modal('show')
+      $('#load-ro-button').attr('disabled', false)
+      $('#create-ro-button').attr('disabled', false)
       return
     }
 
+    $('#modal-load-bar').modal('show')
     $('#ro-table').html('')
     update_progress_bar('running', 'Generating Release Object')
 
@@ -611,6 +618,8 @@
         $('#detail-table').css({'display': 'block'})
         $('#ro-process-title').css({'display': 'block'})
         $('#ro-process-flow').css({'display': 'block'})
+        $('#load-ro-button').attr('disabled', false)
+        $('#create-ro-button').attr('disabled', false)
       }
     })
   }
