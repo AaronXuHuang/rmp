@@ -223,7 +223,7 @@
           <div class="card-header">
             <h2 id='title_release_process' class="card-title"></h2>
             <div class="col-12 col-md-auto ms-auto d-print-none">
-              <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-confirmaction" onclick="start_next_env_test()">
+              <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-info" onclick="update_modal_info_for_release()">
                 Start Release on PIE
               </button>
             </div>
@@ -323,14 +323,14 @@
   </div>
 </div>
 
-<div class="modal modal-blur fade" id="modal-confirmaction" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
+<div class="modal modal-blur fade" id="modal-info" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Are you sure?</h5>
+        <h5 id="modal-info-title" class="modal-title">Ready to release</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div id="modal-content" class="modal-body">
+      <div id="modal-info-text" class="modal-body">
         Ready to start deployment for PIE?
       </div>
       <div class="modal-footer">
@@ -473,7 +473,7 @@
 
 <script type='text/javascript'>
   window.onload = function () {
-    $('#modal-confirmaction').modal({ backdrop: false, keyboard: false })
+    $('#modal-info').modal({ backdrop: false, keyboard: false })
     $('#modal-success').modal({ backdrop: false, keyboard: false })
     $('#modal-error').modal({ backdrop: false, keyboard: false })
     $('#modal-create').modal({ backdrop: false, keyboard: false })
@@ -827,31 +827,50 @@
 </script>
 
 <script type='text/javascript'>
-  function start_next_env_test(start) {
+  function update_modal_info_for_test() {
+    if (orgunit == 'BUX') {
+      $('#modal-info-title').text(env + " testing")
+      $('#modal-info-text').html("<strong>"
+        + env + " deployment is complete.<br> Please click " 
+        + env + " test button when the test complete.</strong>")
+      $('#confirm-yes').text('Close')
+      $('#confirm-yes').attr("onclick", "")
+      $('#modal-info').modal('show')
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function update_modal_info_for_release(start) {
     if (orgunit == 'BUX') {
       if (env == "PIE") {
-        $('#modal-content').text("Start BUX release process on PIE.")
+        $('#modal-info-title').text("Ready to release")
+        $('#modal-info-text').text("Start BUX release process on PIE.")
         $('#confirm-yes').text('Yes, start on PIE')
         $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
       }
       else if (env == "STG") {
-        $('#modal-content').text("Start BUX release process on STG.")
+        $('#modal-info-title').text("Ready to release")
+        $('#modal-info-text').text("Start BUX release process on STG.")
         $('#confirm-yes').text('Yes, start on STG')
         $('#confirm-yes').attr("onclick", "release_process_bux('STG')")
       }
       else if (env == "PROD") {
-        $('#modal-content').text("Start BUX release process on PROD.")
+        $('#modal-info-title').text("Ready to release")
+        $('#modal-info-text').text("Start BUX release process on PROD.")
         $('#confirm-yes').text('Yes, start on PROD')
         $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
       }
       else if (env == "RELEASED") {
-        $('#modal-content').text("Close BUX release, and RMP Release Object will be locked")
+        $('#modal-info-title').text("Ready to close")
+        $('#modal-info-text').text("Close BUX release, and RMP Release Object will be locked")
         $('#confirm-yes').text('Yes, close release')
         $('#confirm-yes').attr("onclick", "release_process_bux('RELEASED')")
         env = "CLOSED"
       }
       else if (env == "CLOSED") {
-        $('#modal-content').text("BUX release has been closed")
+        $('#modal-info-title').text("Release closed")
+        $('#modal-info-text').text("BUX release has been closed")
         $('#confirm-yes').text('Close')
       }
     }
@@ -928,6 +947,7 @@
         update_step_buttons(res[orgunit][env])
         if (res[orgunit][env][env.toLowerCase() + '-test']['status'] == 'running') {
           clearInterval(state_timeId)
+          update_modal_info_for_test()
         }
       }
     })
@@ -936,27 +956,35 @@
 
 <script type='text/javascript'>
   function update_step_buttons(items) {
+    var css_display
+    var css_color
+    var color_blue = '#206bc4'
+    var color_green = '#21BA45'
+    var color_gray = '#767676'
+
     for (key in items) {
       var button_id = '#' + key
       $(button_id).text(items[key]['text'])
       if (items[key]['status'] == 'running') {
-        $(button_id).attr("disabled", false)
-        $(button_id).css({'background-color': '#206bc4', 'border-color': '#206bc4'})
+        css_display = false
+        css_color = color_blue
         if ('' == running_id) {
           button_flash(button_id, 'start')
         }
       }
       else if (items[key]['status'] == 'done') {
-        $(button_id).attr("disabled", false)
-        $(button_id).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
+        css_display = false
+        css_color = color_green
         if (button_id == running_id) {
           button_flash(button_id, 'stop')
         }
       }
       else{
-        $(button_id).attr("disabled", true)
-        $(button_id).css({'background-color': '#767676', 'border-color': '#767676'})
+        css_display = true
+        css_color = color_gray
       }
+      $(button_id).attr("disabled", css_display)
+      $(button_id).css({'background-color': css_color, 'border-color': css_color})
     }
   }
 </script>
@@ -979,23 +1007,20 @@
     })
     cur_env = env
     if (env == 'PIE') {
-      env = 'STG'
       start_button_text = "Start Release on STG"
-      test_button = "#pie-test"
-      test_button_text = "PIE tested"
+      env = 'STG'
     }
     else if (env == 'STG') {
-      env = 'PROD'
       start_button_text = "Start Release on PROD"
-      test_button = "#stg-test"
-      test_button_text = "STG tested"
+      env = 'PROD'
     }
     else if (env == 'PROD') {
-      env = 'RELEASED'
       start_button_text = "Close Release"
-      test_button = "#prod-test"
-      test_button_text = "PROD tested"
+      env = 'RELEASED'
     }
+    test_button = "#" + cur_env.toLowerCase() + "-test"
+    test_button_text = cur_env + " tested"
+
     if (bux_test[cur_env] == '') {
       $('#start-release').text(start_button_text)
       $('#start-release').attr("disabled", false)
@@ -1003,7 +1028,6 @@
       $(test_button).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
       $(test_button).attr("data-bs-toggle", "")
       $(test_button).attr("data-bs-target", "")
-      //button_flash(test_button, 'stop')
       bux_test[cur_env] = 'tested'
     }
   }
