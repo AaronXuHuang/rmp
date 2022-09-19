@@ -928,7 +928,8 @@
         state: state
       },
       success: function(res) {
-      state_timeId = setInterval(get_release_process_state, 5000)
+        get_release_process_state()
+        state_timeId = setInterval(get_release_process_state, 5000)
       }
     })
   }
