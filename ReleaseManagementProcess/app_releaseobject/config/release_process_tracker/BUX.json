@@ -6,14 +6,14 @@
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Octopus step"
+                "title": "Octopus step"
             },
             "pie-test": {
                 "text": "PIE test",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Manual step"
+                "title": "Manual step"
             }
         },
         "STG": {
@@ -22,91 +22,91 @@
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg2-disabled-nonprt": {
                 "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg2-iisreset": {
                 "text": "IIS reset",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Temcity step"
+                "title": "Teamcity step"
             },
             "stg2-deploy": {
                 "text": "Deploy",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Octopus step"
+                "title": "Octopus step"
             },
             "stg2-enabled-nonprt": {
                 "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg2-enabled-prt": {
                 "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg1-disabled-prt": {
                 "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg1-disabled-nonprt": {
                 "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg1-iisreset": {
                 "text": "IIS reset",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Temcity step"
+                "title": "Teamcity step"
             },
             "stg1-deploy": {
                 "text": "Deploy",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Octopus step"
+                "title": "Octopus step"
             },
             "stg1-enabled-nonprt": {
                 "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg1-enabled-prt": {
                 "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "stg-test": {
                 "text": "STG test",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Manual step"
+                "title": "Manual step"
             }
         },
         "PROD": {
@@ -115,119 +115,119 @@
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc2-drain-prt": {
                 "text": "Drain prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc2-disabled-nonprt": {
                 "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc2-drain-nonprt": {
                 "text": "Drain nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc2-iisreset": {
                 "text": "IIS reset",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Temcity step"
+                "title": "Teamcity step"
             },
             "dc2-deploy": {
                 "text": "Deploy",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Octopus step"
+                "title": "Octopus step"
             },
             "dc2-enabled-nonprt": {
                 "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc2-enabled-prt": {
                 "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-disabled-prt": {
                 "text": "Disable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-drain-prt": {
                 "text": "Drain prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-disabled-nonprt": {
                 "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-drain-nonprt": {
                 "text": "Drain nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-iisreset": {
                 "text": "IIS reset",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Temcity step"
+                "title": "Teamcity step"
             },
             "dc1-deploy": {
                 "text": "Deploy",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Octopus step"
+                "title": "Octopus step"
             },
             "dc1-enabled-nonprt": {
                 "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "dc1-enabled-prt": {
                 "text": "Enable prt",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "F5 step"
+                "title": "F5 step"
             },
             "prod-test": {
                 "text": "PROD test",
                 "start": "",
                 "complete": "",
                 "status": "notstart",
-                "description": "Manual step"
+                "title": "Manual step"
             }
         }
     }

@@ -636,7 +636,7 @@
       success: function(res) {
         create_ro_table(res)
         update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
-        load_release_process_table(orgunit)
+        show_release_process_table(orgunit)
         $('#title_details').text(details_text)
         $('#title_release_process').text(release_process)
         $('#start-release').attr('disabled', false)
@@ -889,7 +889,7 @@
 </script>
 
 <script type='text/javascript'>
-  function load_release_process_table(orgunit) {
+  function show_release_process_table(orgunit) {
     if (orgunit == 'BUX') {
       $('#accordion-bux').css({'display': 'block'})
     }
@@ -957,7 +957,7 @@
 
 <script type='text/javascript'>
   function update_step_buttons(items) {
-    var css_display
+    var attr_display
     var css_color
     var color_blue = '#206bc4'
     var color_green = '#21BA45'
@@ -967,24 +967,27 @@
       var button_id = '#' + key
       $(button_id).text(items[key]['text'])
       if (items[key]['status'] == 'running') {
-        css_display = false
+        attr_display = false
         css_color = color_blue
         if ('' == running_id) {
           button_flash(button_id, 'start')
         }
       }
       else if (items[key]['status'] == 'done') {
-        css_display = false
+        attr_display = false
         css_color = color_green
         if (button_id == running_id) {
           button_flash(button_id, 'stop')
         }
       }
       else{
-        css_display = true
+        attr_display = true
         css_color = color_gray
       }
-      $(button_id).attr("disabled", css_display)
+      attr_desc = items[key]['title']
+      
+      $(button_id).attr("disabled", attr_display)
+      $(button_id).attr("title", attr_desc)
       $(button_id).css({'background-color': css_color, 'border-color': css_color})
     }
   }
