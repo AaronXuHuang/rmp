@@ -458,6 +458,58 @@
     </div>
   </div>
 </div>
+
+<div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="mt-3">
+      <div id='rop-step-details-body'>
+      </div>
+    </div>
+    <div class="mt-3">
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_AuthenticationGateway</a></td>
+              <td>Running</td>
+            </tr>
+            <tr>
+              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_TileManagementGateway</a></td>
+              <td>Queueing</td>
+            </tr>
+            <tr>
+              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUXSQL_UM</a></td>
+              <td title="start: 00:12:34 completed: 00:22:22">Completed</td>
+            </tr>
+            <tr>
+              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_BaaSUI</a></td>
+              <td>Running</td>
+            </tr>
+            <tr>
+              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_UserManagement</a></td>
+              <td>Running</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-3">
+      <button class="btn" type="button" data-bs-dismiss="offcanvas">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block js %}
@@ -962,24 +1014,24 @@
 </script>
 
 <script type='text/javascript'>
-  function update_step_buttons(items) {
+  function update_step_buttons(tracker) {
     var attr_display
     var css_color
     var color_blue = '#206bc4'
     var color_green = '#21BA45'
     var color_gray = '#767676'
 
-    for (key in items) {
+    for (key in tracker) {
       var button_id = '#' + key
-      $(button_id).text(items[key]['text'])
-      if (items[key]['status'] == 'running') {
+      $(button_id).text(tracker[key]['text'])
+      if (tracker[key]['status'] == 'running') {
         attr_display = false
         css_color = color_blue
         if ('' == running_id) {
           button_flash(button_id, 'start')
         }
       }
-      else if (items[key]['status'] == 'done') {
+      else if (tracker[key]['status'] == 'done') {
         attr_display = false
         css_color = color_green
         if (button_id == running_id) {
@@ -990,11 +1042,16 @@
         attr_display = true
         css_color = color_gray
       }
-      attr_desc = items[key]['title']
-      
+
+      attr_desc = tracker[key]['title']
       $(button_id).attr("disabled", attr_display)
       $(button_id).attr("title", attr_desc)
       $(button_id).css({'background-color': css_color, 'border-color': css_color})
+
+      //data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"
+      if (!key.includes('-test')) {
+        set_step_offcanvas(key, tracker)
+      }
     }
   }
 </script>
@@ -1079,6 +1136,22 @@
         $(id).css({'opacity':opacity/20})
       }, 50)
     }
+  }
+</script>
+
+<script type='text/javascript'>
+  function set_step_offcanvas(button_id, tracker) {
+    var button_id = '#' + key
+    $(button_id).attr("data-bs-toggle", "offcanvas")
+    $(button_id).attr("href", "#offcanvasStart")
+    $(button_id).attr("role", "button")
+    $(button_id).attr("aria-controls", "offcanvasStart")
+
+    var title = orgunit + ' ' + fix_version + ' ' + env
+    var time_start = tracker[key]['start']
+    var time_complete = tracker[key]['complete']
+    $('#rop-step-details-title').html(title)
+    $('#rop-step-details-body').html(time_start)
   }
 </script>
 
