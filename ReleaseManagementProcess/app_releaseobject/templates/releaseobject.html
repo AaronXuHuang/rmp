@@ -928,7 +928,12 @@
         state: state
       },
       success: function(res) {
-        get_release_process_state()
+        // start_state_timeId runs only once to get/update status quickly
+        start_state_timeId = setInterval(
+          function () {
+            get_release_process_state()
+            clearInterval(start_state_timeId)
+          }, 2000)
         state_timeId = setInterval(get_release_process_state, 5000)
       }
     })
