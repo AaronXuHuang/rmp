@@ -328,13 +328,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 id="modal-info-title" class="modal-title">Ready to release</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div id="modal-info-text" class="modal-body">
         Ready to start deployment for PIE?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancel</button>
         <button id="confirm-yes" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
       </div>
     </div>
@@ -344,12 +342,13 @@
 <div class="modal modal-blur fade" id="modal-success" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-success"></div>
       <div class="modal-body text-center py-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2l4 -4"></path></svg>
         <h3 id='test-pass'></h3>
-        <div class="text-muted">Click Test Passed button and continue the release</div>
+        <div class="text-muted">
+          Click <code>Test passed</code> button and continue the release.
+        </div>
       </div>
       <div class="modal-footer">
         <div class="w-100">
@@ -447,9 +446,11 @@
       <div class="modal-header">
         <h5 class="modal-title">RMP Release Object</h5>
       </div>
-      <div id="ro_progress_text" class="modal-body">
-      </div>
-      <div id="ro_progress_bar">
+      <div class="modal-body">
+        <div id="ro_progress_text">
+        </div>
+        <div id="ro_progress_bar">
+        </div>
       </div>
       <div class="modal-footer">
         <button id="load-close" type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -568,7 +569,7 @@
     $('#detail-table').css({'display': 'none'})
     $('#ro-process-title').css({'display': 'none'})
     $('#ro-process-flow').css({'display': 'none'})
-    update_progress_bar('running', 'Creating RMP Release Object ' + ro_name)
+    update_progress_bar('running', 'Creating RMP Release Object <strong>' + ro_name + '</strong>')
 
     $.ajax({
       url: '/releaseobject/create/',
@@ -579,7 +580,7 @@
       },
       dataType: 'JSON',
       success: function(res) {
-        update_progress_bar('done', 'RMP Release Object ' + ro_name + ' has been created')
+        update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been created')
         $('#load-ro-button').attr('disabled', false)
         $('#create-ro-button').attr('disabled', false)
         $('#load-close').attr('disabled', false)
@@ -622,7 +623,7 @@
     $('#detail-table').css({'display': 'none'})
     $('#ro-process-title').css({'display': 'none'})
     $('#ro-process-flow').css({'display': 'none'})
-    update_progress_bar('running', 'Loading RMP Release Object ' + ro_name)
+    update_progress_bar('running', 'Loading RMP Release Object <strong>' + ro_name + '</strong>')
 
     $.ajax({
       url: '/releaseobject/get/',
@@ -634,7 +635,7 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
-        update_progress_bar('done', 'RMP Release Object ' + ro_name + ' has been loaded')
+        update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
         load_release_process_table(orgunit)
         $('#title_details').text(details_text)
         $('#title_release_process').text(release_process)
@@ -801,7 +802,7 @@
 </script>
 
 <script type='text/javascript'>
-  function update_progress_bar(step, text) {
+  function update_progress_bar(step, progress_bar_html) {
     running_progress = '\
     <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
       <div class="progress-bar progress-bar-indeterminate bg-blue">\
@@ -821,7 +822,7 @@
       ro_progress_bar = completed_progress
     }
     
-    $('#ro_progress_text').html('<strong>' + text + '</strong>')
+    $('#ro_progress_text').html(progress_bar_html)
     $('#ro_progress_bar').html(ro_progress_bar)
   }
 </script>
@@ -831,8 +832,8 @@
     if (orgunit == 'BUX') {
       $('#modal-info-title').text(env + " testing")
       $('#modal-info-text').html("<strong>"
-        + env + " deployment is complete.<br> Please click " 
-        + env + " test button when the test complete.</strong>")
+        + env + "</strong> deployment is completed and in testing now.<br> Click <code>" 
+        + env + " testing</code> to update test result manaully.")
       $('#confirm-yes').text('Close')
       $('#confirm-yes').attr("onclick", "")
       $('#modal-info').modal('show')
@@ -841,36 +842,36 @@
 </script>
 
 <script type='text/javascript'>
-  function update_modal_info_for_release(start) {
+  function update_modal_info_for_release() {
     if (orgunit == 'BUX') {
       if (env == "PIE") {
         $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').text("Start BUX release process on PIE.")
+        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>PIE</strong>.")
         $('#confirm-yes').text('Yes, start on PIE')
         $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
       }
       else if (env == "STG") {
         $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').text("Start BUX release process on STG.")
+        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>STG</strong>.")
         $('#confirm-yes').text('Yes, start on STG')
         $('#confirm-yes').attr("onclick", "release_process_bux('STG')")
       }
       else if (env == "PROD") {
         $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').text("Start BUX release process on PROD.")
+        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>PROD</strong>.")
         $('#confirm-yes').text('Yes, start on PROD')
         $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
       }
       else if (env == "RELEASED") {
         $('#modal-info-title').text("Ready to close")
-        $('#modal-info-text').text("Close BUX release, and RMP Release Object will be locked")
+        $('#modal-info-text').html("Close <strong>BUX</strong> release, and RMP Release Object will be locked.")
         $('#confirm-yes').text('Yes, close release')
         $('#confirm-yes').attr("onclick", "release_process_bux('RELEASED')")
         env = "CLOSED"
       }
       else if (env == "CLOSED") {
         $('#modal-info-title').text("Release closed")
-        $('#modal-info-text').text("BUX release has been closed")
+        $('#modal-info-text').html("<strong>BUX</strong> release has been closed.")
         $('#confirm-yes').text('Close')
       }
     }
@@ -1036,13 +1037,13 @@
 <script type='text/javascript'>
   function update_success_text() {
     if (env == 'PIE') {
-      $('#test-pass').text("Test done on BUX PIE")
+      $('#test-pass').html("Test done on <strong>BUX PIE</strong>")
     }
     else if (env == 'STG') {
-      $('#test-pass').text("Test done on BUX STG")
+      $('#test-pass').html("Test done on <strong>BUX STG</strong>")
     }
     else if (env == 'PROD') {
-      $('#test-pass').text("Test done on BUX PROD")
+      $('#test-pass').html("Test done on <strong>BUX PROD</strong>")
     }
   }
 </script>
