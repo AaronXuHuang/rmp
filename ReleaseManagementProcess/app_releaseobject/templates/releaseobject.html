@@ -459,14 +459,14 @@
   </div>
 </div>
 
-<div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvasStart" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
   <div class="offcanvas-header">
     <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <div class="mt-3">
-      <div id='rop-step-details-body'>
+      <div id='rop-step-details-body' class="page-pretitle">
       </div>
     </div>
     <div class="mt-3">
@@ -476,6 +476,7 @@
             <tr>
               <th>Component</th>
               <th>Status</th>
+              <th>Duration</th>
             </tr>
           </thead>
           <tbody>
@@ -489,7 +490,8 @@
             </tr>
             <tr>
               <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUXSQL_UM</a></td>
-              <td title="start: 00:12:34 completed: 00:22:22">Completed</td>
+              <td>Completed</td>
+              <td>00:22:22</td>
             </tr>
             <tr>
               <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_BaaSUI</a></td>
@@ -1143,15 +1145,24 @@
   function set_step_offcanvas(button_id, tracker) {
     var button_id = '#' + key
     $(button_id).attr("data-bs-toggle", "offcanvas")
-    $(button_id).attr("href", "#offcanvasStart")
+    $(button_id).attr("href", "#step_details_deploy")
     $(button_id).attr("role", "button")
     $(button_id).attr("aria-controls", "offcanvasStart")
 
-    var title = orgunit + ' ' + fix_version + ' ' + env
+    var details_title = orgunit + ' ' + fix_version + ' ' + env
     var time_start = tracker[key]['start']
-    var time_complete = tracker[key]['complete']
-    $('#rop-step-details-title').html(title)
-    $('#rop-step-details-body').html(time_start)
+    var time_complete = tracker[key]['completed']
+    var details_body = ''
+
+    if (time_complete == '') {
+      details_body = time_start + ' started<br>'
+    }
+    else {
+      details_body = time_start + ' started<br>' + time_complete + ' completed'
+    }
+    
+    $('#rop-step-details-title').html(details_title)
+    $('#rop-step-details-body').html(details_body)
   }
 </script>
 
