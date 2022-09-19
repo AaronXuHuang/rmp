@@ -22,7 +22,7 @@
                 "status": "notstart"
             },
             "stg2-disabled-nonprt": {
-                "text": "Disable non-prt",
+                "text": "Disable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
@@ -40,7 +40,7 @@
                 "status": "notstart"
             },
             "stg2-enabled-nonprt": {
-                "text": "Enable non-prt",
+                "text": "Enable nonprt",
                 "start": "",
                 "complete": "",
                 "status": "notstart"
