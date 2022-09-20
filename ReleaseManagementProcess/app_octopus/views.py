@@ -1,10 +1,11 @@
 from asyncio.windows_events import NULL
-import json
 from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
+from concurrent.futures import as_completed
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from requests_futures.sessions import FuturesSession
-from concurrent.futures import as_completed
+from threading import Timer
+import json
 import requests
 import urllib3
 
@@ -444,6 +445,7 @@ def StartDeployment():
     task_urls = []
     futures = []
     session = FuturesSession(max_workers=WORKER)
+    ro_tasks_state = []
 
     for index in range(10):
         deployment = {
@@ -461,7 +463,7 @@ def StartDeployment():
 
     return task_urls
 
-def GetTaskState(ro_octo_tasks_state, task_urls):
+def GetTaskState(ro_tasks_state, task_urls):
     futures = []
     session = FuturesSession(max_workers=WORKER)
     
@@ -475,8 +477,8 @@ def GetTaskState(ro_octo_tasks_state, task_urls):
         time_completed = items['CompletedTime']
         duration = items['Duration']
         error_message = items['ErrorMessage']
-
-    return ro_octo_tasks_state
+    print('{0} | {1} | {2} | {3} | {4}'.format(state, time_start, time_completed, duration, error_message))
+    return ro_tasks_state
 
 
 def GetOctoResource(url):

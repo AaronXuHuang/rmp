@@ -54,5 +54,7 @@ urlpatterns = [
     path('releaseobject/fixversion/get/', ROviews.GetReleaseObjectFixVersion),
     path('releaseobject/process/run/', ROviews.RunReleaseProcess),
     path('releaseobject/process/get/', ROviews.GetReleaseProcessState),
-    path('releaseobject/process/test/update/', ROviews.UpdateReleaseProcessTest)
+    path('releaseobject/process/test/update/', ROviews.UpdateReleaseProcessTest),
+    path('releaseobject/process/deploy/start/', ROviews.StartDeployment),
+    path('releaseobject/process/deploy/state/', ROviews.GetTaskState)
 ]
