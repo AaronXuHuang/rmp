@@ -20,15 +20,17 @@ WORKER = 20
 def test(request):
     # test begin
     # fetch project channel environments map and default channel
-    space_name = request.GET.get('space')
-    space_id = OctoSpace.objects.get(name=space_name).id
-    project_name = request.GET.get('project')
-    project_id = OctoProject.objects.get(name=project_name).id
+    # space_name = request.GET.get('space')
+    # space_id = OctoSpace.objects.get(name=space_name).id
+    # project_name = request.GET.get('project')
+    # project_id = OctoProject.objects.get(name=project_name).id
 
-    channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
+    # channel_environments = FetchProjectChannelEnvironments(space_id, project_id)
 
-    return JsonResponse(channel_environments)
+    # return JsonResponse(channel_environments)
     # test end
+    StartDeployment()
+    return JsonResponse({'result': 'good'})
 
 
 def SyncOctoSpaces(request):
@@ -294,7 +296,7 @@ def CheckDefaultChannel(space_id, channels):
     default_channel = ''
 
     for channel in channels:
-        url = OCTOPUS_SERVER + "/api/"  + space_id + "/channels/" + channel
+        url = OCTOPUS_SERVER + "/api/" + space_id + "/channels/" + channel
         item = requests.get(url=url, headers=HEADERS, verify=False, allow_redirects=True).json()
         if item['IsDefault']:
             default_channel = channel
@@ -367,3 +369,122 @@ def SpaceMap(project_name):
         space = 'Spaces-42'
     
     return space
+
+
+# def StartDeployment(space_name, projects, release):
+def StartDeployment():
+    space_id = 'Spaces-1'
+    space_name = 'Default'
+    projects = [
+        'Projects-2369',
+        'Projects-2370',
+        'Projects-2371',
+        'Projects-2372',
+        'Projects-2373',
+        'Projects-2374',
+        'Projects-2375',
+        'Projects-2376',
+        'Projects-2377',
+        'Projects-2378']
+    project_name = [
+        'BUX_Aaron_Test_A',
+        'BUX_Aaron_Test_B',
+        'BUX_Aaron_Test_C',
+        'BUX_Aaron_Test_D',
+        'BUX_Aaron_Test_E',
+        'BUX_Aaron_Test_F',
+        'BUX_Aaron_Test_G',
+        'BUX_Aaron_Test_H',
+        'BUX_Aaron_Test_I',
+        'BUX_Aaron_Test_J']
+    fix_version = [
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1',
+        '0.0.1']
+    releases = [
+        'Releases-169836',
+        'Releases-169837',
+        'Releases-169838',
+        'Releases-169839',
+        'Releases-169840',
+        'Releases-169841',
+        'Releases-169842',
+        'Releases-169843',
+        'Releases-169844',
+        'Releases-169845'
+    ]
+    environment_name = 'BUX_TWILIO_QA'
+    environments = ['Environments-581']
+    deployments = []
+
+    # space = GetByName('{0}/spaces/all'.format(OCTOPUS_SERVER + "/api"), space_name)
+    # project = GetByName('{0}/{1}/projects/all'.format(OCTOPUS_SERVER + "/api", space['Id']), project_name)
+    # releases = GetOctoResource('{0}/{1}/projects/{2}/releases'.format(OCTOPUS_SERVER + "/api", space['Id'], project['Id']))
+    # release = next((x for x in releases['Items'] if x['Version'] == fix_version), None)
+    # environment = GetByName('{0}/{1}/environments/all'.format(OCTOPUS_SERVER + "/api", space['Id']), environment_name)
+    # deployment = {
+    #     'ReleaseId': release['Id'],
+    #     'EnvironmentId': environment['Id']
+    # }
+    # url = '{0}/{1}/deployments'.format(OCTOPUS_SERVER + "/api", space['Id'])
+    # response = requests.post(url, headers=HEADERS, json=deployment, verify=False, allow_redirects=True)
+    # deployment_task = json.loads (response.text)['Links']['Task']
+    # task_url = OCTOPUS_SERVER + deployment_task
+    # response.raise_for_status()
+# 
+    # return task_url
+
+    task_urls = []
+    futures = []
+    session = FuturesSession(max_workers=WORKER)
+
+    for index in range(10):
+        deployment = {
+            'ReleaseId': releases[index],
+            'EnvironmentId': environments[0]
+        }
+        deployments.append(deployment)
+    url = '{0}/{1}/deployments'.format(OCTOPUS_SERVER + "/api", space_id)
+    for deployment in deployments:
+        futures.append(session.post(url, headers=HEADERS, json=deployment, verify=False, allow_redirects=True))
+    
+    for future in as_completed(futures):
+        items = json.loads(future.result().text)
+        task_urls.append(items['Links']['Task'])
+
+    return task_urls
+
+def GetTaskState(ro_octo_tasks_state, task_urls):
+    futures = []
+    session = FuturesSession(max_workers=WORKER)
+    
+    for task_url in task_urls:
+        futures.append(session.get(url=task_url, headers=HEADERS, verify=False, allow_redirects=True))
+
+    for future in as_completed(futures):
+        items = json.loads(future.result().text)
+        state = items['State']
+        time_start = items['StartTime']
+        time_completed = items['CompletedTime']
+        duration = items['Duration']
+        error_message = items['ErrorMessage']
+
+    return ro_octo_tasks_state
+
+
+def GetOctoResource(url):
+    response = requests.get(url, headers=HEADERS, verify=False, allow_redirects=True)
+    response.raise_for_status()
+    return json.loads(response.content.decode('utf-8'))
+
+
+def GetByName(url, name):
+    resources = GetOctoResource(url)
+    return next((x for x in resources if x['Name'] == name), None)
