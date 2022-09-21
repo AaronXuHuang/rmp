@@ -1,264 +1,420 @@
 {
-    "BUX": {
-        "PIE": {
-            "pie-deploy": {
+    "BUX":
+    {
+        "PIE":
+        {
+            "pie-deploy":
+            {
+                "completed": "",
+                "details":
+                {
+                    "octopus":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
                 "text": "Deploy",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Octopus",
-                "details": []
+                "title": "Click show Octopus details"
             },
-            "pie-test": {
-                "text": "PIE test",
-                "start": "",
+            "pie-test":
+            {
                 "completed": "",
+                "details":
+                {},
+                "start": "",
                 "status": "notstart",
+                "text": "PIE test",
+                "title": "Manual step"
+            }
+        },
+        "PROD":
+        {
+            "dc1-deploy":
+            {
+                "completed": "",
+                "details":
+                {
+                    "octopus":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Deploy",
+                "title": "Octopus"
+            },
+            "dc1-disabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc1-disabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable prt",
+                "title": "Click show F5 details"
+            },
+            "dc1-drain-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Drain nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc1-drain-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Drain prt",
+                "title": "Click show F5 details"
+            },
+            "dc1-enabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc1-enabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable prt",
+                "title": "Click show F5 details"
+            },
+            "dc1-iisreset":
+            {
+                "completed": "",
+                "details":
+                {
+                    "teamcity":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "IIS reset",
+                "title": "Click show Teamcity details"
+            },
+            "dc2-deploy":
+            {
+                "completed": "",
+                "details":
+                {
+                    "octopus":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Deploy",
+                "title": "Octopus"
+            },
+            "dc2-disabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc2-disabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable prt",
+                "title": "Click show F5 details"
+            },
+            "dc2-drain-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Drain nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc2-drain-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Drain prt",
+                "title": "Click show F5 details"
+            },
+            "dc2-enabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable nonprt",
+                "title": "Click show F5 details"
+            },
+            "dc2-enabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable prt",
+                "title": "Click show F5 details"
+            },
+            "dc2-iisreset":
+            {
+                "completed": "",
+                "details":
+                {
+                    "teamcity":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "IIS reset",
+                "title": "Click show Teamcity details"
+            },
+            "prod-test":
+            {
+                "completed": "",
+                "details":
+                {},
+                "start": "",
+                "status": "notstart",
+                "text": "PROD test",
                 "title": "Manual"
             }
         },
-        "STG": {
-            "stg2-disabled-prt": {
-                "text": "Disable prt",
-                "start": "",
+        "STG":
+        {
+            "stg-test":
+            {
                 "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg2-disabled-nonprt": {
-                "text": "Disable nonprt",
+                "details":
+                {},
                 "start": "",
-                "completed": "",
                 "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg2-iisreset": {
-                "text": "IIS reset",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Teamcity",
-                "details": []
-            },
-            "stg2-deploy": {
-                "text": "Deploy",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Octopus",
-                "details": []
-            },
-            "stg2-enabled-nonprt": {
-                "text": "Enable nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg2-enabled-prt": {
-                "text": "Enable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg1-disabled-prt": {
-                "text": "Disable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg1-disabled-nonprt": {
-                "text": "Disable nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg1-iisreset": {
-                "text": "IIS reset",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Teamcity",
-                "details": []
-            },
-            "stg1-deploy": {
-                "text": "Deploy",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Octopus",
-                "details": []
-            },
-            "stg1-enabled-nonprt": {
-                "text": "Enable nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg1-enabled-prt": {
-                "text": "Enable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "stg-test": {
                 "text": "STG test",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Manual",
-                "details": []
-            }
-        },
-        "PROD": {
-            "dc2-disabled-prt": {
-                "text": "Disable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
+                "title": "Manual"
             },
-            "dc2-drain-prt": {
-                "text": "Drain prt",
-                "start": "",
+            "stg1-deploy":
+            {
                 "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc2-disabled-nonprt": {
-                "text": "Disable nonprt",
+                "details":
+                {
+                    "octopus":
+                    {}
+                },
                 "start": "",
-                "completed": "",
                 "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc2-drain-nonprt": {
-                "text": "Drain nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc2-iisreset": {
-                "text": "IIS reset",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Teamcity",
-                "details": []
-            },
-            "dc2-deploy": {
                 "text": "Deploy",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "Octopus",
-                "details": []
+                "title": "Octopus"
             },
-            "dc2-enabled-nonprt": {
-                "text": "Enable nonprt",
-                "start": "",
+            "stg1-disabled-nonprt":
+            {
                 "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc2-enabled-prt": {
-                "text": "Enable prt",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
                 "start": "",
-                "completed": "",
                 "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc1-disabled-prt": {
-                "text": "Disable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc1-drain-prt": {
-                "text": "Drain prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc1-disabled-nonprt": {
                 "text": "Disable nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
+                "title": "Click show F5 details"
             },
-            "dc1-drain-nonprt": {
-                "text": "Drain nonprt",
-                "start": "",
+            "stg1-disabled-prt":
+            {
                 "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
-            },
-            "dc1-iisreset": {
-                "text": "IIS reset",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
                 "start": "",
-                "completed": "",
                 "status": "notstart",
-                "title": "Teamcity",
-                "details": []
+                "text": "Disable prt",
+                "title": "Click show F5 details"
             },
-            "dc1-deploy": {
-                "text": "Deploy",
+            "stg1-enabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
                 "start": "",
-                "completed": "",
                 "status": "notstart",
-                "title": "Octopus",
-                "details": []
-            },
-            "dc1-enabled-nonprt": {
                 "text": "Enable nonprt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
+                "title": "Click show F5 details"
             },
-            "dc1-enabled-prt": {
+            "stg1-enabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
                 "text": "Enable prt",
-                "start": "",
-                "completed": "",
-                "status": "notstart",
-                "title": "F5",
-                "details": []
+                "title": "Click show F5 details"
             },
-            "prod-test": {
-                "text": "PROD test",
-                "start": "",
+            "stg1-iisreset":
+            {
                 "completed": "",
+                "details":
+                {
+                    "teamcity":
+                    {}
+                },
+                "start": "",
                 "status": "notstart",
-                "title": "Manual",
-                "details": []
+                "text": "IIS reset",
+                "title": "Click show Teamcity details"
+            },
+            "stg2-deploy":
+            {
+                "completed": "",
+                "details":
+                {
+                    "octopus":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Deploy",
+                "title": "Octopus"
+            },
+            "stg2-disabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable nonprt",
+                "title": "Click show F5 details"
+            },
+            "stg2-disabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Disable prt",
+                "title": "Click show F5 details"
+            },
+            "stg2-enabled-nonprt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable nonprt",
+                "title": "Click show F5 details"
+            },
+            "stg2-enabled-prt":
+            {
+                "completed": "",
+                "details":
+                {
+                    "f5":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "Enable prt",
+                "title": "Click show F5 details"
+            },
+            "stg2-iisreset":
+            {
+                "completed": "",
+                "details":
+                {
+                    "teamcity":
+                    {}
+                },
+                "start": "",
+                "status": "notstart",
+                "text": "IIS reset",
+                "title": "Click show Teamcity details"
             }
         }
     }
