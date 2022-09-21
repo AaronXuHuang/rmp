@@ -247,7 +247,7 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true>Deploy</button><br>
+                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='get_deploy_state(pie)'>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
                     <button id="pie-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PIE test</button>
                   </div>
@@ -460,7 +460,7 @@
   </div>
 </div>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+<div class="offcanvas offcanvas-start show" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
   <div class="offcanvas-header">
     <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -481,27 +481,6 @@
             </tr>
           </thead>
           <tbody id='rp_step_detail'>
-            <tr>
-              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_AuthenticationGateway</a></td>
-              <td>Running</td>
-            </tr>
-            <tr>
-              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_TileManagementGateway</a></td>
-              <td>Queueing</td>
-            </tr>
-            <tr>
-              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUXSQL_UM</a></td>
-              <td>Completed</td>
-              <td>00:22:22</td>
-            </tr>
-            <tr>
-              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_BaaSUI</a></td>
-              <td>Running</td>
-            </tr>
-            <tr>
-              <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_UserManagement</a></td>
-              <td>Running</td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -690,7 +669,7 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
-        //update_offcanvas_deploy_details(res)
+        update_offcanvas_deploy_details(res)
         update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
         show_release_process_table(orgunit)
         $('#title_details').text(details_text)
@@ -742,7 +721,7 @@
           <a href=https://octopus.nextestate.com/app#/'
           + octo_space + '/projects/'
           + octo_project_name + '/deployments style=\"color:white\">'
-            + component_name +
+          + component_name +
           '</a>\
         </span>\
       </td>'
@@ -1169,7 +1148,7 @@
 </script>
 
 <script type='text/javascript'>
-  function update_offcanvas_deploy_details() {
+  function update_offcanvas_deploy_details(ro) {
     fix_version = ro['information']['fixversion']
     orgunit = ro['information']['orgunit']
     octo_space = ro['information']['space']
@@ -1183,14 +1162,21 @@
         <a href=https://octopus.nextestate.com/app#/'
         + octo_space + '/projects/'
         + octo_project_name + '/deployments/releases/'
-        + release_version + '>\
+        + release_version + '>'
+        + component_name +
+        '</a>\
       </td>'
-      td += '<td></td>'
-      td += '<td></td>'
+      td += '<td id=state_' + component_name + '>Running</td>'
+      td += '<td id=duration_' + component_name + '>11:22:33</td>'
       tr = '<tr>' + td + '</tr>'
 
       $('#rp_step_detail').append(tr)
     }
+  }
+</script>
+
+<script type='text/javascript'>
+  function get_deploy_state(check_env) {
   }
 </script>
 {% endblock %}
