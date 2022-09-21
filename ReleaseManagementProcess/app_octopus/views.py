@@ -30,7 +30,8 @@ def test(request):
 
     # return JsonResponse(channel_environments)
     # test end
-    StartDeployment()
+
+    StartRODeployment()
     return JsonResponse({'result': 'good'})
 
 
@@ -373,7 +374,10 @@ def SpaceMap(project_name):
 
 
 # def StartDeployment(space_name, projects, release):
-def StartDeployment():
+def StartRODeployment(request):
+    orgunit = request.GET.get('orgunit')
+    fix_version = request.GET.get('fixversion')
+    
     space_id = 'Spaces-1'
     space_name = 'Default'
     projects = [
@@ -388,16 +392,16 @@ def StartDeployment():
         'Projects-2377',
         'Projects-2378']
     project_name = [
-        'BUX_Aaron_Test_A',
-        'BUX_Aaron_Test_B',
-        'BUX_Aaron_Test_C',
-        'BUX_Aaron_Test_D',
-        'BUX_Aaron_Test_E',
-        'BUX_Aaron_Test_F',
-        'BUX_Aaron_Test_G',
-        'BUX_Aaron_Test_H',
-        'BUX_Aaron_Test_I',
-        'BUX_Aaron_Test_J']
+        'BUX_Aaron_Test_20',
+        'BUX_Aaron_Test_40',
+        'BUX_Aaron_Test_60',
+        'BUX_Aaron_Test_80',
+        'BUX_Aaron_Test_100',
+        'BUX_Aaron_Test_120',
+        'BUX_Aaron_Test_140',
+        'BUX_Aaron_Test_160',
+        'BUX_Aaron_Test_180',
+        'BUX_Aaron_Test_200']
     fix_version = [
         '0.0.1',
         '0.0.1',
@@ -424,6 +428,7 @@ def StartDeployment():
     environment_name = 'BUX_TWILIO_QA'
     environments = ['Environments-581']
     deployments = []
+    demo_count = 2
 
     # space = GetByName('{0}/spaces/all'.format(OCTOPUS_SERVER + "/api"), space_name)
     # project = GetByName('{0}/{1}/projects/all'.format(OCTOPUS_SERVER + "/api", space['Id']), project_name)
@@ -442,12 +447,11 @@ def StartDeployment():
 # 
     # return task_url
 
-    task_urls = []
+    task_ids = []
     futures = []
     session = FuturesSession(max_workers=WORKER)
-    ro_tasks_state = []
 
-    for index in range(10):
+    for index in range(demo_count):
         deployment = {
             'ReleaseId': releases[index],
             'EnvironmentId': environments[0]
@@ -459,26 +463,46 @@ def StartDeployment():
     
     for future in as_completed(futures):
         items = json.loads(future.result().text)
-        task_urls.append(items['Links']['Task'])
+        task_ids.append(items['TaskId'])
 
-    return task_urls
+    return JsonResponse({'tasks': task_ids})
 
-def GetTaskState(ro_tasks_state, task_urls):
+
+def GetROTaskState(request):
+    orgunit = request.GET.get('orgunit')
+    fix_version = request.GET.get('fixversion')
+    task_ids = request.GET.get('urls')
+
+    ro_tasks_state = {}
     futures = []
     session = FuturesSession(max_workers=WORKER)
-    
-    for task_url in task_urls:
-        futures.append(session.get(url=task_url, headers=HEADERS, verify=False, allow_redirects=True))
+    task_info = {}
+
+    for task_id in task_ids:
+        url = "{0}/api/tasks/{1}".format(OCTOPUS_SERVER, task_id)
+        futures.append(session.get(url=url, headers=HEADERS, verify=False, allow_redirects=True))
 
     for future in as_completed(futures):
         items = json.loads(future.result().text)
+        id = items['Id']
         state = items['State']
         time_start = items['StartTime']
         time_completed = items['CompletedTime']
         duration = items['Duration']
         error_message = items['ErrorMessage']
-    print('{0} | {1} | {2} | {3} | {4}'.format(state, time_start, time_completed, duration, error_message))
-    return ro_tasks_state
+        task_info[id] = {
+            'state': state,
+            'time_start': time_start,
+            'time_completed': time_completed,
+            'duration': duration,
+            'error_message': error_message
+        }
+
+    ro_tasks_state['orgunit'] = orgunit
+    ro_tasks_state['fix_version'] = fix_version
+    ro_tasks_state['task_state'] = task_info
+
+    return JsonResponse(ro_tasks_state)
 
 
 def GetOctoResource(url):

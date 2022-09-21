@@ -47,6 +47,8 @@ urlpatterns = [
     path('octo/release/get/', Octoviews.GetOctoProjectReleases),
     path('octo/deployment/get/', Octoviews.GetOctoProjectReleaseDeployments),
     path('octo/state/get/', Octoviews.GetOctoProjectReleaseDeploymentStates),
+    path('octo/ro/deployment/start/', Octoviews.StartRODeployment),
+    path('octo/ro/deployment/state/', Octoviews.GetROTaskState),
     path('releaseobject/test/', ROviews.test),
     path('releaseobject/', ROviews.LoadReleaseObject),
     path('releaseobject/create/', ROviews.CreateReleaseObject),
@@ -54,7 +56,5 @@ urlpatterns = [
     path('releaseobject/fixversion/get/', ROviews.GetReleaseObjectFixVersion),
     path('releaseobject/process/run/', ROviews.RunReleaseProcess),
     path('releaseobject/process/get/', ROviews.GetReleaseProcessState),
-    path('releaseobject/process/test/update/', ROviews.UpdateReleaseProcessTest),
-    path('releaseobject/process/deploy/start/', ROviews.StartDeployment),
-    path('releaseobject/process/deploy/state/', ROviews.GetTaskState)
+    path('releaseobject/process/test/update/', ROviews.UpdateReleaseProcessTest)
 ]
