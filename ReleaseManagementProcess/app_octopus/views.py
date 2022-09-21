@@ -1,5 +1,7 @@
 from asyncio.windows_events import NULL
+from pickle import TRUE
 from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
+from app_releaseobject.models import ReleaseProcess
 from concurrent.futures import as_completed
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -374,10 +376,8 @@ def SpaceMap(project_name):
 
 
 # def StartDeployment(space_name, projects, release):
-def StartRODeployment(request):
-    orgunit = request.GET.get('orgunit')
-    fix_version = request.GET.get('fixversion')
-    
+def StartRODeployment(ro_orgunit, ro_fix_version, ro_environment, ro_sub_environment):
+    ro_tasks_id = {}
     space_id = 'Spaces-1'
     space_name = 'Default'
     projects = [
@@ -447,7 +447,7 @@ def StartRODeployment(request):
 # 
     # return task_url
 
-    task_ids = []
+    ro_task_ids = []
     futures = []
     session = FuturesSession(max_workers=WORKER)
 
@@ -463,22 +463,25 @@ def StartRODeployment(request):
     
     for future in as_completed(futures):
         items = json.loads(future.result().text)
-        task_ids.append(items['TaskId'])
+        ro_task_ids.append(items['TaskId'])
 
-    return JsonResponse({'tasks': task_ids})
+    ro_tasks_id['orgunit'] = ro_orgunit
+    ro_tasks_id['fix_version'] = ro_fix_version
+    ro_tasks_id['environment'] = ro_environment
+    ro_tasks_id['sub_environment'] = ro_sub_environment
+    ro_tasks_id['task_id'] = ro_task_ids
+
+    SaveRODeploymentTask(ro_tasks_id)
+    return ro_tasks_id
 
 
-def GetROTaskState(request):
-    orgunit = request.GET.get('orgunit')
-    fix_version = request.GET.get('fixversion')
-    task_ids = request.GET.get('urls')
-
-    ro_tasks_state = {}
+def GetROTaskState(ro_tasks_id):
+    ro_tasks_info = {}
+    ro_task_info = {}
     futures = []
     session = FuturesSession(max_workers=WORKER)
-    task_info = {}
 
-    for task_id in task_ids:
+    for task_id in ro_tasks_id['task_id']:
         url = "{0}/api/tasks/{1}".format(OCTOPUS_SERVER, task_id)
         futures.append(session.get(url=url, headers=HEADERS, verify=False, allow_redirects=True))
 
@@ -490,19 +493,26 @@ def GetROTaskState(request):
         time_completed = items['CompletedTime']
         duration = items['Duration']
         error_message = items['ErrorMessage']
-        task_info[id] = {
+        is_completed = items['IsCompleted']
+        ro_task_info[id] = {
             'state': state,
             'time_start': time_start,
             'time_completed': time_completed,
             'duration': duration,
-            'error_message': error_message
+            'error_message': error_message,
+            'is_completed': is_completed
         }
+        is_completed = is_completed and items['IsCompleted']
 
-    ro_tasks_state['orgunit'] = orgunit
-    ro_tasks_state['fix_version'] = fix_version
-    ro_tasks_state['task_state'] = task_info
+    ro_tasks_info['orgunit'] = ro_tasks_id['orgunit']
+    ro_tasks_info['fix_version'] = ro_tasks_id['fix_version']
+    ro_tasks_info['environment'] = ro_tasks_id['environment']
+    ro_tasks_info['sub_environment'] = ro_tasks_id['sub_environment']
+    ro_tasks_info['task_info'] = ro_task_info
+    ro_tasks_info['task_state'] = is_completed
 
-    return JsonResponse(ro_tasks_state)
+    SaveROTaskState(ro_tasks_info)
+    return ro_tasks_info
 
 
 def GetOctoResource(url):
@@ -514,3 +524,34 @@ def GetOctoResource(url):
 def GetByName(url, name):
     resources = GetOctoResource(url)
     return next((x for x in resources if x['Name'] == name), None)
+
+
+def SaveRODeploymentTask(ro_tasks_id):
+    orgunit = ro_tasks_id['orgunit']
+    fix_version = ro_tasks_id['fix_version']
+    env = ro_tasks_id['environment']
+    sub_env = ro_tasks_id['sub_environment']
+    step_id = "{0}-deploy".format(sub_env.lower())
+    task_id = ro_tasks_id['task_id']
+
+    object = ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).values()
+    tracker = json.loads(object[0]['tracker'])
+    tracker[orgunit][env][step_id]['details']['octopus']['task_id'] = task_id
+    ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).update(tracker = json.dumps(tracker))
+
+
+def SaveROTaskState(ro_tasks_info):
+    orgunit = ro_tasks_info['orgunit']
+    fix_version = ro_tasks_info['fix_version']
+    env = ro_tasks_info['environment']
+    sub_env = ro_tasks_info['sub_environment']
+    step_id = "{0}-deploy".format(sub_env.lower())
+    task_info = ro_tasks_info['task_info']
+    task_completed = ro_tasks_info['task_state']
+
+    object = ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).values()
+    tracker = json.loads(object[0]['tracker'])
+    tracker[orgunit][env][step_id]['details']['octopus']['task_info'] = task_info
+    tracker[orgunit][env][step_id]['details']['octopus']['task_state'] = task_completed
+    ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).update(tracker = json.dumps(tracker))
+

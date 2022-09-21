@@ -303,7 +303,7 @@ def RunReleaseProcess(request):
     state = request.GET.get('state')
 
     if orgunit == 'BUX':
-        print('thread run_rp_bux')
+        # print('thread run_rp_bux')
         RP_InitState(orgunit, fix_version, state)
         run_rp_bux = Thread(target=RunReleaseProcess_BUX, args=(fix_version, env))
         run_rp_bux.start()
@@ -376,7 +376,11 @@ def RP_GetState(orgunit, fix_version):
 def RP_Deploy(orgunit, fix_version, env, sub_env):
     RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-deploy', 'Deploying', 'start', 'running')
     # todo
-    time.sleep(30)
+    ro_tasks_id = Octoviews.StartRODeployment(orgunit, fix_version, env, sub_env)
+    deployment_state = False
+    while not deployment_state:
+        deployment_state = Octoviews.GetROTaskState(ro_tasks_id)['task_state']
+        time.sleep(10)
     RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-deploy', 'Deployed', 'complete', 'done')
 
     print('RP_Deploy')

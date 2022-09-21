@@ -328,6 +328,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 id="modal-info-title" class="modal-title">Ready to release</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div id="modal-info-text" class="modal-body">
         Ready to start deployment for PIE?
@@ -475,11 +476,11 @@
           <thead>
             <tr>
               <th>Component</th>
-              <th>Status</th>
+              <th>State</th>
               <th>Duration</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id='rp_step_detail'>
             <tr>
               <td><a href="https://octopus.nextestate.com/app#/Spaces-1/projects/bux-baasgateway/deployments/releases/1.0.3367" target="_blank">BUX_AuthenticationGateway</a></td>
               <td>Running</td>
@@ -689,6 +690,7 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
+        //update_offcanvas_deploy_details(res)
         update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
         show_release_process_table(orgunit)
         $('#title_details').text(details_text)
@@ -1166,4 +1168,29 @@
   }
 </script>
 
+<script type='text/javascript'>
+  function update_offcanvas_deploy_details() {
+    fix_version = ro['information']['fixversion']
+    orgunit = ro['information']['orgunit']
+    octo_space = ro['information']['space']
+
+    for (component_name in ro[fix_version]) {
+      octo_project_name = component_name.replace('_', '-')
+      release_version = ro[fix_version][component_name]['releaseversion']
+
+      td = '\
+      <td>\
+        <a href=https://octopus.nextestate.com/app#/'
+        + octo_space + '/projects/'
+        + octo_project_name + '/deployments/releases/'
+        + release_version + '>\
+      </td>'
+      td += '<td></td>'
+      td += '<td></td>'
+      tr = '<tr>' + td + '</tr>'
+
+      $('#rp_step_detail').append(tr)
+    }
+  }
+</script>
 {% endblock %}
