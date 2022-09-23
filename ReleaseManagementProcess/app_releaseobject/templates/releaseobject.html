@@ -136,8 +136,10 @@
               RMP Release Object Details
             </h2>
             <div class="col-12 col-md-auto ms-auto d-print-none">
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_detail("PIE")'>Test A</button>
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_detail("STG2")'>Test B</button>
+              <!--
+              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick=''>Test A</button>
+              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick=''>Test B</button>
+              -->
               <button id='create-ro-button' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
                 Create from Jira
               </button>
@@ -249,7 +251,7 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_detail("pie")'>Deploy</button><br>
+                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("pie")'>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
                     <button id="pie-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PIE test</button>
                   </div>
@@ -266,17 +268,17 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">STG2</label>
-                    <button id="stg2-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
-                    <button id="stg2-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="stg2-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "stg2")'>Disable prt</button>
+                    <button id="stg2-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "stg2")'>Disable nonprt</button>
                     <button id="stg2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="stg2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_detail("stg2")'>Deploy</button>
+                    <button id="stg2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("stg2")'>Deploy</button>
                     <button id="stg2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="stg2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">STG1</label>
-                    <button id="stg1-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
-                    <button id="stg1-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
+                    <button id="stg1-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "stg1")'>Disable prt</button>
+                    <button id="stg1-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "stg1")'>Disable nonprt</button>
                     <button id="stg1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="stg1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_detail("stg1")'>Deploy</button>
+                    <button id="stg1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("stg1")'>Deploy</button>
                     <button id="stg1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="stg1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">STG</label>
@@ -295,21 +297,21 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">DC2</label>
-                    <button id="dc2-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
-                    <button id="dc2-drain-prt" class="btn btn-ro-release" disabled=true>Drain prt</button>
-                    <button id="dc2-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
-                    <button id="dc2-drain-nonprt" class="btn btn-ro-release" disabled=true>Drain nonprt</button>
+                    <button id="dc2-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "dc2")'>Disable prt</button>
+                    <button id="dc2-drain-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("prt", "dc2")'>Drain prt</button>
+                    <button id="dc2-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "dc2")'>Disable nonprt</button>
+                    <button id="dc2-drain-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("nonprt", "dc2")'>Drain nonprt</button>
                     <button id="dc2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="dc2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_detail("dc2")'>Deploy</button>
+                    <button id="dc2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("dc2")'>Deploy</button>
                     <button id="dc2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="dc2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">DC1</label>
-                    <button id="dc1-disabled-prt" class="btn btn-ro-release" disabled=true>Disable prt</button>
-                    <button id="dc1-drain-prt" class="btn btn-ro-release" disabled=true>Drain prt</button>
-                    <button id="dc1-disabled-nonprt" class="btn btn-ro-release" disabled=true>Disable nonprt</button>
-                    <button id="dc1-drain-nonprt" class="btn btn-ro-release" disabled=true>Drain nonprt</button>
+                    <button id="dc1-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "dc1")'>Disable prt</button>
+                    <button id="dc1-drain-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("prt", "dc2")'>Drain prt</button>
+                    <button id="dc1-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "dc1")'>Disable nonprt</button>
+                    <button id="dc1-drain-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("nonprt", "dc1")'>Drain nonprt</button>
                     <button id="dc1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="dc1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_detail("dc1")'>Deploy</button>
+                    <button id="dc1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("dc1")'>Deploy</button>
                     <button id="dc1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
                     <button id="dc1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
                     <label class="ro-env-name">PROD</label>
@@ -475,7 +477,7 @@
     <div class="mt-3">
       <div class="table-responsive">
         <table class="table table-vcenter card-table">
-          <thead>
+          <thead id='rp_step_detail_theader'>
             <tr>
               <th>Component</th>
               <th>State</th>
@@ -491,6 +493,143 @@
           <tbody id='rp_step_detail_dc2_deploy' style="display: none">
           </tbody>
           <tbody id='rp_step_detail_dc1_deploy' style="display: none">
+          </tbody>
+          <tbody id='rp_step_detail_stg2_disable_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_STG2_POOL_PRT</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_stg1_disable_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_STG1_POOL_PRT</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_stg2_disable_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_STG2_POOL_NONPRT_A</td>
+              <td id=''>Running</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_STG2_POOL_NONPRT_B</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_stg1_disable_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_STG1_POOL_NONPRT_A</td>
+              <td id=''>Running</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_STG1_POOL_NONPRT_B</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc2_disable_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_PRT</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc1_disable_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_PRT</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc2_disable_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_A</td>
+              <td id=''>Running</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_B</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc1_disable_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_A</td>
+              <td id=''>Running</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_B</td>
+              <td id=''>Running</td>
+            </tr>
+          </tbody>
+          <!---->
+          <tbody id='rp_step_detail_dc2_drain_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_A</td>
+              <td id=''>101</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_B</td>
+              <td id=''>102</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_C</td>
+              <td id=''>103</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_D</td>
+              <td id=''>104</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc1_drain_prt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_A</td>
+              <td id=''>201</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_B</td>
+              <td id=''>202</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_C</td>
+              <td id=''>203</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_D</td>
+              <td id=''>204</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc2_drain_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_A</td>
+              <td id=''>301</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_B</td>
+              <td id=''>302</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_C</td>
+              <td id=''>303</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_D</td>
+              <td id=''>304</td>
+            </tr>
+          </tbody>
+          <tbody id='rp_step_detail_dc1_drain_nonprt' style="display: none">
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_A</td>
+              <td id=''>401</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_B</td>
+              <td id=''>402</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_C</td>
+              <td id=''>403</td>
+            </tr>
+            <tr>
+              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_D</td>
+              <td id=''>404</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1203,14 +1342,62 @@
 </script>
 
 <script type='text/javascript'>
-  function show_running_env_detail(running_env) {
+  function hide_all_detail_element() {
     $('#rp_step_detail_pie_deploy').css({'display': 'none'})
     $('#rp_step_detail_stg2_deploy').css({'display': 'none'})
     $('#rp_step_detail_stg1_deploy').css({'display': 'none'})
     $('#rp_step_detail_dc2_deploy').css({'display': 'none'})
     $('#rp_step_detail_dc1_deploy').css({'display': 'none'})
 
+    $('#rp_step_detail_stg2_disable_prt').css({'display': 'none'})
+    $('#rp_step_detail_stg1_disable_prt').css({'display': 'none'})
+
+    $('#rp_step_detail_stg2_disable_nonprt').css({'display': 'none'})
+    $('#rp_step_detail_stg1_disable_nonprt').css({'display': 'none'})
+
+    $('#rp_step_detail_dc2_disable_prt').css({'display': 'none'})
+    $('#rp_step_detail_dc1_disable_prt').css({'display': 'none'})
+
+    $('#rp_step_detail_dc2_disable_nonprt').css({'display': 'none'})
+    $('#rp_step_detail_dc1_disable_nonprt').css({'display': 'none'})
+
+    $('#rp_step_detail_dc2_drain_prt').css({'display': 'none'})
+    $('#rp_step_detail_dc1_drain_prt').css({'display': 'none'})
+
+    $('#rp_step_detail_dc2_drain_nonprt').css({'display': 'none'})
+    $('#rp_step_detail_dc1_drain_nonprt').css({'display': 'none'})
+  }
+</script>
+
+<script type='text/javascript'>
+  function show_running_env_deploy_detail(running_env) {
+    hide_all_detail_element()
+    var table_header = '<tr><th>Component</th><th>State</th><th>Duration</th></tr>'
+    $('#rp_step_detail_theader').html(table_header)
+
     var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_deploy'
+    $(detail_element).css({'display': 'table-row-group'})
+  }
+</script>
+
+<script type='text/javascript'>
+  function show_running_env_disable_detail(prt, running_env) {
+    hide_all_detail_element()
+    var table_header = '<tr><th>Pool</th><th>State</th></tr>'
+    $('#rp_step_detail_theader').html(table_header)
+
+    var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_disable_' + prt
+    $(detail_element).css({'display': 'table-row-group'})
+  }
+</script>
+
+<script type='text/javascript'>
+  function show_running_env_drain_detail(prt, running_env) {
+    hide_all_detail_element()
+    var table_header = '<tr><th>Member</th><th>Connection</th></tr>'
+    $('#rp_step_detail_theader').html(table_header)
+
+    var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_drain_' + prt
     $(detail_element).css({'display': 'table-row-group'})
   }
 </script>
