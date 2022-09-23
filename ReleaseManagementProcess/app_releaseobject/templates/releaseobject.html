@@ -247,7 +247,7 @@
                 <div class="accordion-body pt-0">
                   <div>
                     <label class="ro-env-name">PIE</label>
-                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='get_deploy_state(pie)'>Deploy</button><br>
+                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='change_offcanvas_comp_id("PIE")'>Deploy</button><br>
                     <label class="ro-env-name">PIE</label>
                     <button id="pie-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PIE test</button>
                   </div>
@@ -460,7 +460,7 @@
   </div>
 </div>
 
-<div class="offcanvas offcanvas-start show" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible;">
+<div class="offcanvas offcanvas-start show" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible; width:500px">
   <div class="offcanvas-header">
     <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -504,6 +504,7 @@
     'STG': '',
     'PROD': ''
   }
+  rp_components = []
 </script>
 
 <script type='text/javascript'>
@@ -669,7 +670,8 @@
       dataType: 'JSON',
       success: function(res) {
         create_ro_table(res)
-        update_offcanvas_deploy_details(res)
+        save_rp_components(res)
+        //update_offcanvas_deploy_details_component(res)
         update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
         show_release_process_table(orgunit)
         $('#title_details').text(details_text)
@@ -987,6 +989,7 @@
       },
       success: function(res) {
         update_step_buttons(res[orgunit][env])
+        update_offcanvas_deploy_details_state(res[orgunit][env])
         if (res[orgunit][env][env.toLowerCase() + '-test']['status'] == 'running') {
           clearInterval(state_timeId)
           update_modal_info_for_test()
@@ -1148,10 +1151,8 @@
 </script>
 
 <script type='text/javascript'>
-  function update_offcanvas_deploy_details(ro) {
+  function save_rp_components(ro) {
     fix_version = ro['information']['fixversion']
-    orgunit = ro['information']['orgunit']
-    octo_space = ro['information']['space']
 
     for (component_name in ro[fix_version]) {
       octo_project_name = component_name.replace('_', '-')
@@ -1166,8 +1167,8 @@
         + component_name +
         '</a>\
       </td>'
-      td += '<td id=state_' + component_name + '>Running</td>'
-      td += '<td id=duration_' + component_name + '>11:22:33</td>'
+      td += '<td id=state_' + component_name + '></td>'
+      td += '<td id=duration_' + component_name + '></td>'
       tr = '<tr>' + td + '</tr>'
 
       $('#rp_step_detail').append(tr)
@@ -1176,7 +1177,48 @@
 </script>
 
 <script type='text/javascript'>
-  function get_deploy_state(check_env) {
+  function update_offcanvas_deploy_details_component(ro) {
+    fix_version = ro['information']['fixversion']
+
+    for (component_name in ro[fix_version]) {
+      octo_project_name = component_name.replace('_', '-')
+      release_version = ro[fix_version][component_name]['releaseversion']
+
+      td = '\
+      <td>\
+        <a href=https://octopus.nextestate.com/app#/'
+        + octo_space + '/projects/'
+        + octo_project_name + '/deployments/releases/'
+        + release_version + '>'
+        + component_name +
+        '</a>\
+      </td>'
+      td += '<td id=state_' + component_name + '></td>'
+      td += '<td id=duration_' + component_name + '></td>'
+      tr = '<tr>' + td + '</tr>'
+
+      $('#rp_step_detail').append(tr)
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function update_offcanvas_deploy_details_state(tracker) {
+    for (key in tracker) {
+      if (key.includes('-deploy')) {
+        var tasks = tracker[key]['details']['octopus']['task_info']
+        for (var task in tasks) {
+          $('#state_' + tasks[task]['project_name']).text(tasks[task]['state'])
+          $('#duration_' + tasks[task]['project_name']).text(tasks[task]['duration'])
+        }
+      }
+    }
+  }
+</script>
+
+<script type='text/javascript'>
+  function change_offcanvas_comp_id(running_env) {
+
   }
 </script>
 {% endblock %}

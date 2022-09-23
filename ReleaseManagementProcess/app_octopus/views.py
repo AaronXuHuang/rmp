@@ -1,7 +1,7 @@
 from asyncio.windows_events import NULL
 from pickle import TRUE
 from app_octopus.models import OctoEnvironment, OctoProject, OctoSpace
-from app_releaseobject.models import ReleaseProcess
+from app_releaseobject.models import ReleaseObject, ReleaseProcess
 from concurrent.futures import as_completed
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -375,7 +375,6 @@ def SpaceMap(project_name):
     return space
 
 
-# def StartDeployment(space_name, projects, release):
 def StartRODeployment(ro_orgunit, ro_fix_version, ro_environment, ro_sub_environment):
     ro_tasks_id = {}
     space_id = 'Spaces-1'
@@ -447,10 +446,28 @@ def StartRODeployment(ro_orgunit, ro_fix_version, ro_environment, ro_sub_environ
 # 
     # return task_url
 
-    ro_task_ids = []
+    ro_release_info = {}
+    ro_task_ids = {}
     futures = []
+
+    # get space
+    if ro_orgunit == 'BUX':
+        space_id = 'Spaces-1'
+
+    # read release object to get octo project name and release version
+    release_object_count_query = ReleaseObject.objects.filter(orgunit=ro_orgunit, fixversion=ro_fix_version).values()
+    count = release_object_count_query.count()
+    if count != 0:
+        release_object_query = ReleaseObject.objects.filter(orgunit=ro_orgunit, fixversion=ro_fix_version, version=count).values()
+    release_object = json.loads(release_object_query[0]['releaseobject'])[ro_fix_version]
+    for project_in_ro in release_object:
+        ro_release_info[project_in_ro] = {'release_name': '', 'release_id': ''}
+        ro_release_info[project_in_ro]['release_name'] = release_object[project_in_ro]['releaseversion']
+        ro_release_info[project_in_ro]['release_id'] = release_object[project_in_ro]['releaseversionid']
+
     session = FuturesSession(max_workers=WORKER)
 
+    demo_count = len(release_object.keys())
     for index in range(demo_count):
         deployment = {
             'ReleaseId': releases[index],
@@ -463,12 +480,33 @@ def StartRODeployment(ro_orgunit, ro_fix_version, ro_environment, ro_sub_environ
     
     for future in as_completed(futures):
         items = json.loads(future.result().text)
-        ro_task_ids.append(items['TaskId'])
+        ro_task_ids[items['TaskId']] = {
+            'release_id': items['ReleaseId']}
+
+    for key_task, value_task in ro_task_ids.items():
+        for key_info, value_info in ro_release_info.items():
+            if value_task['release_id'] == value_info['release_id']:
+                ro_task_ids[key_task]['release_name'] = value_info['release_name']
+                ro_task_ids[key_task]['project_name'] = key_info
+
+    # mock for demo
+    # todo delete begin
+    mock_release_count = 0
+    mock_project_name = []
+    for key in ro_release_info.keys():
+        mock_project_name.append(key)
+    for key_task, value_task in ro_task_ids.items():
+        ro_task_ids[key_task]['release_id'] = releases[mock_release_count]
+        ro_task_ids[key_task]['release_name'] = 'mock-release-{0}'.format(mock_release_count)
+        ro_task_ids[key_task]['project_name'] = mock_project_name[mock_release_count]
+        mock_release_count += 1
+    # todo delete end
 
     ro_tasks_id['orgunit'] = ro_orgunit
     ro_tasks_id['fix_version'] = ro_fix_version
     ro_tasks_id['environment'] = ro_environment
     ro_tasks_id['sub_environment'] = ro_sub_environment
+    # ro_tasks_id['release_info'] = ro_release_info
     ro_tasks_id['task_id'] = ro_task_ids
 
     SaveRODeploymentTask(ro_tasks_id)
@@ -476,6 +514,7 @@ def StartRODeployment(ro_orgunit, ro_fix_version, ro_environment, ro_sub_environ
 
 
 def GetROTaskState(ro_tasks_id):
+    is_completed = True
     ro_tasks_info = {}
     ro_task_info = {}
     futures = []
@@ -493,8 +532,11 @@ def GetROTaskState(ro_tasks_id):
         time_completed = items['CompletedTime']
         duration = items['Duration']
         error_message = items['ErrorMessage']
-        is_completed = items['IsCompleted']
+        is_completed = is_completed and items['IsCompleted']
         ro_task_info[id] = {
+            'project_name': ro_tasks_id['task_id'][id]['project_name'],
+            'release_id': ro_tasks_id['task_id'][id]['release_id'],
+            'release_name': ro_tasks_id['task_id'][id]['release_name'],
             'state': state,
             'time_start': time_start,
             'time_completed': time_completed,
@@ -502,7 +544,8 @@ def GetROTaskState(ro_tasks_id):
             'error_message': error_message,
             'is_completed': is_completed
         }
-        is_completed = is_completed and items['IsCompleted']
+        print('id:{0}, completed:{1}'.format(id, is_completed))
+        
 
     ro_tasks_info['orgunit'] = ro_tasks_id['orgunit']
     ro_tasks_info['fix_version'] = ro_tasks_id['fix_version']
@@ -536,7 +579,7 @@ def SaveRODeploymentTask(ro_tasks_id):
 
     object = ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).values()
     tracker = json.loads(object[0]['tracker'])
-    tracker[orgunit][env][step_id]['details']['octopus']['task_id'] = task_id
+    tracker[orgunit][env][step_id]['details']['octopus']['task_info'] = task_id
     ReleaseProcess.objects.filter(orgunit=orgunit, fixversion=fix_version).update(tracker = json.dumps(tracker))
 
 

@@ -170,10 +170,11 @@ def FilterRelease(octo_project_id_map, project_name, octo_space_id, release_obje
     return releases_filtered
     
 
-def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_assembled, env_states):
+def ConstrucRelease(releases_filtered, release_object, fix_version, project_name, release_version, release_version_id, release_assembled, env_states):
     latest_version = ''
     project = release_object[fix_version][project_name]
     project['releaseversion'] = release_version
+    project['releaseversionid'] = release_version_id
     project['releaseassembled'] = release_assembled
     project['environments'] = env_states
 
@@ -202,7 +203,7 @@ def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map,
 
         releases_filtered = Octoviews.FetchProjectReleaseDeploymentStates(releases_filtered, tasks)
 
-        release_version, release_assembled = ConstructROReleaseVersion(releases_filtered)
+        release_version, release_version_id, release_assembled = ConstructROReleaseVersion(releases_filtered)
 
         env_states = ConstructROReleaseEnvironmentState(
             releases_filtered,
@@ -215,6 +216,7 @@ def ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map,
             fix_version,
             project_name,
             release_version,
+            release_version_id,
             release_assembled,
             env_states)
 
@@ -235,7 +237,8 @@ def ConstructROReleaseVersion(releases_filtered):
     release_assembled = ''
     last_assembled = ''
                 
-    for release in releases_filtered['releases'].values():
+    #for release in releases_filtered['releases'].values():
+    for release_id, release in releases_filtered['releases'].items():
         version = release['version']
         assembled = release['assembled']
         for deployment in release['deployments'].values():
@@ -243,10 +246,11 @@ def ConstructROReleaseVersion(releases_filtered):
             state = deployment['state']
             if env_name == BUX_QA and state == 'Success' and assembled > last_assembled:
                 release_version = version
+                release_version_id = release_id
                 last_assembled = assembled
                 release_assembled = ConvertTimeZone(assembled)
 
-    return release_version, release_assembled
+    return release_version, release_version_id, release_assembled
 
 
 def ConstructROFixVersion(fix_versions_list):
@@ -425,6 +429,7 @@ def GetReleaseProcessState(request):
 
     tracker = RP_GetState(orgunit, fix_version)
     return JsonResponse(tracker)
+
 
 def UpdateReleaseProcessTest(request):
     orgunit = request.GET.get('orgunit')
