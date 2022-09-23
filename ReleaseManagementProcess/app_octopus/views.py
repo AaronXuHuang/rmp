@@ -544,7 +544,6 @@ def GetROTaskState(ro_tasks_id):
             'error_message': error_message,
             'is_completed': is_completed
         }
-        print('id:{0}, completed:{1}'.format(id, is_completed))
         
 
     ro_tasks_info['orgunit'] = ro_tasks_id['orgunit']

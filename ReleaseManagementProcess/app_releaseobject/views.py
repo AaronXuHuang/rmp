@@ -384,7 +384,7 @@ def RP_Deploy(orgunit, fix_version, env, sub_env):
     deployment_state = False
     while not deployment_state:
         deployment_state = Octoviews.GetROTaskState(ro_tasks_id)['task_state']
-        time.sleep(10)
+        time.sleep(5)
     RP_UpdateState(orgunit, fix_version, env, sub_env.lower() + '-deploy', 'Deployed', 'complete', 'done')
 
     print('RP_Deploy')
