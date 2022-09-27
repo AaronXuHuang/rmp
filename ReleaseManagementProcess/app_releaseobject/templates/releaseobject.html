@@ -136,10 +136,10 @@
               RMP Release Object Details
             </h2>
             <div class="col-12 col-md-auto ms-auto d-print-none">
-              <!--
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick=''>Test A</button>
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick=''>Test B</button>
-              -->
+              
+              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_deploy_detail("pie")'>Test A</button>
+              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_deploy_detail("stg2")'>Test B</button>
+              
               <button id='create-ro-button' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
                 Create from Jira
               </button>
@@ -1298,6 +1298,8 @@
 <script type='text/javascript'>
   function update_offcanvas_deploy_details_component(ro) {
     for (var index = 0; index < bux_deployment_sub_env.length; index++) {
+      var detail_element = '#rp_step_detail_' + bux_deployment_sub_env[index].toLowerCase() + '_deploy'
+      $(detail_element).empty()
       for (component_name in ro[fix_version]) {
         octo_project_name = component_name.replace('_', '-')
         release_version = ro[fix_version][component_name]['releaseversion']
@@ -1315,8 +1317,6 @@
         td += '<td id=' + bux_deployment_sub_env[index].toLowerCase() + '_duration_' + component_name.toLowerCase() + '></td>'
         tr = '<tr>' + td + '</tr>'
 
-
-        var detail_element = '#rp_step_detail_' + bux_deployment_sub_env[index].toLowerCase() + '_deploy'
         $(detail_element).append(tr)
       }
     }
