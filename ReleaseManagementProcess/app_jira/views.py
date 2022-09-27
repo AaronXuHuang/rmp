@@ -52,6 +52,8 @@ def GetJiraFixVersions(request):
     project = request.GET.get('project')
     released = request.GET.get('released')
 
+    SyncJiraFixVersions(request)
+    
     print(released)
     if released == 'false':
         fix_versions = ReadJiraFixVersions(project, released)
