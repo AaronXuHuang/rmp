@@ -1137,7 +1137,7 @@
       success: function(res) {
         update_step_buttons(res[orgunit][env])
         update_offcanvas_deploy_details_state(res[orgunit][env])
-        if (res[orgunit][env][env.toLowerCase() + '-test']['status'] == 'running') {
+        if (res[orgunit][env][env.toLowerCase() + '-test']['state'] == 'running') {
           clearInterval(state_timeId)
           update_modal_info_for_test()
         }
@@ -1157,14 +1157,14 @@
     for (key in tracker) {
       var button_id = '#' + key
       $(button_id).text(tracker[key]['text'])
-      if (tracker[key]['status'] == 'running') {
+      if (tracker[key]['state'] == 'running') {
         attr_display = false
         css_color = color_blue
         if ('' == running_id) {
           button_flash(button_id, 'start')
         }
       }
-      else if (tracker[key]['status'] == 'done') {
+      else if (tracker[key]['state'] == 'done') {
         attr_display = false
         css_color = color_green
         if (button_id == running_id) {
