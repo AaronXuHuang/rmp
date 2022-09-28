@@ -55,6 +55,8 @@ def GetJiraFixVersions(request):
         
     fix_versions.reverse()
     rmp_fix_versions = {"fix_versions": fix_versions}
+    JiraFixVersion.objects.filter(project=project).delete()
+    SaveJiraFixVersion(rmp_fix_versions)
     return JsonResponse(rmp_fix_versions)    
 
 
