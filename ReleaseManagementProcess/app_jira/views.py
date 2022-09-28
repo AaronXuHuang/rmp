@@ -29,16 +29,6 @@ def SyncJiraProjects(request):
     return JsonResponse(projects)
 
 
-def SyncJiraFixVersions(request):
-    project = request.GET.get('project')
-
-    fix_versions = FetchJiraFixVersions(project)
-    JiraFixVersion.objects.filter(project=project).delete()
-    SaveJiraFixVersion(fix_versions)
-
-    return JsonResponse(fix_versions)
-
-
 def GetJiraIssues(request):
     project = request.GET.get('project')
     fix_version = request.GET.get('fixversion')
@@ -52,15 +42,20 @@ def GetJiraFixVersions(request):
     project = request.GET.get('project')
     released = request.GET.get('released')
 
-    SyncJiraFixVersions(request)
-    
-    print(released)
-    if released == 'false':
-        fix_versions = ReadJiraFixVersions(project, released)
-    else:
-        fix_versions = ReadJiraFixVersions(project, 'all')
+    fix_versions = []
+    jira_fix_versions = FetchJiraFixVersions(project)
 
-    return JsonResponse(fix_versions)
+    if released.lower() == "false":
+        released = False
+        for jira_fix_version in jira_fix_versions["fix_versions"]:
+            if jira_fix_version["released"] == released:
+                fix_versions.append(jira_fix_version)
+    else:
+        fix_versions = jira_fix_versions["fix_versions"]
+        
+    fix_versions.reverse()
+    rmp_fix_versions = {"fix_versions": fix_versions}
+    return JsonResponse(rmp_fix_versions)    
 
 
 def FetchJiraProjects():
@@ -175,17 +170,6 @@ def SaveJiraFixVersion(fix_versions):
             projectid = fix_version['projectid'],
             project = fix_version['project']))
     JiraFixVersion.objects.bulk_create(bulk_data)
-
-
-def ReadJiraFixVersions(project, released):
-    if released == 'all':
-        fix_versions_list = list(JiraFixVersion.objects.filter(project=project).values().order_by('-id'))
-    else:
-        fix_versions_list =  list(JiraFixVersion.objects.filter(project=project, released=released.lower()).values().order_by('-id'))
-
-    fix_versions = ConstructFixVersion(fix_versions_list)
-
-    return fix_versions
 
 
 def ConstructFixVersion(fix_versions_list):
