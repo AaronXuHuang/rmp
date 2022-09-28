@@ -12,7 +12,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Deploy",
                 "title": "Click show Octopus details"
             },
@@ -22,7 +22,7 @@
                 "details":
                 {},
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "PIE test",
                 "title": "Manual step"
             }
@@ -38,7 +38,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Deploy",
                 "title": "Octopus"
             },
@@ -51,7 +51,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable nonprt",
                 "title": "Click show F5 details"
             },
@@ -64,7 +64,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable prt",
                 "title": "Click show F5 details"
             },
@@ -77,7 +77,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Drain nonprt",
                 "title": "Click show F5 details"
             },
@@ -90,7 +90,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Drain prt",
                 "title": "Click show F5 details"
             },
@@ -103,7 +103,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable nonprt",
                 "title": "Click show F5 details"
             },
@@ -116,7 +116,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable prt",
                 "title": "Click show F5 details"
             },
@@ -129,7 +129,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "IIS reset",
                 "title": "Click show Teamcity details"
             },
@@ -142,7 +142,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Deploy",
                 "title": "Octopus"
             },
@@ -155,7 +155,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable nonprt",
                 "title": "Click show F5 details"
             },
@@ -168,7 +168,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable prt",
                 "title": "Click show F5 details"
             },
@@ -181,7 +181,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Drain nonprt",
                 "title": "Click show F5 details"
             },
@@ -194,7 +194,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Drain prt",
                 "title": "Click show F5 details"
             },
@@ -207,7 +207,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable nonprt",
                 "title": "Click show F5 details"
             },
@@ -220,7 +220,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable prt",
                 "title": "Click show F5 details"
             },
@@ -233,7 +233,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "IIS reset",
                 "title": "Click show Teamcity details"
             },
@@ -243,7 +243,7 @@
                 "details":
                 {},
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "PROD test",
                 "title": "Manual"
             }
@@ -256,7 +256,7 @@
                 "details":
                 {},
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "STG test",
                 "title": "Manual"
             },
@@ -269,7 +269,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Deploy",
                 "title": "Octopus"
             },
@@ -282,7 +282,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable nonprt",
                 "title": "Click show F5 details"
             },
@@ -295,7 +295,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable prt",
                 "title": "Click show F5 details"
             },
@@ -308,7 +308,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable nonprt",
                 "title": "Click show F5 details"
             },
@@ -321,7 +321,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable prt",
                 "title": "Click show F5 details"
             },
@@ -334,7 +334,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "IIS reset",
                 "title": "Click show Teamcity details"
             },
@@ -347,7 +347,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Deploy",
                 "title": "Octopus"
             },
@@ -360,7 +360,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable nonprt",
                 "title": "Click show F5 details"
             },
@@ -373,7 +373,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Disable prt",
                 "title": "Click show F5 details"
             },
@@ -386,7 +386,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable nonprt",
                 "title": "Click show F5 details"
             },
@@ -399,7 +399,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "Enable prt",
                 "title": "Click show F5 details"
             },
@@ -412,7 +412,7 @@
                     {}
                 },
                 "start": "",
-                "status": "notstart",
+                "state": "notstart",
                 "text": "IIS reset",
                 "title": "Click show Teamcity details"
             }

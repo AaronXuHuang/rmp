@@ -366,7 +366,7 @@ def RP_UpdateState(orgunit, fix_version, env, id, text, time_item, state):
     tracker = json.loads(object[0]['tracker'])
     tracker[orgunit][env][id]['text'] = text
     tracker[orgunit][env][id][time_item] = time
-    tracker[orgunit][env][id]['status'] = state
+    tracker[orgunit][env][id]['state'] = state
     ReleaseProcess.objects.update_or_create(orgunit=orgunit, fixversion=fix_version, defaults={'tracker':json.dumps(tracker)})
 
 
