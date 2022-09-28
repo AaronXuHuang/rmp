@@ -2,7 +2,7 @@ from platform import release
 from unicodedata import name
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from app_jira.models import JiraProject
+from app_jira.models import JiraFixVersion, JiraProject
 import json
 import requests
 
@@ -156,6 +156,20 @@ def SaveJiraProjects(projects):
     for project in projects['projects']:
         bulk_data.append(JiraProject(id=project['id'], name=project['name'], key=project['key']))
     JiraProject.objects.bulk_create(bulk_data)
+
+
+def SaveJiraFixVersion(fix_versions):
+    bulk_data = []
+
+    for fix_version in fix_versions['fix_versions']:
+        bulk_data.append(JiraFixVersion(
+            id = fix_version['id'],
+            name = fix_version['name'],
+            description = fix_version['description'],
+            released = fix_version['released'],
+            projectid = fix_version['projectid'],
+            project = fix_version['project']))
+    JiraFixVersion.objects.bulk_create(bulk_data)
 
 
 def ConstructFixVersion(fix_versions_list):
