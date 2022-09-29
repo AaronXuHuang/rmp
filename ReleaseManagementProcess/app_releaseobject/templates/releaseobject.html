@@ -834,7 +834,7 @@
         $('#load-ro-button').attr('disabled', false)
         $('#create-ro-button').attr('disabled', false)
         $('#load-close').attr('disabled', false)
-        load_rp_state()
+        get_release_process_state_all()
       }
     })
   }
@@ -843,12 +843,6 @@
 <script type='text/javascript'>
   function create_rp_table() {
     console.log(orgunit)
-  }
-</script>
-
-<script type='text/javascript'>
-  function load_rp_state() {
-    get_release_process_state()
   }
 </script>
 
@@ -1132,6 +1126,29 @@
 </script>
 
 <script type='text/javascript'>
+  function get_release_process_state_all () {
+    $.ajax({
+      url: '/releaseobject/process/get/',
+      type: 'GET',
+      dataType: 'JSON',
+      data: {
+        orgunit: orgunit,
+        fixversion: fix_version
+      },
+      success: function(res) {
+        for (var state_env in bux_test) {
+          update_step_buttons(res[orgunit][state_env])
+          update_offcanvas_deploy_details_state(res[orgunit][state_env])
+          if (res[orgunit][state_env][state_env.toLowerCase() + '-test']['state'] == 'running') {
+            update_modal_info_for_test()
+          }
+        }
+      }
+    })
+  }
+</script>
+
+<script type='text/javascript'>
   function get_release_process_state () {
     $.ajax({
       url: '/releaseobject/process/get/',
@@ -1148,9 +1165,6 @@
           clearInterval(state_timeId)
           update_modal_info_for_test()
         }
-      },
-      error: function() {
-        restore_step_buttons()
       }
     })
   }
