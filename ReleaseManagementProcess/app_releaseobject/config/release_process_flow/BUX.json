@@ -1,0 +1,323 @@
+{
+    "BUX":
+    {
+        "process1":
+        {
+            "env": "PIE",
+            "flows":
+            {
+                "flow1":
+                {
+                    "label": "PIE",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_deploy_detail(\"pie\")"
+                            },
+                            "id": "pie-deploy",
+                            "text": "Deploy"
+                        }
+                    }
+                },
+                "flow2":
+                {
+                    "label": "PIE",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "data-bs-target": "#modal-success",
+                                "data-bs-toggle": "modal",
+                                "onclick": "update_success_text()"
+                            },
+                            "id": "pie-test",
+                            "text": "PIE test"
+                        }
+                    }
+                }
+            },
+            "name": "BUX_PIE Process"
+        },
+        "process2":
+        {
+            "env": "STG",
+            "flows":
+            {
+                "flow1":
+                {
+                    "label": "STG2",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"prt\", \"stg2\")"
+                            },
+                            "id": "stg2-disabled-prt",
+                            "text": "Disable prt"
+                        },
+                        "step2":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"nonprt\", \"stg2\")"
+                            },
+                            "id": "stg2-disabled-nonprt",
+                            "text": "Disable nonprt"
+                        },
+                        "step3":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg2-iisreset",
+                            "text": "IIS reset"
+                        },
+                        "step4":
+                        {
+                            "attr":
+                            {
+                                "show_running_env_deploy_detail(\"stg2\")"
+                            },
+                            "id": "stg2-deploy",
+                            "text": "Deploy"  
+                        },
+                        "step5":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg2-enabled-nonprt",
+                            "text": "Enable nonprt"  
+                        },
+                        "step6":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg2-enabled-prt",
+                            "text": "Enable prt"  
+                        }
+                    }
+                },
+                "flow2":
+                {
+                    "label": "STG1",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"prt\", \"stg1\")"
+                            },
+                            "id": "stg1-disabled-prt",
+                            "text": "Disable prt"
+                        },
+                        "step2":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"nonprt\", \"stg1\")"
+                            },
+                            "id": "stg1-disabled-nonprt",
+                            "text": "Disable nonprt"
+                        },
+                        "step3":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg1-iisreset",
+                            "text": "IIS reset"
+                        },
+                        "step4":
+                        {
+                            "attr":
+                            {
+                                "show_running_env_deploy_detail(\"stg1\")"
+                            },
+                            "id": "stg1-deploy",
+                            "text": "Deploy"  
+                        },
+                        "step5":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg1-enabled-nonprt",
+                            "text": "Enable nonprt"  
+                        },
+                        "step6":
+                        {
+                            "attr":
+                            {},
+                            "id": "stg1-enabled-prt",
+                            "text": "Enable prt"  
+                        }
+                    }
+                },
+                "flow3":
+                {
+                    "label": "STG",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "data-bs-target": "#modal-success",
+                                "data-bs-toggle": "modal",
+                                "onclick": "update_success_text()"
+                            },
+                            "id": "stg-test",
+                            "text": "STG test"
+                        }
+                    }
+                }
+            },
+            "name": "BUX_STG Process"
+        },
+        "process3":
+        {
+            "env": "PROD",
+            "flows":
+            {
+                "flow1":
+                {
+                    "label": "DC2",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"prt\", \"dc2\")"
+                            },
+                            "id": "dc2-disabled-prt",
+                            "text": "Disable prt"
+                        },
+                        "step2":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"nonprt\", \"dc2\")"
+                            },
+                            "id": "dc2-disabled-nonprt",
+                            "text": "Disable nonprt"
+                        },
+                        "step3":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc2-iisreset",
+                            "text": "IIS reset"
+                        },
+                        "step4":
+                        {
+                            "attr":
+                            {
+                                "show_running_env_deploy_detail(\"dc2\")"
+                            },
+                            "id": "dc2-deploy",
+                            "text": "Deploy"  
+                        },
+                        "step5":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc2-enabled-nonprt",
+                            "text": "Enable nonprt"  
+                        },
+                        "step6":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc2-enabled-prt",
+                            "text": "Enable prt"  
+                        }
+                    }
+                },
+                "flow2":
+                {
+                    "label": "DC1",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"prt\", \"dc1\")"
+                            },
+                            "id": "dc1-disabled-prt",
+                            "text": "Disable prt"
+                        },
+                        "step2":
+                        {
+                            "attr":
+                            {
+                                "onclick": "show_running_env_disable_detail(\"nonprt\", \"dc1\")"
+                            },
+                            "id": "dc1-disabled-nonprt",
+                            "text": "Disable nonprt"
+                        },
+                        "step3":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc1-iisreset",
+                            "text": "IIS reset"
+                        },
+                        "step4":
+                        {
+                            "attr":
+                            {
+                                "show_running_env_deploy_detail(\"dc1\")"
+                            },
+                            "id": "dc1-deploy",
+                            "text": "Deploy"  
+                        },
+                        "step5":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc1-enabled-nonprt",
+                            "text": "Enable nonprt"  
+                        },
+                        "step6":
+                        {
+                            "attr":
+                            {},
+                            "id": "dc1-enabled-prt",
+                            "text": "Enable prt"  
+                        }
+                    }
+                },
+                "flow3":
+                {
+                    "label": "PROD",
+                    "steps":
+                    {
+                        "step1":
+                        {
+                            "attr":
+                            {
+                                "data-bs-target": "#modal-success",
+                                "data-bs-toggle": "modal",
+                                "onclick": "update_success_text()"
+                            },
+                            "id": "prod-test",
+                            "text": "PROD test"
+                        }
+                    }
+                }
+            },
+            "name": "BUX_STG Process"
+        }
+    },
+    "CBS":
+    {},
+    "GWA":
+    {}
+}
