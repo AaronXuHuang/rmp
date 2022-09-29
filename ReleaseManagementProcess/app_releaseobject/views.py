@@ -47,6 +47,7 @@ def CreateReleaseObject(request):
     release_object = ConstructRO(release_object, fix_version, octo_space_id, octo_project_id_map, envs_map)
 
     SaveReleaseObject(orgunit, fix_version, release_object)
+    RP_InitState(orgunit, fix_version, "start")
  
     return JsonResponse(release_object)
 
@@ -308,7 +309,7 @@ def RunReleaseProcess(request):
 
     if orgunit == 'BUX':
         # print('thread run_rp_bux')
-        RP_InitState(orgunit, fix_version, state)
+        # RP_InitState(orgunit, fix_version, state)
         run_rp_bux = Thread(target=RunReleaseProcess_BUX, args=(fix_version, env))
         run_rp_bux.start()
 

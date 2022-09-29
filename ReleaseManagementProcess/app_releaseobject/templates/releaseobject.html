@@ -765,6 +765,7 @@
       },
       dataType: 'JSON',
       success: function(res) {
+        create_rp_table()
         update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been created')
         $('#load-ro-button').attr('disabled', false)
         $('#create-ro-button').attr('disabled', false)
@@ -833,15 +834,21 @@
         $('#load-ro-button').attr('disabled', false)
         $('#create-ro-button').attr('disabled', false)
         $('#load-close').attr('disabled', false)
-        load_rp(res)
+        load_rp_state()
       }
     })
   }
 </script>
 
 <script type='text/javascript'>
-  function load_rp(ro) {
-    console.log(ro)
+  function create_rp_table() {
+    console.log(orgunit)
+  }
+</script>
+
+<script type='text/javascript'>
+  function load_rp_state() {
+    get_release_process_state()
   }
 </script>
 
@@ -1141,8 +1148,17 @@
           clearInterval(state_timeId)
           update_modal_info_for_test()
         }
+      },
+      error: function() {
+        restore_step_buttons()
       }
     })
+  }
+</script>
+
+<script type='text/javascript'>
+  function restore_step_buttons() {
+
   }
 </script>
 
