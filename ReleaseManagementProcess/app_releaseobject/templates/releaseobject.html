@@ -1,31 +1,29 @@
-{% extends 'layout.html' %}
-{% load static %}
-{% block css %}
+{% extends 'layout.html' %} {% load static %} {% block css %}
 <style type="text/css">
   a:link {
     color: #206bc4;
     font-weight: 600;
   }
   .ro-component {
-    background-color:#2185D0;
+    background-color: #2185d0;
     font-size: 0.71rem;
-    color:white;
-    border-radius:0.18rem;
-    border-color:#2185D0;
+    color: white;
+    border-radius: 0.18rem;
+    border-color: #2185d0;
     padding-top: 0.1em;
     padding-right: 0.7em;
     padding-bottom: 0.1em;
     padding-left: 0.7em;
     font-weight: 500;
   }
-  .ro-env-span{
+  .ro-env-span {
     display: inline-block;
-    clear:both;
-    background-color:#767676;
+    clear: both;
+    background-color: #767676;
     font-size: 0.71rem;
-    color:white;
-    border-radius:0.18rem;
-    border-color:#767676;
+    color: white;
+    border-radius: 0.18rem;
+    border-color: #767676;
     padding-top: 0.1em;
     padding-right: 0.7em;
     padding-bottom: 0.1em;
@@ -34,42 +32,42 @@
     width: 80px;
     text-align: center;
   }
-  .ro-env-label{
+  .ro-env-label {
     margin: 0.2em;
     width: 80px;
     vertical-align: text-top;
   }
-  .ro-env-td{
+  .ro-env-td {
     width: 400px;
     border-width: 1px;
   }
-  .ro-issue-span{
-    clear:both;
+  .ro-issue-span {
+    clear: both;
     display: inline-block;
     line-height: 1;
-    background-color: #E8E8E8;
+    background-color: #e8e8e8;
     font-size: 0.63rem;
     color: rgb(232, 232, 232);
-    border-radius:0.18rem;
-    border-color:#767676;
+    border-radius: 0.18rem;
+    border-color: #767676;
     font-weight: 700;
     text-align: center;
     padding-top: 0.1em;
     padding-bottom: 0.1em;
     padding-right: 0.7em;
-    display: inline-block
+    display: inline-block;
   }
-  .ro-issue-td{
+  .ro-issue-td {
     width: 220px;
   }
-  .text-muted{
+  .text-muted {
     border-width: 1px;
     text-align: center;
   }
-  .btn-ro-release{
+  .btn-ro-release {
     background-color: #767676;
     font-size: 0.81rem;
-    color:white;
+    color: white;
     border-radius: 0.18rem;
     border-color: #767676;
     padding-top: 0.1em;
@@ -80,1362 +78,1896 @@
     width: 120px;
     text-align: center;
     margin-top: 5px;
-    margin-bottom: 5px
+    margin-bottom: 5px;
   }
-  .ro-env-name{
+  .ro-env-name {
     width: 40px;
-    background-color: rgba(75,84,98,.03);
+    background-color: rgba(75, 84, 98, 0.03);
     border-radius: 0.18rem;
     font-size: 0.61rem;
     text-align: center;
   }
-
 </style>
-{% endblock %}
+{% endblock %} {% block item_rs %}
+<li class="nav-item">{% endblock %} {% block item_ro %}</li>
 
-{% block item_rs %}
-<li class="nav-item">
-{% endblock %}
+<li class="nav-item active">{% endblock %} {% block item_aws %}</li>
 
-{% block item_ro %}
-<li class="nav-item active">
-{% endblock %}
+<li class="nav-item dropdown">{% endblock %} {% block item_f5 %}</li>
 
-{% block item_aws %}
+<li class="nav-item dropdown">{% endblock %} {% block item_ci %}</li>
+
+<li class="nav-item dropdown">{% endblock %} {% block item_ad %}</li>
+
+<li class="nav-item">{% endblock %} {% block item_hp %}</li>
+
 <li class="nav-item dropdown">
-{% endblock %}
-
-{% block item_f5 %}
-<li class="nav-item dropdown">
-{% endblock %}
-
-{% block item_ci %}
-<li class="nav-item dropdown">
-{% endblock %}
-
-{% block item_ad %}
-<li class="nav-item">
-{% endblock %}
-
-{% block item_hp %}
-<li class="nav-item dropdown">
-{% endblock %}
-
-{% block content %}
-<div class="page-wrapper">
-  <div class="container-xl">
-    <!-- Page title -->
-    <div class="page-header d-print-none">
-      <div class="row g-2 align-items-center">
-        <div class="col">
-          <div class="page-pretitle">
-            Release Object
-          </div>
-          <div class="card-header">
-            <h2 id='title_details' class="card-title">
-              RMP Release Object Details
-            </h2>
-            <div class="col-12 col-md-auto ms-auto d-print-none">
-              
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_deploy_detail("pie")'>Test A</button>
-              <button class="btn" data-bs-toggle="offcanvas" href="#step_details_deploy" aria-controls="offcanvasStart" onclick='show_running_env_deploy_detail("stg2")'>Test B</button>
-              
-              <button id='create-ro-button' class="btn" data-bs-toggle="modal" data-bs-target="#modal-create">
-                Create from Jira
-              </button>
-              <button id="load-ro-button" class="btn btn-primary" onclick="load_ro()">
-                Load Release Object
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="page-body">
+  {% endblock %} {% block content %}
+  <div class="page-wrapper">
     <div class="container-xl">
-      <div class="row row-cards">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">RMP orgunit</label>
-                <div class="col">
-                  <select id="rmp_orgunit" class="form-select" onchange="read_rmp_fix_version()">
-                    <option disabled selected value style="display:none"> </option>
-                    <option value="BUX">BUX</option>
-                    <option value="CBS">CBS</option>
-                    <option value="GWA">GWA</option>
-                  </select>
-                  <small class="form-hint">select orgunit to load existing release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">RMP fix version</label>
-                <div class="col">
-                  <select id="rmp_fix_version" class="form-select" disabled="">
-                  </select>
-                  <small class="form-hint">select fix version to load existing release object.</small>
-                </div>
-              </div>
-              <div class="form-group mb-3 row">
-                <label class="form-label col-3 col-form-label">Options</label>
-                <div class="col">
-                  <label class="form-check" style="margin-top: .5rem">
-                    <input id="rmp_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_rmp_fix_version()">
-                    <small class="form-hint">unreleased only</small>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="detail-table" class="container-xl" style="display: none">
-      <div class="row row-cards">
-        <div class="col-12">
-          <div class="card">
-            <div class="table-responsive">
-              <table class="table table-vcenter card-table">
-                <thead>
-                  <tr>
-                    <th style="text-align: center">Component</th>
-                    <th style="text-align: center">Release Version</th>
-                    <th style="text-align: center">Assembled</th>
-                    <th style="text-align: center">Environments</th>
-                    <th style="text-align: center">Latest</th>
-                    <th style="text-align: center">Issues</th>
-                  </tr>
-                </thead>
-                <tbody id="ro-table">
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="ro-process-title" class="container-xl" style="display: none">
-    <div class="page-header d-print-none">
-      <div class="row g-2 align-items-center">
-        <div class="col">
-          <div class="page-pretitle">
-            Release Object
-          </div>
-          <div class="card-header">
-            <h2 id='title_release_process' class="card-title"></h2>
-            <div class="col-12 col-md-auto ms-auto d-print-none">
-              <button id="start-release" class="btn btn-primary" disabled=true data-bs-toggle="modal" data-bs-target="#modal-info" onclick="update_modal_info_for_release()">
-                Start Release on PIE
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="ro-process-flow" class="page-body" style="display: none">
-    <div class="container-xl">
-      <div class="card">
-        <div id="release_process_table" class="card-body">
-          <div class="accordion" id="accordion-bux" style="display: none">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="heading-1">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="false">
-                  BUX_PIE Process
-                </button>
+      <!-- Page title -->
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <div class="page-pretitle">Release Object</div>
+            <div class="card-header">
+              <h2 id="title_details" class="card-title">
+                RMP Release Object Details
               </h2>
-              <div id="collapse-1" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
-                <div class="accordion-body pt-0">
-                  <div>
-                    <label class="ro-env-name">PIE</label>
-                    <button id="pie-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("pie")'>Deploy</button><br>
-                    <label class="ro-env-name">PIE</label>
-                    <button id="pie-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PIE test</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="heading-2">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
-                  BUX_STG Process
+              <div class="col-12 col-md-auto ms-auto d-print-none">
+                <button
+                  class="btn"
+                  data-bs-toggle="offcanvas"
+                  href="#step_details_deploy"
+                  aria-controls="offcanvasStart"
+                  onclick='show_running_env_deploy_detail("pie")'
+                >
+                  Test A
                 </button>
-              </h2>
-              <div id="collapse-2" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
-                <div class="accordion-body pt-0">
-                  <div>
-                    <label class="ro-env-name">STG2</label>
-                    <button id="stg2-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "stg2")'>Disable prt</button>
-                    <button id="stg2-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "stg2")'>Disable nonprt</button>
-                    <button id="stg2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="stg2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("stg2")'>Deploy</button>
-                    <button id="stg2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
-                    <button id="stg2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
-                    <label class="ro-env-name">STG1</label>
-                    <button id="stg1-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "stg1")'>Disable prt</button>
-                    <button id="stg1-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "stg1")'>Disable nonprt</button>
-                    <button id="stg1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="stg1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("stg1")'>Deploy</button>
-                    <button id="stg1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
-                    <button id="stg1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
-                    <label class="ro-env-name">STG</label>
-                    <button id="stg-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">STG test</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="heading-3">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
-                  BUX_PROD Process
+                <button
+                  class="btn"
+                  data-bs-toggle="offcanvas"
+                  href="#step_details_deploy"
+                  aria-controls="offcanvasStart"
+                  onclick='show_running_env_deploy_detail("stg2")'
+                >
+                  Test B
                 </button>
-              </h2>
-              <div id="collapse-3" class="accordion-collapse collapse" data-bs-parent="#accordion-bux" style="">
-                <div class="accordion-body pt-0">
-                  <div>
-                    <label class="ro-env-name">DC2</label>
-                    <button id="dc2-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "dc2")'>Disable prt</button>
-                    <button id="dc2-drain-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("prt", "dc2")'>Drain prt</button>
-                    <button id="dc2-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "dc2")'>Disable nonprt</button>
-                    <button id="dc2-drain-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("nonprt", "dc2")'>Drain nonprt</button>
-                    <button id="dc2-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="dc2-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("dc2")'>Deploy</button>
-                    <button id="dc2-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
-                    <button id="dc2-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
-                    <label class="ro-env-name">DC1</label>
-                    <button id="dc1-disabled-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("prt", "dc1")'>Disable prt</button>
-                    <button id="dc1-drain-prt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("prt", "dc2")'>Drain prt</button>
-                    <button id="dc1-disabled-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_disable_detail("nonprt", "dc1")'>Disable nonprt</button>
-                    <button id="dc1-drain-nonprt" class="btn btn-ro-release" disabled=true onclick='show_running_env_drain_detail("nonprt", "dc1")'>Drain nonprt</button>
-                    <button id="dc1-iisreset" class="btn btn-ro-release" disabled=true>IIS reset</button>
-                    <button id="dc1-deploy" class="btn btn-ro-release" disabled=true onclick='show_running_env_deploy_detail("dc1")'>Deploy</button>
-                    <button id="dc1-enabled-nonprt" class="btn btn-ro-release" disabled=true>Enable nonprt</button>
-                    <button id="dc1-enabled-prt" class="btn btn-ro-release" disabled=true>Enable prt</button><br>
-                    <label class="ro-env-name">PROD</label>
-                    <button id="prod-test" class="btn btn-ro-release" data-bs-toggle="modal" data-bs-target="#modal-success" disabled=true onclick="update_success_text()">PROD test</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="modal modal-blur fade" id="modal-info" tabindex="-1" style="display: none" aria-modal="false" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 id="modal-info-title" class="modal-title">Ready to release</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                  id="create-ro-button"
+                  class="btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-create"
+                >
+                  Create from Jira
+                </button>
+                <button
+                  id="load-ro-button"
+                  class="btn btn-primary"
+                  onclick="load_ro()"
+                >
+                  Load Release Object
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="modal-info-text" class="modal-body">
-        Ready to start deployment for PIE?
+    </div>
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-cards">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="form-group mb-3 row">
+                  <label class="form-label col-3 col-form-label"
+                    >RMP orgunit</label
+                  >
+                  <div class="col">
+                    <select
+                      id="rmp_orgunit"
+                      class="form-select"
+                      onchange="read_rmp_fix_version()"
+                    >
+                      <option
+                        disabled
+                        selected
+                        value
+                        style="display: none"
+                      ></option>
+                      <option value="BUX">BUX</option>
+                      <option value="CBS">CBS</option>
+                      <option value="GWA">GWA</option>
+                    </select>
+                    <small class="form-hint"
+                      >select orgunit to load existing release object.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group mb-3 row">
+                  <label class="form-label col-3 col-form-label"
+                    >RMP fix version</label
+                  >
+                  <div class="col">
+                    <select
+                      id="rmp_fix_version"
+                      class="form-select"
+                      disabled=""
+                    ></select>
+                    <small class="form-hint"
+                      >select fix version to load existing release
+                      object.</small
+                    >
+                  </div>
+                </div>
+                <div class="form-group mb-3 row">
+                  <label class="form-label col-3 col-form-label">Options</label>
+                  <div class="col">
+                    <label class="form-check" style="margin-top: 0.5rem">
+                      <input
+                        id="rmp_released_only"
+                        class="form-check-input"
+                        type="checkbox"
+                        checked=""
+                        onclick="read_rmp_fix_version()"
+                      />
+                      <small class="form-hint">unreleased only</small>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button id="confirm-yes" type="button" class="btn btn-primary" data-bs-dismiss="modal"></button>
+      <div id="detail-table" class="container-xl" style="display: none">
+        <div class="row row-cards">
+          <div class="col-12">
+            <div class="card">
+              <div class="table-responsive">
+                <table class="table table-vcenter card-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">Component</th>
+                      <th style="text-align: center">Release Version</th>
+                      <th style="text-align: center">Assembled</th>
+                      <th style="text-align: center">Environments</th>
+                      <th style="text-align: center">Latest</th>
+                      <th style="text-align: center">Issues</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ro-table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ro-process-title" class="container-xl" style="display: none">
+      <div class="page-header d-print-none">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <div class="page-pretitle">Release Object</div>
+            <div class="card-header">
+              <h2 id="title_release_process" class="card-title"></h2>
+              <div class="col-12 col-md-auto ms-auto d-print-none">
+                <button
+                  id="start-release"
+                  class="btn btn-primary"
+                  disabled="true"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-info"
+                  onclick="update_modal_info_for_release()"
+                >
+                  Start Release on PIE
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="ro-process-flow" class="page-body" style="display: none">
+      <div class="container-xl">
+        <div class="card">
+          <div id="release_process_table" class="card-body">
+            <div class="accordion" id="accordion-bux" style="display: none">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-1">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-1"
+                    aria-expanded="false"
+                  >
+                    BUX_PIE Process
+                  </button>
+                </h2>
+                <div
+                  id="collapse-1"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-bux"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div>
+                      <label class="ro-env-name">PIE</label>
+                      <button
+                        id="pie-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("pie")'
+                      >
+                        Deploy</button
+                      ><br />
+                      <label class="ro-env-name">PIE</label>
+                      <button
+                        id="pie-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        PIE test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-2">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-2"
+                    aria-expanded="false"
+                  >
+                    BUX_STG Process
+                  </button>
+                </h2>
+                <div
+                  id="collapse-2"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-bux"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div>
+                      <label class="ro-env-name">STG2</label>
+                      <button
+                        id="stg2-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "stg2")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="stg2-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "stg2")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="stg2-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="stg2-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("stg2")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="stg2-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="stg2-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">STG1</label>
+                      <button
+                        id="stg1-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "stg1")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="stg1-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "stg1")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="stg1-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="stg1-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("stg1")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="stg1-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="stg1-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">STG</label>
+                      <button
+                        id="stg-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        STG test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-3">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-3"
+                    aria-expanded="false"
+                  >
+                    BUX_PROD Process
+                  </button>
+                </h2>
+                <div
+                  id="collapse-3"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#accordion-bux"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div>
+                      <label class="ro-env-name">DC2</label>
+                      <button
+                        id="dc2-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "dc2")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="dc2-drain-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("prt", "dc2")'
+                      >
+                        Drain prt
+                      </button>
+                      <button
+                        id="dc2-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "dc2")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="dc2-drain-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("nonprt", "dc2")'
+                      >
+                        Drain nonprt
+                      </button>
+                      <button
+                        id="dc2-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="dc2-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("dc2")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="dc2-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="dc2-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">DC1</label>
+                      <button
+                        id="dc1-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "dc1")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="dc1-drain-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("prt", "dc2")'
+                      >
+                        Drain prt
+                      </button>
+                      <button
+                        id="dc1-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "dc1")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="dc1-drain-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("nonprt", "dc1")'
+                      >
+                        Drain nonprt
+                      </button>
+                      <button
+                        id="dc1-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="dc1-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("dc1")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="dc1-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="dc1-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">PROD</label>
+                      <button
+                        id="prod-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        PROD test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal modal-blur fade" id="modal-success" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-status bg-success"></div>
-      <div class="modal-body text-center py-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2l4 -4"></path></svg>
-        <h3 id='test-pass'></h3>
-        <div class="text-muted">
-          Click <code>Test passed</code> button and continue the release.
+  <div
+    class="modal modal-blur fade"
+    id="modal-info"
+    tabindex="-1"
+    style="display: none"
+    aria-modal="false"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-info-title" class="modal-title">Ready to release</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div id="modal-info-text" class="modal-body">
+          Ready to start deployment for PIE?
+        </div>
+        <div class="modal-footer">
+          <button
+            id="confirm-yes"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          ></button>
         </div>
       </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                Cancel
-              </a></div>
+    </div>
+  </div>
+
+  <div
+    class="modal modal-blur fade"
+    id="modal-success"
+    tabindex="-1"
+    style="display: none"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-status bg-success"></div>
+        <div class="modal-body text-center py-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon mb-2 text-green icon-lg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M9 12l2 2l4 -4"></path>
+          </svg>
+          <h3 id="test-pass"></h3>
+          <div class="text-muted">
+            Click <code>Test passed</code> button and continue the release.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="w-100">
+            <div class="row">
+              <div class="col">
+                <a href="#" class="btn w-100" data-bs-dismiss="modal">
+                  Cancel
+                </a>
+              </div>
+              <div class="col">
+                <button
+                  class="btn btn-success w-100"
+                  data-bs-dismiss="modal"
+                  onclick="update_test_success()"
+                >
+                  Test passed
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal modal-blur fade"
+    id="modal-error"
+    tabindex="-1"
+    style="display: none"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-status bg-danger"></div>
+        <div class="modal-body text-center py-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon mb-2 text-danger icon-lg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 9v2m0 4v.01"></path>
+            <path
+              d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"
+            ></path>
+          </svg>
+          <h3 id="error-title"></h3>
+          <div id="error-text" class="text-muted"></div>
+        </div>
+        <div class="modal-footer">
+          <div class="w-100">
+            <div class="row">
+              <div class="col">
+                <a
+                  href="#"
+                  class="btn btn-danger w-100"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal modal-blur fade"
+    id="modal-create"
+    tabindex="-1"
+    style="display: none"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create RMP Release Object from Jira</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3 row">
+            <label class="form-label col-3 col-form-label">Jira project</label>
             <div class="col">
-              <button class="btn btn-success w-100" data-bs-dismiss="modal" onclick="update_test_success()">
-                Test passed
-              </button>
+              <select
+                id="jira_project"
+                class="form-select"
+                onchange="read_jira_fix_version()"
+              >
+                <option disabled selected style="display: none"></option>
+                <option value="BUX">BUX</option>
+                <option value="CBS">CBS</option>
+                <option value="GWA">GWA</option>
+              </select>
+              <small class="form-hint"
+                >select project to create new release object.</small
+              >
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label class="form-label col-3 col-form-label"
+              >Jira fix version</label
+            >
+            <div class="col">
+              <select
+                id="jira_fix_version"
+                class="form-select"
+                disabled=""
+              ></select>
+              <small class="form-hint"
+                >select fix version to create new release object.</small
+              >
+            </div>
+          </div>
+          <div class="form-group mb-3 row">
+            <label class="form-label col-3 col-form-label">Options</label>
+            <div class="col">
+              <label class="form-check" style="margin-top: 0.5rem">
+                <input
+                  id="jira_released_only"
+                  class="form-check-input"
+                  type="checkbox"
+                  checked=""
+                  onclick="read_jira_fix_version()"
+                />
+                <small class="form-hint">unreleased only</small>
+              </label>
+            </div>
+          </div>
+          <div class="form-footer">
+            <div class="row align-items-center">
+              <div class="col"></div>
+              <div class="col-auto">
+                <button class="btn btn-primary" onclick="create_ro()">
+                  Create
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal modal-blur fade" id="modal-error" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-status bg-danger"></div>
-      <div class="modal-body text-center py-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v2m0 4v.01"></path><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path></svg>
-        <h3 id="error-title"></h3>
-        <div id="error-text" class="text-muted"></div>
-      </div>
-      <div class="modal-footer">
-        <div class="w-100">
-          <div class="row">
-            <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                Close
-              </a></div>
-          </div>
+  <div
+    class="modal modal-blur fade"
+    id="modal-load-bar"
+    tabindex="-1"
+    style="display: none"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">RMP Release Object</h5>
+        </div>
+        <div class="modal-body">
+          <div id="ro_progress_text"></div>
+          <div id="ro_progress_bar"></div>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="load-close"
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="modal modal-blur fade" id="modal-create" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Create RMP Release Object from Jira</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div
+    class="offcanvas offcanvas-start"
+    tabindex="-1"
+    id="step_details_deploy"
+    aria-labelledby="offcanvasStartLabel"
+    aria-modal="true"
+    role="dialog"
+    style="visibility: visible; width: 600px"
+  >
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="mt-3">
+        <div id="rop-step-details-body" class="page-pretitle"></div>
       </div>
-      <div class="modal-body">
-        <div class="form-group mb-3 row">
-          <label class="form-label col-3 col-form-label">Jira project</label>
-          <div class="col">
-            <select id="jira_project" class="form-select" onchange="read_jira_fix_version()">
-              <option disabled selected style="display:none"></option>
-              <option value="BUX">BUX</option>
-              <option value="CBS">CBS</option>
-              <option value="GWA">GWA</option>
-            </select>
-            <small class="form-hint">select project to create new release object.</small>
-          </div>
+      <div class="mt-3">
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <thead id="rp_step_detail_theader">
+              <tr>
+                <th>Component</th>
+                <th>State</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody id="rp_step_detail_pie_deploy" style="display: none"></tbody>
+            <tbody
+              id="rp_step_detail_stg2_deploy"
+              style="display: none"
+            ></tbody>
+            <tbody
+              id="rp_step_detail_stg1_deploy"
+              style="display: none"
+            ></tbody>
+            <tbody id="rp_step_detail_dc2_deploy" style="display: none"></tbody>
+            <tbody id="rp_step_detail_dc1_deploy" style="display: none"></tbody>
+            <tbody id="rp_step_detail_stg2_disable_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_STG2_POOL_PRT</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_stg1_disable_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_STG1_POOL_PRT</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody
+              id="rp_step_detail_stg2_disable_nonprt"
+              style="display: none"
+            >
+              <tr>
+                <td id="">MOCK_BUX_STG2_POOL_NONPRT_A</td>
+                <td id="">Running</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_STG2_POOL_NONPRT_B</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody
+              id="rp_step_detail_stg1_disable_nonprt"
+              style="display: none"
+            >
+              <tr>
+                <td id="">MOCK_BUX_STG1_POOL_NONPRT_A</td>
+                <td id="">Running</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_STG1_POOL_NONPRT_B</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc2_disable_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_PRT</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc1_disable_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_PRT</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc2_disable_nonprt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_A</td>
+                <td id="">Running</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_B</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc1_disable_nonprt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_A</td>
+                <td id="">Running</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_B</td>
+                <td id="">Running</td>
+              </tr>
+            </tbody>
+            <!---->
+            <tbody id="rp_step_detail_dc2_drain_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_PRT_MEMBER_A</td>
+                <td id="">101</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_PRT_MEMBER_B</td>
+                <td id="">102</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_PRT_MEMBER_C</td>
+                <td id="">103</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_PRT_MEMBER_D</td>
+                <td id="">104</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc1_drain_prt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_PRT_MEMBER_A</td>
+                <td id="">201</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_PRT_MEMBER_B</td>
+                <td id="">202</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_PRT_MEMBER_C</td>
+                <td id="">203</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_PRT_MEMBER_D</td>
+                <td id="">204</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc2_drain_nonprt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_MEMBER_A</td>
+                <td id="">301</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_MEMBER_B</td>
+                <td id="">302</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_MEMBER_C</td>
+                <td id="">303</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC2_POOL_NONPRT_MEMBER_D</td>
+                <td id="">304</td>
+              </tr>
+            </tbody>
+            <tbody id="rp_step_detail_dc1_drain_nonprt" style="display: none">
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_MEMBER_A</td>
+                <td id="">401</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_MEMBER_B</td>
+                <td id="">402</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_MEMBER_C</td>
+                <td id="">403</td>
+              </tr>
+              <tr>
+                <td id="">MOCK_BUX_DC1_POOL_NONPRT_MEMBER_D</td>
+                <td id="">404</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="form-group mb-3 row">
-          <label class="form-label col-3 col-form-label">Jira fix version</label>
-          <div class="col">
-            <select id="jira_fix_version" class="form-select" disabled="">
-            </select>
-            <small class="form-hint">select fix version to create new release object.</small>
-          </div>
-        </div>
-        <div class="form-group mb-3 row">
-          <label class="form-label col-3 col-form-label">Options</label>
-          <div class="col">
-            <label class="form-check" style="margin-top: .5rem">
-              <input id="jira_released_only" class="form-check-input" type="checkbox" checked="" onclick="read_jira_fix_version()">
-              <small class="form-hint">unreleased only</small>
-            </label>
-          </div>
-        </div>
-        <div class="form-footer">
-          <div class="row align-items-center">
-            <div class="col"></div>
-            <div class="col-auto">
-              <button class="btn btn-primary" onclick="create_ro()">Create</button>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div class="mt-3">
+        <button class="btn" type="button" data-bs-dismiss="offcanvas">
+          Close
+        </button>
       </div>
     </div>
   </div>
-</div>
+  {% endblock %} {% block js %}
+  <script>
+    env = "PIE";
+    state_timeId = "";
+    running_id = "";
+    bux_test = {
+      PIE: "",
+      STG: "",
+      PROD: "",
+    };
+    bux_deployment_env = ["PIE", "STG", "PROD"];
+    bux_deployment_sub_env = ["PIE", "STG2", "STG1", "DC2", "DC1"];
+  </script>
 
-<div class="modal modal-blur fade" id="modal-load-bar" tabindex="-1" style="display: none" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">RMP Release Object</h5>
-      </div>
-      <div class="modal-body">
-        <div id="ro_progress_text">
-        </div>
-        <div id="ro_progress_bar">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="load-close" type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <script type="text/javascript">
+    window.onload = function () {
+      $("#modal-info").modal({ backdrop: false, keyboard: false });
+      $("#modal-success").modal({ backdrop: false, keyboard: false });
+      $("#modal-error").modal({ backdrop: false, keyboard: false });
+      $("#modal-create").modal({ backdrop: false, keyboard: false });
+      $("#modal-load-bar").modal({ backdrop: false, keyboard: false });
+    };
+  </script>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="step_details_deploy" aria-labelledby="offcanvasStartLabel" aria-modal="true" role="dialog" style="visibility: visible; width:600px">
-  <div class="offcanvas-header">
-    <h2 class="offcanvas-title" id="rop-step-details-title"></h2>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="mt-3">
-      <div id='rop-step-details-body' class="page-pretitle">
-      </div>
-    </div>
-    <div class="mt-3">
-      <div class="table-responsive">
-        <table class="table table-vcenter card-table">
-          <thead id='rp_step_detail_theader'>
-            <tr>
-              <th>Component</th>
-              <th>State</th>
-              <th>Duration</th>
-            </tr>
-          </thead>
-          <tbody id='rp_step_detail_pie_deploy' style="display: none">
-          </tbody>
-          <tbody id='rp_step_detail_stg2_deploy' style="display: none">
-          </tbody>
-          <tbody id='rp_step_detail_stg1_deploy' style="display: none">
-          </tbody>
-          <tbody id='rp_step_detail_dc2_deploy' style="display: none">
-          </tbody>
-          <tbody id='rp_step_detail_dc1_deploy' style="display: none">
-          </tbody>
-          <tbody id='rp_step_detail_stg2_disable_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_STG2_POOL_PRT</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_stg1_disable_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_STG1_POOL_PRT</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_stg2_disable_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_STG2_POOL_NONPRT_A</td>
-              <td id=''>Running</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_STG2_POOL_NONPRT_B</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_stg1_disable_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_STG1_POOL_NONPRT_A</td>
-              <td id=''>Running</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_STG1_POOL_NONPRT_B</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc2_disable_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_PRT</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc1_disable_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_PRT</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc2_disable_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_A</td>
-              <td id=''>Running</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_B</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc1_disable_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_A</td>
-              <td id=''>Running</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_B</td>
-              <td id=''>Running</td>
-            </tr>
-          </tbody>
-          <!---->
-          <tbody id='rp_step_detail_dc2_drain_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_A</td>
-              <td id=''>101</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_B</td>
-              <td id=''>102</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_C</td>
-              <td id=''>103</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_PRT_MEMBER_D</td>
-              <td id=''>104</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc1_drain_prt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_A</td>
-              <td id=''>201</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_B</td>
-              <td id=''>202</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_C</td>
-              <td id=''>203</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_PRT_MEMBER_D</td>
-              <td id=''>204</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc2_drain_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_A</td>
-              <td id=''>301</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_B</td>
-              <td id=''>302</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_C</td>
-              <td id=''>303</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC2_POOL_NONPRT_MEMBER_D</td>
-              <td id=''>304</td>
-            </tr>
-          </tbody>
-          <tbody id='rp_step_detail_dc1_drain_nonprt' style="display: none">
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_A</td>
-              <td id=''>401</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_B</td>
-              <td id=''>402</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_C</td>
-              <td id=''>403</td>
-            </tr>
-            <tr>
-              <td id=''>MOCK_BUX_DC1_POOL_NONPRT_MEMBER_D</td>
-              <td id=''>404</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="mt-3">
-      <button class="btn" type="button" data-bs-dismiss="offcanvas">
-        Close
-      </button>
-    </div>
-  </div>
-</div>
-{% endblock %}
+  <script type="text/javascript">
+    function read_jira_fix_version() {
+      project = $("#jira_project").val();
+      released = document.getElementById("jira_released_only").checked;
+      $.ajax({
+        url: "/jira/fixversion/get/",
+        type: "GET",
+        data: {
+          project: project,
+          released: !released,
+        },
+        dataType: "JSON",
+        success: function (res) {
+          var jira_fix_version =
+            '<option disabled selected style="display:none"></option>';
+          var fix_versions = res["fix_versions"];
 
-{% block js %}
-<script>
-  env = 'PIE'
-  state_timeId = ''
-  running_id = ''
-  bux_test = {
-    'PIE': '',
-    'STG': '',
-    'PROD': ''
-  }
-  bux_deployment_env = ['PIE', 'STG', 'PROD']
-  bux_deployment_sub_env = ['PIE', 'STG2', 'STG1', 'DC2', 'DC1']
-</script>
-
-<script type='text/javascript'>
-  window.onload = function () {
-    $('#modal-info').modal({ backdrop: false, keyboard: false })
-    $('#modal-success').modal({ backdrop: false, keyboard: false })
-    $('#modal-error').modal({ backdrop: false, keyboard: false })
-    $('#modal-create').modal({ backdrop: false, keyboard: false })
-    $('#modal-load-bar').modal({ backdrop: false, keyboard: false })
-  }
-</script>
-
-<script type='text/javascript'>
-  function read_jira_fix_version() {
-    project = $("#jira_project").val()
-    released = document.getElementById("jira_released_only").checked
-    $.ajax({
-      url: '/jira/fixversion/get/',
-      type: 'GET',
-      data: {
-        project: project,
-        released: !released
-      },
-      dataType: 'JSON',
-      success: function(res) {
-        var jira_fix_version = '<option disabled selected style="display:none"></option>'
-        var fix_versions = res['fix_versions']
-
-        if (fix_versions.length > 0){
-          $('#jira_fix_version').prop('disabled', false)
-        }
-        else{
-          $('#jira_fix_version').prop('disabled', true)
-        }
-        for (let i = 0; i < fix_versions.length; i++) {
-          var fix_version_name = fix_versions[i].name
-          jira_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
-        }
-        $('#jira_fix_version').html(jira_fix_version)
-      }
-    })
-  }
-</script>
-
-<script type='text/javascript'>
-  function read_rmp_fix_version() {
-    orgunit = $("#rmp_orgunit").val()
-    $.ajax({
-      url: '/releaseobject/fixversion/get/',
-      type: 'GET',
-      data: {
-        orgunit: orgunit
-      },
-      dataType: 'JSON',
-      success: function(res) {
-        var rmp_fix_version = '<option disabled selected style="display:none"></option>'
-        var fix_versions = res['fix_versions']
-        if (fix_versions.length > 0){
-          $('#rmp_fix_version').prop('disabled', false)
-        }
-        else{
-          $('#rmp_fix_version').prop('disabled', true)
-        }
-        for (let i = 0; i < fix_versions.length; i++) {
-          var fix_version_name = fix_versions[i]
-          rmp_fix_version += '<option value="' + fix_version_name + '">' + fix_version_name + '</option>'
-        }
-        $('#rmp_fix_version').html(rmp_fix_version)
-      }
-    })
-  }
-</script>
-
-<script type='text/javascript'>
-  function create_ro() {
-    $('#load-ro-button').attr('disabled', true)
-    $('#create-ro-button').attr('disabled', true)
-    $('#load-close').attr('disabled', true)
-
-    jira_project = $("#jira_project").val()
-    jira_fix_version = $("#jira_fix_version").val()
-    if ((jira_project==null) || (jira_fix_version==null)){
-      $('#error-title').text('Error!')
-      $('#error-text').html('<strong>Orgunit</strong> or <strong>fix version</strong> is empty!')
-      $('#modal-create').modal('hide')
-      $('#modal-error').modal('show')
-      $('#load-ro-button').attr('disabled', false)
-      $('#create-ro-button').attr('disabled', false)
-      return
+          if (fix_versions.length > 0) {
+            $("#jira_fix_version").prop("disabled", false);
+          } else {
+            $("#jira_fix_version").prop("disabled", true);
+          }
+          for (let i = 0; i < fix_versions.length; i++) {
+            var fix_version_name = fix_versions[i].name;
+            jira_fix_version +=
+              '<option value="' +
+              fix_version_name +
+              '">' +
+              fix_version_name +
+              "</option>";
+          }
+          $("#jira_fix_version").html(jira_fix_version);
+        },
+      });
     }
+  </script>
 
-    var ro_name = jira_project + '-' + jira_fix_version
+  <script type="text/javascript">
+    function read_rmp_fix_version() {
+      orgunit = $("#rmp_orgunit").val();
+      $.ajax({
+        url: "/releaseobject/fixversion/get/",
+        type: "GET",
+        data: {
+          orgunit: orgunit,
+        },
+        dataType: "JSON",
+        success: function (res) {
+          var rmp_fix_version =
+            '<option disabled selected style="display:none"></option>';
+          var fix_versions = res["fix_versions"];
+          if (fix_versions.length > 0) {
+            $("#rmp_fix_version").prop("disabled", false);
+          } else {
+            $("#rmp_fix_version").prop("disabled", true);
+          }
+          for (let i = 0; i < fix_versions.length; i++) {
+            var fix_version_name = fix_versions[i];
+            rmp_fix_version +=
+              '<option value="' +
+              fix_version_name +
+              '">' +
+              fix_version_name +
+              "</option>";
+          }
+          $("#rmp_fix_version").html(rmp_fix_version);
+        },
+      });
+    }
+  </script>
 
-    $('#ro-table').html('')
-    $('#modal-create').modal('hide')
-    $('#modal-load-bar').modal('show')
-    $('#detail-table').css({'display': 'none'})
-    $('#ro-process-title').css({'display': 'none'})
-    $('#ro-process-flow').css({'display': 'none'})
-    update_progress_bar('running', 'Creating RMP Release Object <strong>' + ro_name + '</strong>')
+  <script type="text/javascript">
+    function create_ro() {
+      $("#load-ro-button").attr("disabled", true);
+      $("#create-ro-button").attr("disabled", true);
+      $("#load-close").attr("disabled", true);
 
-    $.ajax({
-      url: '/releaseobject/create/',
-      type: 'GET',
-      data: {
-        orgunit: jira_project,
-        fixversion: jira_fix_version
-      },
-      dataType: 'JSON',
-      success: function(res) {
-        create_rp_table()
-        update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been created')
-        $('#load-ro-button').attr('disabled', false)
-        $('#create-ro-button').attr('disabled', false)
-        $('#load-close').attr('disabled', false)
-        $("#rmp_orgunit ").get(0).selectedIndex=0
-        $("#rmp_fix_version ").get(0).selectedIndex=0
-        $("#rmp_fix_version ").attr('disabled', true)
+      jira_project = $("#jira_project").val();
+      jira_fix_version = $("#jira_fix_version").val();
+      if (jira_project == null || jira_fix_version == null) {
+        $("#error-title").text("Error!");
+        $("#error-text").html(
+          "<strong>Orgunit</strong> or <strong>fix version</strong> is empty!"
+        );
+        $("#modal-create").modal("hide");
+        $("#modal-error").modal("show");
+        $("#load-ro-button").attr("disabled", false);
+        $("#create-ro-button").attr("disabled", false);
+        return;
       }
-    })
-  }
-</script>
 
-<script type='text/javascript'>
-  function load_ro(orgunit, fix_version) {
-    $('#load-ro-button').attr('disabled', true)
-    $('#create-ro-button').attr('disabled', true)
-    $('#load-close').attr('disabled', true)
+      var ro_name = jira_project + "-" + jira_fix_version;
 
-    if ((typeof(orgunit)=='undefined') || (typeof(fix_version)=='undefined')){
-      orgunit = $("#rmp_orgunit").val()
-      fix_version = $("#rmp_fix_version").val()
+      $("#ro-table").html("");
+      $("#modal-create").modal("hide");
+      $("#modal-load-bar").modal("show");
+      $("#detail-table").css({ display: "none" });
+      $("#ro-process-title").css({ display: "none" });
+      $("#ro-process-flow").css({ display: "none" });
+      update_progress_bar(
+        "running",
+        "Creating RMP Release Object <strong>" + ro_name + "</strong>"
+      );
+
+      $.ajax({
+        url: "/releaseobject/create/",
+        type: "GET",
+        data: {
+          orgunit: jira_project,
+          fixversion: jira_fix_version,
+        },
+        dataType: "JSON",
+        success: function (res) {
+          create_rp_table();
+          update_progress_bar(
+            "done",
+            "RMP Release Object <strong>" +
+              ro_name +
+              "</strong> has been created"
+          );
+          $("#load-ro-button").attr("disabled", false);
+          $("#create-ro-button").attr("disabled", false);
+          $("#load-close").attr("disabled", false);
+          $("#rmp_orgunit ").get(0).selectedIndex = 0;
+          $("#rmp_fix_version ").get(0).selectedIndex = 0;
+          $("#rmp_fix_version ").attr("disabled", true);
+        },
+      });
     }
-    
-    if ((orgunit==null) || (fix_version==null)){
-      $('#error-title').text('Error!')
-      $('#error-text').html('<strong>Orgunit</strong> or <strong>fix version</strong> is empty!')
-      $('#modal-load-bar').modal('hide')
-      $('#modal-error').modal('show')
-      $('#load-ro-button').attr('disabled', false)
-      $('#create-ro-button').attr('disabled', false)
-      $('#load-close').attr('disabled', false)
-      return
-    }
+  </script>
 
-    var ro_name = orgunit + '-' + fix_version
-    var details_text = ro_name + ' Details'
-    var release_process = ro_name + ' Release Process'
+  <script type="text/javascript">
+    function load_ro(orgunit, fix_version) {
+      $("#load-ro-button").attr("disabled", true);
+      $("#create-ro-button").attr("disabled", true);
+      $("#load-close").attr("disabled", true);
 
-    $('#ro-table').html('')
-    $('#modal-load-bar').modal('show')
-    $('#detail-table').css({'display': 'none'})
-    $('#ro-process-title').css({'display': 'none'})
-    $('#ro-process-flow').css({'display': 'none'})
-    update_progress_bar('running', 'Loading RMP Release Object <strong>' + ro_name + '</strong>')
-
-    $.ajax({
-      url: '/releaseobject/get/',
-      type: 'GET',
-      data: {
-        orgunit: orgunit,
-        fixversion: fix_version
-      },
-      dataType: 'JSON',
-      success: function(res) {
-        create_ro_table(res)
-        save_rp_components(res)
-        update_offcanvas_deploy_details_component(res)
-        update_progress_bar('done', 'RMP Release Object <strong>' + ro_name + '</strong> has been loaded')
-        show_release_process_table(orgunit)
-        $('#title_details').text(details_text)
-        $('#title_release_process').text(release_process)
-        $('#start-release').attr('disabled', false)
-        $('#detail-table').css({'display': 'block'})
-        $('#ro-process-title').css({'display': 'block'})
-        $('#ro-process-flow').css({'display': 'block'})
-        $('#load-ro-button').attr('disabled', false)
-        $('#create-ro-button').attr('disabled', false)
-        $('#load-close').attr('disabled', false)
-        get_release_process_state_all()
+      if (typeof orgunit == "undefined" || typeof fix_version == "undefined") {
+        orgunit = $("#rmp_orgunit").val();
+        fix_version = $("#rmp_fix_version").val();
       }
-    })
-  }
-</script>
 
-<script type='text/javascript'>
-  function create_rp_table() {
-    console.log(orgunit)
-  }
-</script>
+      if (orgunit == null || fix_version == null) {
+        $("#error-title").text("Error!");
+        $("#error-text").html(
+          "<strong>Orgunit</strong> or <strong>fix version</strong> is empty!"
+        );
+        $("#modal-load-bar").modal("hide");
+        $("#modal-error").modal("show");
+        $("#load-ro-button").attr("disabled", false);
+        $("#create-ro-button").attr("disabled", false);
+        $("#load-close").attr("disabled", false);
+        return;
+      }
 
-<script type='text/javascript'>
-  function create_ro_table(ro) {
-    fix_version = ro['information']['fixversion']
-    orgunit = ro['information']['orgunit']
-    octo_space = ro['information']['space']
+      var ro_name = orgunit + "-" + fix_version;
+      var details_text = ro_name + " Details";
+      var release_process = ro_name + " Release Process";
 
-    for (component_name in ro[fix_version]) {
-      release_version = ro[fix_version][component_name]['releaseversion']
-      assembled = ro[fix_version][component_name]['releaseassembled']
-      environments = ro[fix_version][component_name]['environments']
-      latest = ro[fix_version][component_name]['latest']
-      issues = ro[fix_version][component_name]['issues']
+      $("#ro-table").html("");
+      $("#modal-load-bar").modal("show");
+      $("#detail-table").css({ display: "none" });
+      $("#ro-process-title").css({ display: "none" });
+      $("#ro-process-flow").css({ display: "none" });
+      update_progress_bar(
+        "running",
+        "Loading RMP Release Object <strong>" + ro_name + "</strong>"
+      );
 
-      td = create_component(component_name, octo_space)
-      td += create_release_version(component_name, release_version, octo_space)
-      td += create_assembled(assembled)
-      td += create_environments(environments)
-      td += create_latest(release_version, latest)
-      td += create_issues(issues)
-      tr = '<tr>' + td + '</tr>'
-
-      $('#ro-table').append(tr)
+      $.ajax({
+        url: "/releaseobject/get/",
+        type: "GET",
+        data: {
+          orgunit: orgunit,
+          fixversion: fix_version,
+        },
+        dataType: "JSON",
+        success: function (res) {
+          create_ro_table(res);
+          save_rp_components(res);
+          update_offcanvas_deploy_details_component(res);
+          update_progress_bar(
+            "done",
+            "RMP Release Object <strong>" +
+              ro_name +
+              "</strong> has been loaded"
+          );
+          show_release_process_table(orgunit);
+          $("#title_details").text(details_text);
+          $("#title_release_process").text(release_process);
+          $("#start-release").attr("disabled", false);
+          $("#detail-table").css({ display: "block" });
+          $("#ro-process-title").css({ display: "block" });
+          $("#ro-process-flow").css({ display: "block" });
+          $("#load-ro-button").attr("disabled", false);
+          $("#create-ro-button").attr("disabled", false);
+          $("#load-close").attr("disabled", false);
+          get_release_process_state_all();
+        },
+      });
     }
-  }
-</script>
+  </script>
 
-<script type='text/javascript'>
-  function create_component(component_name, octo_space) {
-    octo_project_name = component_name.replace('_', '-')
-    td = '\
+  <script type="text/javascript">
+    function create_rp_table() {
+      console.log(orgunit);
+    }
+  </script>
+
+  <script type="text/javascript">
+    function create_ro_table(ro) {
+      fix_version = ro["information"]["fixversion"];
+      orgunit = ro["information"]["orgunit"];
+      octo_space = ro["information"]["space"];
+
+      for (component_name in ro[fix_version]) {
+        release_version = ro[fix_version][component_name]["releaseversion"];
+        assembled = ro[fix_version][component_name]["releaseassembled"];
+        environments = ro[fix_version][component_name]["environments"];
+        latest = ro[fix_version][component_name]["latest"];
+        issues = ro[fix_version][component_name]["issues"];
+
+        td = create_component(component_name, octo_space);
+        td += create_release_version(
+          component_name,
+          release_version,
+          octo_space
+        );
+        td += create_assembled(assembled);
+        td += create_environments(environments);
+        td += create_latest(release_version, latest);
+        td += create_issues(issues);
+        tr = "<tr>" + td + "</tr>";
+
+        $("#ro-table").append(tr);
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function create_component(component_name, octo_space) {
+      octo_project_name = component_name.replace("_", "-");
+      td =
+        '\
       <td>\
-        <span class=\"ro-component\">\
-          <a href=https://octopus.nextestate.com/app#/'
-          + octo_space + '/projects/'
-          + octo_project_name + '/deployments style=\"color:white\">'
-          + component_name +
-          '</a>\
+        <span class="ro-component">\
+          <a href=https://octopus.nextestate.com/app#/' +
+        octo_space +
+        "/projects/" +
+        octo_project_name +
+        '/deployments style="color:white">' +
+        component_name +
+        "</a>\
         </span>\
-      </td>'
-    return td
-  }
-</script>
-
-<script type='text/javascript'>
-  function create_release_version(component_name, release_version, octo_space) {
-    octo_project_name = component_name.replace('_', '-')
-    td = '\
-    <td class=\"text-muted\">\
-      <a href=\"https://octopus.nextestate.com/app#/'
-      + octo_space + '/projects/'
-      + octo_project_name + '/deployments/releases/'
-      + release_version + '\" style=\"color:#25782b; font-size: .8em\">'
-        + release_version +
-      '</a>\
-    </td>'
-    return td
-  }
-</script>
-
-<script type='text/javascript'>
-  function create_assembled(assembled) {
-    assembled = assembled.replace('T', '<br>')
-    td = '\
-    <td class=\"text-muted\" style=\"font-size: .9em\">'
-      + assembled +
-    '</td>'
-    return td
-  }
-</script>
-
-<script type='text/javascript'>
-  function create_environments(environments) {
-    for (name in environments) {
-      if (environments[name] == 'Success') {
-        environments[name] = 'style=\"background-color:#21BA45\"'
-      }
-      else{
-        environments[name] = ''
-      }
-      }
-
-    td = '\
-    <td class=\"ro-env-td\">\
-      <label class=\"ro-env-label\">\
-        <span class=\"ro-env-span\"' + environments['BUX_QA'] + '>BUX_QA</span>\
-        <span class=\"ro-env-span\"' + environments['BUX_PRF'] + '>BUX_PRF</span>\
-      </label>\
-      <label class=\"ro-env-label\">\
-        <span class=\"ro-env-span\"' + environments['BUX_PIE'] + '>BUX_PIE</span>\
-      </label>\
-      <label class=\"ro-env-label\">\
-        <span class=\"ro-env-span\"' + environments['BUX_STG1'] + '>BUX_STG1</span>\
-        <span class=\"ro-env-span\"' + environments['BUX_STG2'] + '>BUX_STG2</span>\
-      </label>\
-      <label class=\"ro-env-label\">\
-        <span class="ro-env-span"' + environments['BUX_DC1'] + '>BUX_DC1</span>\
-        <span class="ro-env-span"' + environments['BUX_DC2'] + '>BUX_DC2</span>\
-      </label>\
-    </td>'
-    return td
-  }
-</script>
-
-<script type='text/javascript'>
-  function create_latest(release_version, latest) {
-    result = 'false'
-    td = '<td class=\"text-muted\" style=\"background-color:#ffebe6; font-size: 0.72rem\">'
-      + result + '</td>'
-    if (release_version == latest) {
-      result = 'true'
-      td = '<td class=\"text-muted\" style=\"font-size: 0.72rem\">' + result + '</td>'
+      </td>";
+      return td;
     }
-    return td
-  }
-</script>
+  </script>
 
-<script type='text/javascript'>
-  function create_issues(issues) {
-    br = '<br>'
-    spans = ''
-
-    for (name in issues) {
-      if (br =  '<br>') {
-        br = ''
-      }
-      else {
-        br = '<br>'
-      }
-      if (issues[name]['issuetype'] == 'Defect') {
-        img = '<img src=/static/img/exclamation.png>'
-      }
-      else {
-        img = '<img src=/static/img/viewavatar.svg>'
-      }
-      spans += '\
-      <span class=\"ro-issue-span\">\
-        <a href=https://pd.nextestate.com/browse/' + name + '>'
-           + img + '  ' + name +
-        '</a>\
-      </span>' + br
+  <script type="text/javascript">
+    function create_release_version(
+      component_name,
+      release_version,
+      octo_space
+    ) {
+      octo_project_name = component_name.replace("_", "-");
+      td =
+        '\
+    <td class="text-muted">\
+      <a href="https://octopus.nextestate.com/app#/' +
+        octo_space +
+        "/projects/" +
+        octo_project_name +
+        "/deployments/releases/" +
+        release_version +
+        '" style="color:#25782b; font-size: .8em">' +
+        release_version +
+        "</a>\
+    </td>";
+      return td;
     }
-    td = '\
-    <td class=\"ro-issue-td\">'
-      + spans +
-    '</td>'
+  </script>
 
-    return td
-  }
-</script>
+  <script type="text/javascript">
+    function create_assembled(assembled) {
+      assembled = assembled.replace("T", "<br>");
+      td =
+        '\
+    <td class="text-muted" style="font-size: .9em">' +
+        assembled +
+        "</td>";
+      return td;
+    }
+  </script>
 
-<script type='text/javascript'>
-  function update_progress_bar(step, progress_bar_html) {
-    running_progress = '\
+  <script type="text/javascript">
+    function create_environments(environments) {
+      for (name in environments) {
+        if (environments[name] == "Success") {
+          environments[name] = 'style="background-color:#21BA45"';
+        } else {
+          environments[name] = "";
+        }
+      }
+
+      td =
+        '\
+    <td class="ro-env-td">\
+      <label class="ro-env-label">\
+        <span class="ro-env-span"' +
+        environments["BUX_QA"] +
+        '>BUX_QA</span>\
+        <span class="ro-env-span"' +
+        environments["BUX_PRF"] +
+        '>BUX_PRF</span>\
+      </label>\
+      <label class="ro-env-label">\
+        <span class="ro-env-span"' +
+        environments["BUX_PIE"] +
+        '>BUX_PIE</span>\
+      </label>\
+      <label class="ro-env-label">\
+        <span class="ro-env-span"' +
+        environments["BUX_STG1"] +
+        '>BUX_STG1</span>\
+        <span class="ro-env-span"' +
+        environments["BUX_STG2"] +
+        '>BUX_STG2</span>\
+      </label>\
+      <label class="ro-env-label">\
+        <span class="ro-env-span"' +
+        environments["BUX_DC1"] +
+        '>BUX_DC1</span>\
+        <span class="ro-env-span"' +
+        environments["BUX_DC2"] +
+        ">BUX_DC2</span>\
+      </label>\
+    </td>";
+      return td;
+    }
+  </script>
+
+  <script type="text/javascript">
+    function create_latest(release_version, latest) {
+      result = "false";
+      td =
+        '<td class="text-muted" style="background-color:#ffebe6; font-size: 0.72rem">' +
+        result +
+        "</td>";
+      if (release_version == latest) {
+        result = "true";
+        td =
+          '<td class="text-muted" style="font-size: 0.72rem">' +
+          result +
+          "</td>";
+      }
+      return td;
+    }
+  </script>
+
+  <script type="text/javascript">
+    function create_issues(issues) {
+      br = "<br>";
+      spans = "";
+
+      for (name in issues) {
+        if ((br = "<br>")) {
+          br = "";
+        } else {
+          br = "<br>";
+        }
+        if (issues[name]["issuetype"] == "Defect") {
+          img = "<img src=/static/img/exclamation.png>";
+        } else {
+          img = "<img src=/static/img/viewavatar.svg>";
+        }
+        spans +=
+          '\
+      <span class="ro-issue-span">\
+        <a href=https://pd.nextestate.com/browse/' +
+          name +
+          ">" +
+          img +
+          "  " +
+          name +
+          "</a>\
+      </span>" +
+          br;
+      }
+      td = '\
+    <td class="ro-issue-td">' + spans + "</td>";
+
+      return td;
+    }
+  </script>
+
+  <script type="text/javascript">
+    function update_progress_bar(step, progress_bar_html) {
+      running_progress =
+        '\
     <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
       <div class="progress-bar progress-bar-indeterminate bg-blue">\
       </div>\
-    </div>'
-    completed_progress = '\
+    </div>';
+      completed_progress =
+        '\
     <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
       <div class="progress-bar" style="width: 100%" role="progressbar">\
       </div>\
-    </div>'
-    error_progress = ''
+    </div>';
+      error_progress = "";
 
-    if (step == 'running') {
-      ro_progress_bar = running_progress
-    }
-    else if (step == 'done') {
-      ro_progress_bar = completed_progress
-    }
-    
-    $('#ro_progress_text').html(progress_bar_html)
-    $('#ro_progress_bar').html(ro_progress_bar)
-  }
-</script>
+      if (step == "running") {
+        ro_progress_bar = running_progress;
+      } else if (step == "done") {
+        ro_progress_bar = completed_progress;
+      }
 
-<script type='text/javascript'>
-  function update_modal_info_for_test() {
-    if (orgunit == 'BUX') {
-      $('#modal-info-title').text(env + " testing")
-      $('#modal-info-text').html("<strong>"
-        + env + "</strong> deployment is completed and in testing now.<br> Click <code>" 
-        + env + " testing</code> to update test result manaully.")
-      $('#confirm-yes').text('Close')
-      $('#confirm-yes').attr("onclick", "")
-      $('#modal-info').modal('show')
+      $("#ro_progress_text").html(progress_bar_html);
+      $("#ro_progress_bar").html(ro_progress_bar);
     }
-  }
-</script>
+  </script>
 
-<script type='text/javascript'>
-  function update_modal_info_for_release() {
-    if (orgunit == 'BUX') {
+  <script type="text/javascript">
+    function update_modal_info_for_test() {
+      if (orgunit == "BUX") {
+        $("#modal-info-title").text(env + " testing");
+        $("#modal-info-text").html(
+          "<strong>" +
+            env +
+            "</strong> deployment is completed and in testing now.<br> Click <code>" +
+            env +
+            " testing</code> to update test result manaully."
+        );
+        $("#confirm-yes").text("Close");
+        $("#confirm-yes").attr("onclick", "");
+        $("#modal-info").modal("show");
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function update_modal_info_for_release() {
+      if (orgunit == "BUX") {
+        if (env == "PIE") {
+          $("#modal-info-title").text("Ready to release");
+          $("#modal-info-text").html(
+            "Start <strong>BUX</strong> release process on <strong>PIE</strong>."
+          );
+          $("#confirm-yes").text("Yes, start on PIE");
+          $("#confirm-yes").attr(
+            "onclick",
+            "release_process_bux('PIE', 'start')"
+          );
+        } else if (env == "STG") {
+          $("#modal-info-title").text("Ready to release");
+          $("#modal-info-text").html(
+            "Start <strong>BUX</strong> release process on <strong>STG</strong>."
+          );
+          $("#confirm-yes").text("Yes, start on STG");
+          $("#confirm-yes").attr("onclick", "release_process_bux('STG')");
+        } else if (env == "PROD") {
+          $("#modal-info-title").text("Ready to release");
+          $("#modal-info-text").html(
+            "Start <strong>BUX</strong> release process on <strong>PROD</strong>."
+          );
+          $("#confirm-yes").text("Yes, start on PROD");
+          $("#confirm-yes").attr("onclick", "release_process_bux('PROD')");
+        } else if (env == "RELEASED") {
+          $("#modal-info-title").text("Ready to close");
+          $("#modal-info-text").html(
+            "Close <strong>BUX</strong> release, and RMP Release Object will be locked."
+          );
+          $("#confirm-yes").text("Yes, close release");
+          $("#confirm-yes").attr("onclick", "release_process_bux('RELEASED')");
+          env = "CLOSED";
+        } else if (env == "CLOSED") {
+          $("#modal-info-title").text("Release closed");
+          $("#modal-info-text").html(
+            "<strong>BUX</strong> release has been closed."
+          );
+          $("#confirm-yes").text("Close");
+        }
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function show_release_process_table(orgunit) {
+      if (orgunit == "BUX") {
+        $("#accordion-bux").css({ display: "block" });
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function release_process_bux(env, state) {
+      if (env == "RELEASED") {
+        $("#start-release").text("Release closed");
+        $("#start-release").attr("disabled", false);
+        return;
+      }
+
       if (env == "PIE") {
-        $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>PIE</strong>.")
-        $('#confirm-yes').text('Yes, start on PIE')
-        $('#confirm-yes').attr("onclick", "release_process_bux('PIE', 'start')")
+        $("#start-release").text("Release on PIE running");
+        $("#start-release").attr("disabled", true);
+      } else if (env == "STG") {
+        $("#start-release").text("Release on STG running");
+        $("#start-release").attr("disabled", true);
+      } else if (env == "PROD") {
+        $("#start-release").text("Release on PROD running");
+        $("#start-release").attr("disabled", true);
       }
-      else if (env == "STG") {
-        $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>STG</strong>.")
-        $('#confirm-yes').text('Yes, start on STG')
-        $('#confirm-yes').attr("onclick", "release_process_bux('STG')")
-      }
-      else if (env == "PROD") {
-        $('#modal-info-title').text("Ready to release")
-        $('#modal-info-text').html("Start <strong>BUX</strong> release process on <strong>PROD</strong>.")
-        $('#confirm-yes').text('Yes, start on PROD')
-        $('#confirm-yes').attr("onclick", "release_process_bux('PROD')")
-      }
-      else if (env == "RELEASED") {
-        $('#modal-info-title').text("Ready to close")
-        $('#modal-info-text').html("Close <strong>BUX</strong> release, and RMP Release Object will be locked.")
-        $('#confirm-yes').text('Yes, close release')
-        $('#confirm-yes').attr("onclick", "release_process_bux('RELEASED')")
-        env = "CLOSED"
-      }
-      else if (env == "CLOSED") {
-        $('#modal-info-title').text("Release closed")
-        $('#modal-info-text').html("<strong>BUX</strong> release has been closed.")
-        $('#confirm-yes').text('Close')
-      }
-    }
-  }
-</script>
 
-<script type='text/javascript'>
-  function show_release_process_table(orgunit) {
-    if (orgunit == 'BUX') {
-      $('#accordion-bux').css({'display': 'block'})
+      $.ajax({
+        url: "/releaseobject/process/run/",
+        type: "GET",
+        dataType: "JSON",
+        data: {
+          orgunit: orgunit,
+          fixversion: fix_version,
+          env: env,
+          state: state,
+        },
+        success: function (res) {
+          // start_state_timeId runs only once to get/update status quickly
+          start_state_timeId = setInterval(function () {
+            get_release_process_state();
+            clearInterval(start_state_timeId);
+          }, 2000);
+          state_timeId = setInterval(get_release_process_state, 5000);
+        },
+      });
     }
-  }
-</script>
+  </script>
 
-<script type='text/javascript'>
-  function release_process_bux(env, state) {
-    if (env == 'RELEASED') {
-      $('#start-release').text("Release closed")
-      $('#start-release').attr("disabled", false)
-      return
+  <script type="text/javascript">
+    function get_release_process_state_all() {
+      $.ajax({
+        url: "/releaseobject/process/get/",
+        type: "GET",
+        dataType: "JSON",
+        data: {
+          orgunit: orgunit,
+          fixversion: fix_version,
+        },
+        success: function (res) {
+          for (var state_env in bux_test) {
+            update_step_buttons(res[orgunit][state_env]);
+            update_offcanvas_deploy_details_state(res[orgunit][state_env]);
+            if (
+              res[orgunit][state_env][state_env.toLowerCase() + "-test"][
+                "state"
+              ] == "running"
+            ) {
+              update_modal_info_for_test();
+            }
+          }
+        },
+      });
     }
+  </script>
 
-    if (env == 'PIE') {
-      $('#start-release').text("Release on PIE running")
-      $('#start-release').attr("disabled", true)
+  <script type="text/javascript">
+    function get_release_process_state() {
+      $.ajax({
+        url: "/releaseobject/process/get/",
+        type: "GET",
+        dataType: "JSON",
+        data: {
+          orgunit: orgunit,
+          fixversion: fix_version,
+        },
+        success: function (res) {
+          update_step_buttons(res[orgunit][env]);
+          update_offcanvas_deploy_details_state(res[orgunit][env]);
+          if (
+            res[orgunit][env][env.toLowerCase() + "-test"]["state"] == "running"
+          ) {
+            clearInterval(state_timeId);
+            update_modal_info_for_test();
+          }
+        },
+      });
     }
-    else if (env == 'STG') {
-      $('#start-release').text("Release on STG running")
-      $('#start-release').attr("disabled", true)
-    }
-    else if (env == 'PROD') {
-      $('#start-release').text("Release on PROD running")
-      $('#start-release').attr("disabled", true)
-    }
+  </script>
 
-    $.ajax({
-      url: '/releaseobject/process/run/',
-      type: 'GET',
-      dataType: 'JSON',
-      data: {
-        orgunit: orgunit,
-        fixversion: fix_version,
-        env: env,
-        state: state
-      },
-      success: function(res) {
-        // start_state_timeId runs only once to get/update status quickly
-        start_state_timeId = setInterval(
-          function () {
-            get_release_process_state()
-            clearInterval(start_state_timeId)
-          }, 2000)
-        state_timeId = setInterval(get_release_process_state, 5000)
+  <script type="text/javascript">
+    function restore_step_buttons() {}
+  </script>
+
+  <script type="text/javascript">
+    function update_step_buttons(tracker) {
+      var attr_display;
+      var css_color;
+      var color_blue = "#206bc4";
+      var color_green = "#21BA45";
+      var color_gray = "#767676";
+
+      for (key in tracker) {
+        var button_id = "#" + key;
+        $(button_id).text(tracker[key]["text"]);
+        if (tracker[key]["state"] == "running") {
+          attr_display = false;
+          css_color = color_blue;
+          if ("" == running_id) {
+            button_flash(button_id, "start");
+          }
+        } else if (tracker[key]["state"] == "done") {
+          attr_display = false;
+          css_color = color_green;
+          if (button_id == running_id) {
+            button_flash(button_id, "stop");
+          }
+        } else {
+          attr_display = true;
+          css_color = color_gray;
+        }
+
+        attr_desc = tracker[key]["title"];
+        $(button_id).attr("disabled", attr_display);
+        $(button_id).attr("title", attr_desc);
+        $(button_id).css({
+          "background-color": css_color,
+          "border-color": css_color,
+        });
+
+        //data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"
+        if (!key.includes("-test")) {
+          set_step_offcanvas(key, tracker);
+        }
       }
-    })
-  }
-</script>
+    }
+  </script>
 
-<script type='text/javascript'>
-  function get_release_process_state_all () {
-    $.ajax({
-      url: '/releaseobject/process/get/',
-      type: 'GET',
-      dataType: 'JSON',
-      data: {
-        orgunit: orgunit,
-        fixversion: fix_version
-      },
-      success: function(res) {
-        for (var state_env in bux_test) {
-          update_step_buttons(res[orgunit][state_env])
-          update_offcanvas_deploy_details_state(res[orgunit][state_env])
-          if (res[orgunit][state_env][state_env.toLowerCase() + '-test']['state'] == 'running') {
-            update_modal_info_for_test()
+  <script type="text/javascript">
+    function update_test_success() {
+      var start_button_text;
+      var test_button;
+      var test_button_text;
+      var cur_env;
+      $.ajax({
+        url: "/releaseobject/process/test/update/",
+        type: "GET",
+        dataType: "JSON",
+        data: {
+          orgunit: orgunit,
+          fixversion: fix_version,
+          env: env,
+        },
+      });
+      cur_env = env;
+      if (env == "PIE") {
+        start_button_text = "Start Release on STG";
+        env = "STG";
+      } else if (env == "STG") {
+        start_button_text = "Start Release on PROD";
+        env = "PROD";
+      } else if (env == "PROD") {
+        start_button_text = "Close Release";
+        env = "RELEASED";
+      }
+      test_button = "#" + cur_env.toLowerCase() + "-test";
+      test_button_text = cur_env + " tested";
+
+      if (bux_test[cur_env] == "") {
+        $("#start-release").text(start_button_text);
+        $("#start-release").attr("disabled", false);
+        $(test_button).text(test_button_text);
+        $(test_button).css({
+          "background-color": "#21BA45",
+          "border-color": "#21BA45",
+        });
+        $(test_button).attr("data-bs-toggle", "");
+        $(test_button).attr("data-bs-target", "");
+        bux_test[cur_env] = "tested";
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function update_success_text() {
+      if (env == "PIE") {
+        $("#test-pass").html("Test done on <strong>BUX PIE</strong>");
+      } else if (env == "STG") {
+        $("#test-pass").html("Test done on <strong>BUX STG</strong>");
+      } else if (env == "PROD") {
+        $("#test-pass").html("Test done on <strong>BUX PROD</strong>");
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function button_flash(id, action) {
+      if (action == "stop" || id.includes("-test")) {
+        running_id = "";
+        clearInterval(timeId);
+        $(id).css({ opacity: 1 });
+      } else {
+        var opacity = 0;
+        var interval = 0.5;
+        timeId = setInterval(function () {
+          running_id = id;
+          opacity = opacity + interval;
+          if (opacity == 10) {
+            interval = 0.5;
+          }
+          if (opacity == 20) {
+            interval = -0.5;
+          }
+          $(id).css({ opacity: opacity / 20 });
+        }, 50);
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function set_step_offcanvas(button_id, tracker) {
+      var button_id = "#" + key;
+      $(button_id).attr("data-bs-toggle", "offcanvas");
+      $(button_id).attr("href", "#step_details_deploy");
+      $(button_id).attr("role", "button");
+      $(button_id).attr("aria-controls", "offcanvasStart");
+
+      var details_title = orgunit + " " + fix_version + " " + env;
+      var time_start = tracker[key]["start"];
+      var time_complete = tracker[key]["completed"];
+      var details_body = "";
+
+      if (time_complete == "") {
+        details_body = time_start + " started<br>";
+      } else {
+        details_body =
+          time_start + " started<br>" + time_complete + " completed";
+      }
+
+      $("#rop-step-details-title").html(details_title);
+      $("#rop-step-details-body").html(details_body);
+    }
+  </script>
+
+  <script type="text/javascript">
+    function save_rp_components() {}
+  </script>
+
+  <script type="text/javascript">
+    function update_offcanvas_deploy_details_component(ro) {
+      for (var index = 0; index < bux_deployment_sub_env.length; index++) {
+        var detail_element =
+          "#rp_step_detail_" +
+          bux_deployment_sub_env[index].toLowerCase() +
+          "_deploy";
+        $(detail_element).empty();
+        for (component_name in ro[fix_version]) {
+          octo_project_name = component_name.replace("_", "-");
+          release_version = ro[fix_version][component_name]["releaseversion"];
+
+          td =
+            "\
+        <td>\
+          <a href=https://octopus.nextestate.com/app#/" +
+            octo_space +
+            "/projects/" +
+            octo_project_name +
+            "/deployments/releases/" +
+            release_version +
+            ">" +
+            component_name +
+            "</a>\
+        </td>";
+          td +=
+            "<td id=" +
+            bux_deployment_sub_env[index].toLowerCase() +
+            "_state_" +
+            component_name.toLowerCase() +
+            "></td>";
+          td +=
+            "<td id=" +
+            bux_deployment_sub_env[index].toLowerCase() +
+            "_duration_" +
+            component_name.toLowerCase() +
+            "></td>";
+          tr = "<tr>" + td + "</tr>";
+
+          $(detail_element).append(tr);
+        }
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function update_offcanvas_deploy_details_state(tracker) {
+      for (key in tracker) {
+        if (key.includes("-deploy")) {
+          var index = key.indexOf("-");
+          var sub_env = key.substring(0, index);
+          var tasks = tracker[key]["details"]["octopus"]["task_info"];
+          for (var task in tasks) {
+            var state_id =
+              "#" +
+              sub_env +
+              "_state_" +
+              tasks[task]["project_name"].toLowerCase();
+            var duration_id =
+              "#" +
+              sub_env +
+              "_duration_" +
+              tasks[task]["project_name"].toLowerCase();
+            $(state_id).text(tasks[task]["state"]);
+            $(duration_id).text(tasks[task]["duration"]);
           }
         }
       }
-    })
-  }
-</script>
-
-<script type='text/javascript'>
-  function get_release_process_state () {
-    $.ajax({
-      url: '/releaseobject/process/get/',
-      type: 'GET',
-      dataType: 'JSON',
-      data: {
-        orgunit: orgunit,
-        fixversion: fix_version
-      },
-      success: function(res) {
-        update_step_buttons(res[orgunit][env])
-        update_offcanvas_deploy_details_state(res[orgunit][env])
-        if (res[orgunit][env][env.toLowerCase() + '-test']['state'] == 'running') {
-          clearInterval(state_timeId)
-          update_modal_info_for_test()
-        }
-      }
-    })
-  }
-</script>
-
-<script type='text/javascript'>
-  function restore_step_buttons() {
-
-  }
-</script>
-
-<script type='text/javascript'>
-  function update_step_buttons(tracker) {
-    var attr_display
-    var css_color
-    var color_blue = '#206bc4'
-    var color_green = '#21BA45'
-    var color_gray = '#767676'
-
-    for (key in tracker) {
-      var button_id = '#' + key
-      $(button_id).text(tracker[key]['text'])
-      if (tracker[key]['state'] == 'running') {
-        attr_display = false
-        css_color = color_blue
-        if ('' == running_id) {
-          button_flash(button_id, 'start')
-        }
-      }
-      else if (tracker[key]['state'] == 'done') {
-        attr_display = false
-        css_color = color_green
-        if (button_id == running_id) {
-          button_flash(button_id, 'stop')
-        }
-      }
-      else{
-        attr_display = true
-        css_color = color_gray
-      }
-
-      attr_desc = tracker[key]['title']
-      $(button_id).attr("disabled", attr_display)
-      $(button_id).attr("title", attr_desc)
-      $(button_id).css({'background-color': css_color, 'border-color': css_color})
-
-      //data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"
-      if (!key.includes('-test')) {
-        set_step_offcanvas(key, tracker)
-      }
     }
-  }
-</script>
+  </script>
 
-<script type='text/javascript'>
-  function update_test_success() {
-    var start_button_text
-    var test_button
-    var test_button_text
-    var cur_env
-    $.ajax({
-      url: '/releaseobject/process/test/update/',
-      type: 'GET',
-      dataType: 'JSON',
-      data: {
-        orgunit: orgunit,
-        fixversion: fix_version,
-        env: env
-      }
-    })
-    cur_env = env
-    if (env == 'PIE') {
-      start_button_text = "Start Release on STG"
-      env = 'STG'
+  <script type="text/javascript">
+    function hide_all_detail_element() {
+      $("#rp_step_detail_pie_deploy").css({ display: "none" });
+      $("#rp_step_detail_stg2_deploy").css({ display: "none" });
+      $("#rp_step_detail_stg1_deploy").css({ display: "none" });
+      $("#rp_step_detail_dc2_deploy").css({ display: "none" });
+      $("#rp_step_detail_dc1_deploy").css({ display: "none" });
+
+      $("#rp_step_detail_stg2_disable_prt").css({ display: "none" });
+      $("#rp_step_detail_stg1_disable_prt").css({ display: "none" });
+
+      $("#rp_step_detail_stg2_disable_nonprt").css({ display: "none" });
+      $("#rp_step_detail_stg1_disable_nonprt").css({ display: "none" });
+
+      $("#rp_step_detail_dc2_disable_prt").css({ display: "none" });
+      $("#rp_step_detail_dc1_disable_prt").css({ display: "none" });
+
+      $("#rp_step_detail_dc2_disable_nonprt").css({ display: "none" });
+      $("#rp_step_detail_dc1_disable_nonprt").css({ display: "none" });
+
+      $("#rp_step_detail_dc2_drain_prt").css({ display: "none" });
+      $("#rp_step_detail_dc1_drain_prt").css({ display: "none" });
+
+      $("#rp_step_detail_dc2_drain_nonprt").css({ display: "none" });
+      $("#rp_step_detail_dc1_drain_nonprt").css({ display: "none" });
     }
-    else if (env == 'STG') {
-      start_button_text = "Start Release on PROD"
-      env = 'PROD'
+  </script>
+
+  <script type="text/javascript">
+    function show_running_env_deploy_detail(running_env) {
+      hide_all_detail_element();
+      var table_header =
+        "<tr><th>Component</th><th>State</th><th>Duration</th></tr>";
+      $("#rp_step_detail_theader").html(table_header);
+
+      var detail_element =
+        "#rp_step_detail_" + running_env.toLowerCase() + "_deploy";
+      $(detail_element).css({ display: "table-row-group" });
     }
-    else if (env == 'PROD') {
-      start_button_text = "Close Release"
-      env = 'RELEASED'
+  </script>
+
+  <script type="text/javascript">
+    function show_running_env_disable_detail(prt, running_env) {
+      hide_all_detail_element();
+      var table_header = "<tr><th>Pool</th><th>State</th></tr>";
+      $("#rp_step_detail_theader").html(table_header);
+
+      var detail_element =
+        "#rp_step_detail_" + running_env.toLowerCase() + "_disable_" + prt;
+      $(detail_element).css({ display: "table-row-group" });
     }
-    test_button = "#" + cur_env.toLowerCase() + "-test"
-    test_button_text = cur_env + " tested"
+  </script>
 
-    if (bux_test[cur_env] == '') {
-      $('#start-release').text(start_button_text)
-      $('#start-release').attr("disabled", false)
-      $(test_button).text(test_button_text)
-      $(test_button).css({'background-color': '#21BA45', 'border-color': '#21BA45'})
-      $(test_button).attr("data-bs-toggle", "")
-      $(test_button).attr("data-bs-target", "")
-      bux_test[cur_env] = 'tested'
+  <script type="text/javascript">
+    function show_running_env_drain_detail(prt, running_env) {
+      hide_all_detail_element();
+      var table_header = "<tr><th>Member</th><th>Connection</th></tr>";
+      $("#rp_step_detail_theader").html(table_header);
+
+      var detail_element =
+        "#rp_step_detail_" + running_env.toLowerCase() + "_drain_" + prt;
+      $(detail_element).css({ display: "table-row-group" });
     }
-  }
-</script>
-
-<script type='text/javascript'>
-  function update_success_text() {
-    if (env == 'PIE') {
-      $('#test-pass').html("Test done on <strong>BUX PIE</strong>")
-    }
-    else if (env == 'STG') {
-      $('#test-pass').html("Test done on <strong>BUX STG</strong>")
-    }
-    else if (env == 'PROD') {
-      $('#test-pass').html("Test done on <strong>BUX PROD</strong>")
-    }
-  }
-</script>
-
-<script type='text/javascript'>
-  function button_flash(id, action) {
-    if ((action == 'stop') || (id.includes('-test'))) {
-      running_id = ''
-      clearInterval(timeId)
-      $(id).css({'opacity': 1})
-    }
-    else {
-      var opacity = 0
-      var interval = 0.5
-      timeId = setInterval(function () {
-        running_id = id
-        opacity = opacity + interval
-        if (opacity == 10) {
-          interval = 0.5
-        }
-        if (opacity == 20) {
-          interval = -0.5
-        }
-        $(id).css({'opacity':opacity/20})
-      }, 50)
-    }
-  }
-</script>
-
-<script type='text/javascript'>
-  function set_step_offcanvas(button_id, tracker) {
-    var button_id = '#' + key
-    $(button_id).attr("data-bs-toggle", "offcanvas")
-    $(button_id).attr("href", "#step_details_deploy")
-    $(button_id).attr("role", "button")
-    $(button_id).attr("aria-controls", "offcanvasStart")
-
-    var details_title = orgunit + ' ' + fix_version + ' ' + env
-    var time_start = tracker[key]['start']
-    var time_complete = tracker[key]['completed']
-    var details_body = ''
-
-    if (time_complete == '') {
-      details_body = time_start + ' started<br>'
-    }
-    else {
-      details_body = time_start + ' started<br>' + time_complete + ' completed'
-    }
-    
-    $('#rop-step-details-title').html(details_title)
-    $('#rop-step-details-body').html(details_body)
-  }
-</script>
-
-<script type='text/javascript'>
-  function save_rp_components() {
-  }
-</script>
-
-<script type='text/javascript'>
-  function update_offcanvas_deploy_details_component(ro) {
-    for (var index = 0; index < bux_deployment_sub_env.length; index++) {
-      var detail_element = '#rp_step_detail_' + bux_deployment_sub_env[index].toLowerCase() + '_deploy'
-      $(detail_element).empty()
-      for (component_name in ro[fix_version]) {
-        octo_project_name = component_name.replace('_', '-')
-        release_version = ro[fix_version][component_name]['releaseversion']
-
-        td = '\
-        <td>\
-          <a href=https://octopus.nextestate.com/app#/'
-          + octo_space + '/projects/'
-          + octo_project_name + '/deployments/releases/'
-          + release_version + '>'
-          + component_name +
-          '</a>\
-        </td>'
-        td += '<td id=' + bux_deployment_sub_env[index].toLowerCase() + '_state_' + component_name.toLowerCase() + '></td>'
-        td += '<td id=' + bux_deployment_sub_env[index].toLowerCase() + '_duration_' + component_name.toLowerCase() + '></td>'
-        tr = '<tr>' + td + '</tr>'
-
-        $(detail_element).append(tr)
-      }
-    }
-  }
-</script>
-
-<script type='text/javascript'>
-  function update_offcanvas_deploy_details_state(tracker) {
-    for (key in tracker) {
-      if (key.includes('-deploy')) {
-        var index = key.indexOf('-')
-        var sub_env = key.substring(0, index)
-        var tasks = tracker[key]['details']['octopus']['task_info']
-        for (var task in tasks) {
-          var state_id = '#' + sub_env + '_state_' + tasks[task]['project_name'].toLowerCase()
-          var duration_id = '#' + sub_env + '_duration_' + tasks[task]['project_name'].toLowerCase()
-          $(state_id).text(tasks[task]['state'])
-          $(duration_id).text(tasks[task]['duration'])
-        }
-      }
-    }
-  }
-</script>
-
-<script type='text/javascript'>
-  function hide_all_detail_element() {
-    $('#rp_step_detail_pie_deploy').css({'display': 'none'})
-    $('#rp_step_detail_stg2_deploy').css({'display': 'none'})
-    $('#rp_step_detail_stg1_deploy').css({'display': 'none'})
-    $('#rp_step_detail_dc2_deploy').css({'display': 'none'})
-    $('#rp_step_detail_dc1_deploy').css({'display': 'none'})
-
-    $('#rp_step_detail_stg2_disable_prt').css({'display': 'none'})
-    $('#rp_step_detail_stg1_disable_prt').css({'display': 'none'})
-
-    $('#rp_step_detail_stg2_disable_nonprt').css({'display': 'none'})
-    $('#rp_step_detail_stg1_disable_nonprt').css({'display': 'none'})
-
-    $('#rp_step_detail_dc2_disable_prt').css({'display': 'none'})
-    $('#rp_step_detail_dc1_disable_prt').css({'display': 'none'})
-
-    $('#rp_step_detail_dc2_disable_nonprt').css({'display': 'none'})
-    $('#rp_step_detail_dc1_disable_nonprt').css({'display': 'none'})
-
-    $('#rp_step_detail_dc2_drain_prt').css({'display': 'none'})
-    $('#rp_step_detail_dc1_drain_prt').css({'display': 'none'})
-
-    $('#rp_step_detail_dc2_drain_nonprt').css({'display': 'none'})
-    $('#rp_step_detail_dc1_drain_nonprt').css({'display': 'none'})
-  }
-</script>
-
-<script type='text/javascript'>
-  function show_running_env_deploy_detail(running_env) {
-    hide_all_detail_element()
-    var table_header = '<tr><th>Component</th><th>State</th><th>Duration</th></tr>'
-    $('#rp_step_detail_theader').html(table_header)
-
-    var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_deploy'
-    $(detail_element).css({'display': 'table-row-group'})
-  }
-</script>
-
-<script type='text/javascript'>
-  function show_running_env_disable_detail(prt, running_env) {
-    hide_all_detail_element()
-    var table_header = '<tr><th>Pool</th><th>State</th></tr>'
-    $('#rp_step_detail_theader').html(table_header)
-
-    var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_disable_' + prt
-    $(detail_element).css({'display': 'table-row-group'})
-  }
-</script>
-
-<script type='text/javascript'>
-  function show_running_env_drain_detail(prt, running_env) {
-    hide_all_detail_element()
-    var table_header = '<tr><th>Member</th><th>Connection</th></tr>'
-    $('#rp_step_detail_theader').html(table_header)
-
-    var detail_element = '#rp_step_detail_' + running_env.toLowerCase() + '_drain_' + prt
-    $(detail_element).css({'display': 'table-row-group'})
-  }
-</script>
-{% endblock %}
+  </script>
+  {% endblock %}
+</li>
