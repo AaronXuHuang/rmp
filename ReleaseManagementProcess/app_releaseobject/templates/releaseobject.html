@@ -1293,9 +1293,7 @@
   </script>
 
   <script type="text/javascript">
-    function create_rp_table() {
-      console.log(orgunit);
-    }
+    function create_rp_table() {}
   </script>
 
   <script type="text/javascript">
@@ -1585,7 +1583,8 @@
   </script>
 
   <script type="text/javascript">
-    function release_process_bux(env, state) {
+    function update_start_release_button(env) {
+      console.log(env);
       if (env == "RELEASED") {
         $("#start-release").text("Release closed");
         $("#start-release").attr("disabled", false);
@@ -1602,6 +1601,12 @@
         $("#start-release").text("Release on PROD running");
         $("#start-release").attr("disabled", true);
       }
+    }
+  </script>
+
+  <script type="text/javascript">
+    function release_process_bux(env, state) {
+      update_start_release_button(env);
 
       $.ajax({
         url: "/releaseobject/process/run/",
@@ -1636,19 +1641,44 @@
           fixversion: fix_version,
         },
         success: function (res) {
-          for (var state_env in bux_test) {
-            update_step_buttons(res[orgunit][state_env]);
-            update_offcanvas_deploy_details_state(res[orgunit][state_env]);
-            if (
-              res[orgunit][state_env][state_env.toLowerCase() + "-test"][
-                "state"
-              ] == "running"
-            ) {
-              update_modal_info_for_test();
+          if (orgunit == "BUX") {
+            for (var state_env in bux_test) {
+              var state_env_steps = res[orgunit][state_env];
+              update_step_buttons(state_env_steps);
+              check_state_env_steps(state_env, state_env_steps);
+              update_offcanvas_deploy_details_state(state_env_steps);
             }
           }
         },
       });
+    }
+  </script>
+
+  <script type="text/javascript">
+    function check_state_env_steps(state_env, state_env_steps) {
+      if (orgunit == "BUX") {
+        for (step in state_env_steps) {
+          if (state_env_steps[step]["state"] == "running") {
+            env = state_env;
+            console.log(state_env);
+            update_start_release_button(state_env);
+            if (!step.includes("-test")) {
+              state_timeId = setInterval(get_release_process_state, 5000);
+            }
+          }
+        }
+        if (
+          state_env_steps[state_env.toLowerCase() + "-test"]["state"] ==
+          "running"
+        ) {
+          update_modal_info_for_test();
+          update_start_release_button(state_env);
+        } else if (
+          state_env_steps[state_env.toLowerCase() + "-test"]["state"] == "done"
+        ) {
+          update_start_release_button_after_test(state_env);
+        }
+      }
     }
   </script>
 
@@ -1726,10 +1756,6 @@
 
   <script type="text/javascript">
     function update_test_success() {
-      var start_button_text;
-      var test_button;
-      var test_button_text;
-      var cur_env;
       $.ajax({
         url: "/releaseobject/process/test/update/",
         type: "GET",
@@ -1740,7 +1766,16 @@
           env: env,
         },
       });
-      cur_env = env;
+      update_start_release_button_after_test(env);
+    }
+  </script>
+
+  <script type="text/javascript">
+    function update_start_release_button_after_test(cur_env) {
+      var start_button_text;
+      var test_button;
+      var test_button_text;
+
       if (env == "PIE") {
         start_button_text = "Start Release on STG";
         env = "STG";
@@ -1785,7 +1820,9 @@
     function button_flash(id, action) {
       if (action == "stop" || id.includes("-test")) {
         running_id = "";
-        clearInterval(timeId);
+        if (typeof timeId != "undefined") {
+          clearInterval(timeId);
+        }
         $(id).css({ opacity: 1 });
       } else {
         var opacity = 0;
