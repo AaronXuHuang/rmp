@@ -182,118 +182,118 @@ function fetchinstance() {
 }
 
 function selectall(type) {
-    switch (type) {
-        case 'env':
-        value = document.getElementById('env_all').checked
-        for (let i = 0; i < environment_array.length; i++) {
-            document.getElementById(environment_array[i]).checked = value
-        }
-        break
-        case 'color':
-        value = document.getElementById('color_all').checked
-        for (let i = 0; i < colorstack_array.length; i++) {
-            document.getElementById(colorstack_array[i]).checked = value
-        }
-        break
-        case 'state':
-        value = document.getElementById('state_all').checked
-        for (let i = 0; i < instancestate_array.length; i++) {
-            document.getElementById(instancestate_array[i]).checked = value
-        }
-        break
-        case 'partner':
-        value = document.getElementById('partner_all').checked
-        for (let i = 0; i < partner_array.length; i++) {
-            document.getElementById(partner_array[i]).checked = value
-        }
-        break
-        case 'tier':
-        value = document.getElementById('tier_all').checked
-        for (let i = 0; i < tier_array.length; i++) {
-            document.getElementById(tier_array[i]).checked = value
-        }
-        break
+  switch (type) {
+    case 'env':
+    value = document.getElementById('env_all').checked
+    for (let i = 0; i < environment_array.length; i++) {
+      document.getElementById(environment_array[i]).checked = value
     }
+    break
+    case 'color':
+    value = document.getElementById('color_all').checked
+    for (let i = 0; i < colorstack_array.length; i++) {
+      document.getElementById(colorstack_array[i]).checked = value
+    }
+    break
+    case 'state':
+    value = document.getElementById('state_all').checked
+    for (let i = 0; i < instancestate_array.length; i++) {
+      document.getElementById(instancestate_array[i]).checked = value
+    }
+    break
+    case 'partner':
+    value = document.getElementById('partner_all').checked
+    for (let i = 0; i < partner_array.length; i++) {
+      document.getElementById(partner_array[i]).checked = value
+    }
+    break
+    case 'tier':
+    value = document.getElementById('tier_all').checked
+    for (let i = 0; i < tier_array.length; i++) {
+      document.getElementById(tier_array[i]).checked = value
+    }
+    break
+  }
 }
 function resetfilter() {
-    id_all_array = [
-    environment_array, 
-    colorstack_array,
-    instancestate_array,
-    partner_array,
-    tier_array
-    ]
-    for (let i = 0; i < environment_array.length; i++) {
-        document.getElementById(environment_array[i]).checked = 0
-    }
-    for (let i = 0; i < colorstack_array.length; i++) {
-        document.getElementById(colorstack_array[i]).checked = 1
-    }
-    for (let i = 0; i < instancestate_array.length; i++) {
-        document.getElementById(instancestate_array[i]).checked = 0
-    }
-    for (let i = 0; i < partner_array.length; i++) {
-        document.getElementById(partner_array[i]).checked = 1
-    }
-    for (let i = 0; i < tier_array.length; i++) {
-        document.getElementById(tier_array[i]).checked = 1
-    }
-    document.getElementById('env_all').checked = 0
-    document.getElementById('color_all').checked = 1
-    document.getElementById('state_all').checked = 0
-    document.getElementById('partner_all').checked = 1
-    document.getElementById('tier_all').checked = 1
-    document.getElementById('state_running').checked = 1
+  id_all_array = [
+  environment_array, 
+  colorstack_array,
+  instancestate_array,
+  partner_array,
+  tier_array
+  ]
+  for (let i = 0; i < environment_array.length; i++) {
+    document.getElementById(environment_array[i]).checked = 0
+  }
+  for (let i = 0; i < colorstack_array.length; i++) {
+    document.getElementById(colorstack_array[i]).checked = 1
+  }
+  for (let i = 0; i < instancestate_array.length; i++) {
+    document.getElementById(instancestate_array[i]).checked = 0
+  }
+  for (let i = 0; i < partner_array.length; i++) {
+    document.getElementById(partner_array[i]).checked = 1
+  }
+  for (let i = 0; i < tier_array.length; i++) {
+    document.getElementById(tier_array[i]).checked = 1
+  }
+  document.getElementById('env_all').checked = 0
+  document.getElementById('color_all').checked = 1
+  document.getElementById('state_all').checked = 0
+  document.getElementById('partner_all').checked = 1
+  document.getElementById('tier_all').checked = 1
+  document.getElementById('state_running').checked = 1
 }
 
 function checkstatus(type) {
-    switch (type) {
-        case 'env':
-        document.getElementById('env_all').checked = 1
-        for (let i = 0; i < environment_array.length; i++) {
-            if (document.getElementById(environment_array[i]).checked == 0) {
-                document.getElementById('env_all').checked = 0
-                break
-            }
-        }
+  switch (type) {
+    case 'env':
+    document.getElementById('env_all').checked = 1
+    for (let i = 0; i < environment_array.length; i++) {
+      if (document.getElementById(environment_array[i]).checked == 0) {
+        document.getElementById('env_all').checked = 0
         break
-        case 'color':
-        document.getElementById('color_all').checked = 1
-        for (let i = 0; i < colorstack_array.length; i++) {
-            if (document.getElementById(colorstack_array[i]).checked == 0 ) {
-                document.getElementById('color_all').checked = 0
-                break
-            }
-        }
-        break
-        case 'state':
-        document.getElementById('state_all').checked = 1
-        for (let i = 0; i < instancestate_array.length; i++) {
-            if (document.getElementById(instancestate_array[i]).checked == 0 ) {
-                document.getElementById('state_all').checked = 0
-                break
-            }
-        }
-        break
-        case 'partner':
-        document.getElementById('partner_all').checked = 1
-        for (let i = 0; i < partner_array.length; i++) {
-            if (document.getElementById(partner_array[i]).checked == 0 ) {
-                document.getElementById('partner_all').checked = 0
-                break
-            }
-        }
-        break
-        case 'tier':
-        document.getElementById('tier_all').checked = 1
-        for (let i = 0; i < tier_array.length; i++) {
-            if (document.getElementById(tier_array[i]).checked == 0) {
-                document.getElementById('tier_all').checked = 0
-                break
-            }
-        }
-        break
+      }
     }
+    break
+    case 'color':
+    document.getElementById('color_all').checked = 1
+    for (let i = 0; i < colorstack_array.length; i++) {
+      if (document.getElementById(colorstack_array[i]).checked == 0 ) {
+        document.getElementById('color_all').checked = 0
+        break
+      }
+    }
+    break
+    case 'state':
+    document.getElementById('state_all').checked = 1
+    for (let i = 0; i < instancestate_array.length; i++) {
+      if (document.getElementById(instancestate_array[i]).checked == 0 ) {
+        document.getElementById('state_all').checked = 0
+        break
+      }
+    }
+    break
+    case 'partner':
+    document.getElementById('partner_all').checked = 1
+    for (let i = 0; i < partner_array.length; i++) {
+      if (document.getElementById(partner_array[i]).checked == 0 ) {
+        document.getElementById('partner_all').checked = 0
+        break
+      }
+    }
+    break
+    case 'tier':
+    document.getElementById('tier_all').checked = 1
+    for (let i = 0; i < tier_array.length; i++) {
+      if (document.getElementById(tier_array[i]).checked == 0) {
+        document.getElementById('tier_all').checked = 0
+        break
+      }
+    }
+    break
+  }
 }
 
 function setborder(type) {
