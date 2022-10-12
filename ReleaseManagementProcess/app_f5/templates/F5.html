@@ -115,8 +115,8 @@
                           </button>
                           <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" onclick="getmember('{{ pool.server }}', '{{ pool.name }}')" > Get member </a>
-                            <a class="dropdown-item" onclick="confirmaction('Do you want to enable the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'enable')" > Enable </a>
-                            <a class="dropdown-item" onclick="confirmaction('Do you want to force offline the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'forceoffline')" > Force offline </a>
+                            <a class="dropdown-item" style="display: none" onclick="confirmaction('Do you want to enable the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'enable')" > Enable </a>
+                            <a class="dropdown-item" style="display: none" onclick="confirmaction('Do you want to force offline the pool {{ pool.name }}?', 'poolaction', '{{ pool.server }}', '{{ pool.name }}', 'forceoffline')" > Force offline </a>
                             <a id='{{ pool.server }}_{{ pool.name }}_remove'
                               class="dropdown-item" onclick="confirmaction('Do you want to remove the pool {{ pool.name }} from the list?', 'removepool', '{{ pool.server }}', '{{ pool.name }}')"> Remove </a>
                           </div>
