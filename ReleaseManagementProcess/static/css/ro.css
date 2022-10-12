@@ -1,0 +1,87 @@
+a:link {
+  color: #206bc4;
+  font-weight: 600;
+}
+.ro-component {
+  background-color: #2185d0;
+  font-size: 0.71rem;
+  color: white;
+  border-radius: 0.18rem;
+  border-color: #2185d0;
+  padding-top: 0.1em;
+  padding-right: 0.7em;
+  padding-bottom: 0.1em;
+  padding-left: 0.7em;
+  font-weight: 500;
+}
+.ro-env-span {
+  display: inline-block;
+  clear: both;
+  background-color: #767676;
+  font-size: 0.71rem;
+  color: white;
+  border-radius: 0.18rem;
+  border-color: #767676;
+  padding-top: 0.1em;
+  padding-right: 0.7em;
+  padding-bottom: 0.1em;
+  padding-left: 0.7em;
+  font-weight: 550;
+  width: 80px;
+  text-align: center;
+}
+.ro-env-label {
+  margin: 0.2em;
+  width: 80px;
+  vertical-align: text-top;
+}
+.ro-env-td {
+  width: 400px;
+  border-width: 1px;
+}
+.ro-issue-span {
+  clear: both;
+  display: inline-block;
+  line-height: 1;
+  background-color: #e8e8e8;
+  font-size: 0.63rem;
+  color: rgb(232, 232, 232);
+  border-radius: 0.18rem;
+  border-color: #767676;
+  font-weight: 700;
+  text-align: center;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  padding-right: 0.7em;
+  display: inline-block;
+}
+.ro-issue-td {
+  width: 220px;
+}
+.text-muted {
+  border-width: 1px;
+  text-align: center;
+}
+.btn-ro-release {
+  background-color: #767676;
+  font-size: 0.81rem;
+  color: white;
+  border-radius: 0.18rem;
+  border-color: #767676;
+  padding-top: 0.1em;
+  padding-right: 0.5em;
+  padding-bottom: 0.1em;
+  padding-left: 0.5em;
+  font-weight: 550;
+  width: 120px;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.ro-env-name {
+  width: 40px;
+  background-color: rgba(75, 84, 98, 0.03);
+  border-radius: 0.18rem;
+  font-size: 0.61rem;
+  text-align: center;
+}
