@@ -14,7 +14,6 @@ window.onload = function () {
   $("#modal-error").modal({ backdrop: false, keyboard: false });
   $("#modal-create").modal({ backdrop: false, keyboard: false });
   $("#modal-load-bar").modal({ backdrop: false, keyboard: false });
-  alert('asdf')
 };
 function read_jira_fix_version() {
   project = $("#jira_project").val();
@@ -134,7 +133,6 @@ function create_ro() {
 }
 function load_ro(orgunit, fix_version) {
   load_rp_table()
-  alert('asdf')
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
