@@ -14,6 +14,7 @@ window.onload = function () {
   $("#modal-error").modal({ backdrop: false, keyboard: false });
   $("#modal-create").modal({ backdrop: false, keyboard: false });
   $("#modal-load-bar").modal({ backdrop: false, keyboard: false });
+  alert('asdf')
 };
 function read_jira_fix_version() {
   project = $("#jira_project").val();
@@ -116,7 +117,6 @@ function create_ro() {
     },
     dataType: "JSON",
     success: function (res) {
-      create_rp_table();
       update_progress_bar(
         "done",
         "RMP Release Object <strong>" +
@@ -133,6 +133,8 @@ function create_ro() {
   });
 }
 function load_ro(orgunit, fix_version) {
+  load_rp_table()
+  alert('asdf')
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
@@ -196,7 +198,11 @@ function load_ro(orgunit, fix_version) {
     },
   });
 }
-function create_rp_table() {}
+function load_rp_table() {
+  console.log('bbb')
+  $('#ro-process-flow').load('release_process_bux.html')
+  console.log('aaa')
+}
 function create_ro_table(ro) {
   fix_version = ro["information"]["fixversion"];
   orgunit = ro["information"]["orgunit"];
