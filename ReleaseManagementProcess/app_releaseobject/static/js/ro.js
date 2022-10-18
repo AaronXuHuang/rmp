@@ -174,7 +174,6 @@ function load_ro(orgunit, fix_version) {
     dataType: "JSON",
     success: function (res) {
       create_ro_table(res);
-      save_rp_components(res);
       update_offcanvas_deploy_details_component(res);
       update_progress_bar(
         "done",
@@ -197,9 +196,6 @@ function load_ro(orgunit, fix_version) {
   });
 }
 function load_rp_table() {
-  console.log('bbb')
-  $('#ro-process-flow').load('release_process_bux.html')
-  console.log('aaa')
 }
 function create_ro_table(ro) {
   fix_version = ro["information"]["fixversion"];
@@ -443,11 +439,12 @@ function update_modal_info_for_release() {
 }
 function show_release_process_table(orgunit) {
   if (orgunit == "BUX") {
-    $("#accordion-bux").css({ display: "block" });
+    $("#accordion").css({ display: "block" });
   }
+  $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "block" });
+  $("#" + orgunit.toLowerCase() + "-accordion").css({ display: "block" });
 }
 function update_start_release_button(env) {
-  console.log(env);
   if (env == "RELEASED") {
     $("#start-release").text("Release closed");
     $("#start-release").attr("disabled", false);
@@ -512,7 +509,6 @@ function check_state_env_steps(state_env, state_env_steps) {
     for (step in state_env_steps) {
       if (state_env_steps[step]["state"] == "running") {
         env = state_env;
-        console.log(state_env);
         update_start_release_button(state_env);
         if (!step.includes("-test")) {
           state_timeId = setInterval(get_release_process_state, 5000);
@@ -553,7 +549,7 @@ function get_release_process_state() {
     },
   });
 }
-function restore_step_buttons() {}
+
 function update_step_buttons(tracker) {
   var attr_display;
   var css_color;
@@ -561,7 +557,7 @@ function update_step_buttons(tracker) {
   var color_green = "#21BA45";
   var color_gray = "#767676";
   for (key in tracker) {
-    var button_id = "#" + key;
+    var button_id = "#" + orgunit.toLowerCase() + "-" + key;
     $(button_id).text(tracker[key]["text"]);
     if (tracker[key]["state"] == "running") {
       attr_display = false;
@@ -619,7 +615,7 @@ function update_start_release_button_after_test(cur_env) {
     start_button_text = "Close Release";
     env = "RELEASED";
   }
-  test_button = "#" + cur_env.toLowerCase() + "-test";
+  test_button = "#" + orgunit.toLowerCase() + "-" + cur_env.toLowerCase() + "-test";
   test_button_text = cur_env + " tested";
   if (bux_test[cur_env] == "") {
     $("#start-release").text(start_button_text);
@@ -667,7 +663,7 @@ function button_flash(id, action) {
   }
 }
 function set_step_offcanvas(button_id, tracker) {
-  var button_id = "#" + key;
+  var button_id = "#" + orgunit.toLowerCase() + "-" + key;
   $(button_id).attr("data-bs-toggle", "offcanvas");
   $(button_id).attr("href", "#step_details_deploy");
   $(button_id).attr("role", "button");
@@ -685,7 +681,6 @@ function set_step_offcanvas(button_id, tracker) {
   $("#rop-step-details-title").html(details_title);
   $("#rop-step-details-body").html(details_body);
 }
-function save_rp_components() {}
 function update_offcanvas_deploy_details_component(ro) {
   for (var index = 0; index < bux_deployment_sub_env.length; index++) {
     var detail_element =

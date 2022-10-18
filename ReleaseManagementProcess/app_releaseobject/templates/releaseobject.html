@@ -184,11 +184,12 @@
         </div>
       </div>
     </div>
+    <!--
     <div id="ro-process-flow" class="page-body" style="display: none">
       <div class="container-xl">
         <div class="card">
-          <div id="release_process_table" class="card-body">
-            <div class="accordion" id="accordion-bux" style="display: none">
+          <div class="card-body">
+            <div class="accordion" id="accordion" style="display: none">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading-1">
                   <button
@@ -204,7 +205,7 @@
                 <div
                   id="collapse-1"
                   class="accordion-collapse collapse"
-                  data-bs-parent="#accordion-bux"
+                  data-bs-parent="#accordion"
                   style=""
                 >
                   <div class="accordion-body pt-0">
@@ -248,7 +249,7 @@
                 <div
                   id="collapse-2"
                   class="accordion-collapse collapse"
-                  data-bs-parent="#accordion-bux"
+                  data-bs-parent="#accordion"
                   style=""
                 >
                   <div class="accordion-body pt-0">
@@ -375,7 +376,7 @@
                 <div
                   id="collapse-3"
                   class="accordion-collapse collapse"
-                  data-bs-parent="#accordion-bux"
+                  data-bs-parent="#accordion"
                   style=""
                 >
                   <div class="accordion-body pt-0">
@@ -507,6 +508,347 @@
                       <label class="ro-env-name">PROD</label>
                       <button
                         id="prod-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        PROD test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+    <div id="bux-ro-process-flow" class="page-body" style="display: none">
+      <div class="container-xl">
+        <div class="card">
+          <div class="card-body">
+            <div class="accordion" id="bux-accordion" style="display: none">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="bux-heading-1">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#bux-collapse-1"
+                    aria-expanded="false"
+                  >
+                    BUX_PIE Process
+                  </button>
+                </h2>
+                <div
+                  id="bux-collapse-1"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#bux-accordion"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div id="bux-rp-pie">
+                      <label class="ro-env-name">PIE</label>
+                      <button
+                        id="bux-pie-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("pie")'
+                      >
+                        Deploy</button
+                      ><br />
+                      <label class="ro-env-name">PIE</label>
+                      <button
+                        id="bux-pie-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        PIE test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="bux-heading-2">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#bux-collapse-2"
+                    aria-expanded="false"
+                  >
+                    BUX_STG Process
+                  </button>
+                </h2>
+                <div
+                  id="bux-collapse-2"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#bux-accordion"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div>
+                      <label class="ro-env-name">STG2</label>
+                      <button
+                        id="bux-stg2-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "stg2")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="bux-stg2-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "stg2")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="bux-stg2-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="bux-stg2-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("stg2")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="bux-stg2-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="bux-stg2-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">STG1</label>
+                      <button
+                        id="bux-stg1-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "stg1")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="bux-stg1-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "stg1")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="bux-stg1-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="bux-stg1-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("stg1")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="bux-stg1-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="bux-stg1-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">STG</label>
+                      <button
+                        id="bux-stg-test"
+                        class="btn btn-ro-release"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-success"
+                        disabled="true"
+                        onclick="update_success_text()"
+                      >
+                        STG test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="bux-heading-3">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#bux-collapse-3"
+                    aria-expanded="false"
+                  >
+                    BUX_PROD Process
+                  </button>
+                </h2>
+                <div
+                  id="bux-collapse-3"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#bux-accordion"
+                  style=""
+                >
+                  <div class="accordion-body pt-0">
+                    <div>
+                      <label class="ro-env-name">DC2</label>
+                      <button
+                        id="bux-dc2-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "dc2")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="bux-dc2-drain-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("prt", "dc2")'
+                      >
+                        Drain prt
+                      </button>
+                      <button
+                        id="bux-dc2-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "dc2")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="bux-dc2-drain-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("nonprt", "dc2")'
+                      >
+                        Drain nonprt
+                      </button>
+                      <button
+                        id="bux-dc2-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="bux-dc2-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("dc2")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="bux-dc2-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="bux-dc2-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">DC1</label>
+                      <button
+                        id="bux-dc1-disabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("prt", "dc1")'
+                      >
+                        Disable prt
+                      </button>
+                      <button
+                        id="bux-dc1-drain-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("prt", "dc2")'
+                      >
+                        Drain prt
+                      </button>
+                      <button
+                        id="bux-dc1-disabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_disable_detail("nonprt", "dc1")'
+                      >
+                        Disable nonprt
+                      </button>
+                      <button
+                        id="bux-dc1-drain-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_drain_detail("nonprt", "dc1")'
+                      >
+                        Drain nonprt
+                      </button>
+                      <button
+                        id="bux-dc1-iisreset"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        IIS reset
+                      </button>
+                      <button
+                        id="bux-dc1-deploy"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                        onclick='show_running_env_deploy_detail("dc1")'
+                      >
+                        Deploy
+                      </button>
+                      <button
+                        id="bux-dc1-enabled-nonprt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable nonprt
+                      </button>
+                      <button
+                        id="bux-dc1-enabled-prt"
+                        class="btn btn-ro-release"
+                        disabled="true"
+                      >
+                        Enable prt</button
+                      ><br />
+                      <label class="ro-env-name">PROD</label>
+                      <button
+                        id="bux-prod-test"
                         class="btn btn-ro-release"
                         data-bs-toggle="modal"
                         data-bs-target="#modal-success"
