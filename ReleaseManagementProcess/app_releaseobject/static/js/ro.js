@@ -102,7 +102,7 @@ function create_ro() {
   $("#modal-load-bar").modal("show");
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
-  $("#ro-process-flow").css({ display: "none" });
+  $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "none" });
   update_progress_bar(
     "running",
     "Creating RMP Release Object <strong>" + ro_name + "</strong>"
@@ -159,7 +159,7 @@ function load_ro(orgunit, fix_version) {
   $("#modal-load-bar").modal("show");
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
-  $("#ro-process-flow").css({ display: "none" });
+  $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "none" });
   update_progress_bar(
     "running",
     "Loading RMP Release Object <strong>" + ro_name + "</strong>"
@@ -187,7 +187,7 @@ function load_ro(orgunit, fix_version) {
       $("#start-release").attr("disabled", false);
       $("#detail-table").css({ display: "block" });
       $("#ro-process-title").css({ display: "block" });
-      $("#ro-process-flow").css({ display: "block" });
+      $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "block" });
       $("#load-ro-button").attr("disabled", false);
       $("#create-ro-button").attr("disabled", false);
       $("#load-close").attr("disabled", false);
@@ -553,6 +553,7 @@ function get_release_process_state() {
 function update_step_buttons(tracker) {
   var attr_display;
   var css_color;
+  var css_opacity = 1;
   var color_blue = "#206bc4";
   var color_green = "#21BA45";
   var color_gray = "#767676";
@@ -574,6 +575,7 @@ function update_step_buttons(tracker) {
     } else {
       attr_display = true;
       css_color = color_gray;
+      css_opacity = 0.65;
     }
     attr_desc = tracker[key]["title"];
     $(button_id).attr("disabled", attr_display);
@@ -581,6 +583,7 @@ function update_step_buttons(tracker) {
     $(button_id).css({
       "background-color": css_color,
       "border-color": css_color,
+      opacity: css_opacity,
     });
     //data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"
     if (!key.includes("-test")) {
