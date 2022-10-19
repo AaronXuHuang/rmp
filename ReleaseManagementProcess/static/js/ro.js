@@ -79,7 +79,7 @@ function read_rmp_fix_version() {
     },
   });
 }
-function create_ro() {
+function create_rmp_ro() {
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
@@ -102,7 +102,7 @@ function create_ro() {
   $("#modal-load-bar").modal("show");
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
-  $("#ro-process-flow").css({ display: "none" });
+  $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "none" });
   update_progress_bar(
     "running",
     "Creating RMP Release Object <strong>" + ro_name + "</strong>"
@@ -131,8 +131,7 @@ function create_ro() {
     },
   });
 }
-function load_ro(orgunit, fix_version) {
-  load_rp_table()
+function load_rmp_ro(orgunit, fix_version) {
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
@@ -159,7 +158,7 @@ function load_ro(orgunit, fix_version) {
   $("#modal-load-bar").modal("show");
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
-  $("#ro-process-flow").css({ display: "none" });
+  $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "none" });
   update_progress_bar(
     "running",
     "Loading RMP Release Object <strong>" + ro_name + "</strong>"
@@ -187,15 +186,13 @@ function load_ro(orgunit, fix_version) {
       $("#start-release").attr("disabled", false);
       $("#detail-table").css({ display: "block" });
       $("#ro-process-title").css({ display: "block" });
-      $("#ro-process-flow").css({ display: "block" });
+      $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "block" });
       $("#load-ro-button").attr("disabled", false);
       $("#create-ro-button").attr("disabled", false);
       $("#load-close").attr("disabled", false);
       get_release_process_state_all();
     },
   });
-}
-function load_rp_table() {
 }
 function create_ro_table(ro) {
   fix_version = ro["information"]["fixversion"];
@@ -207,21 +204,21 @@ function create_ro_table(ro) {
     environments = ro[fix_version][component_name]["environments"];
     latest = ro[fix_version][component_name]["latest"];
     issues = ro[fix_version][component_name]["issues"];
-    td = create_component(component_name, octo_space);
-    td += create_release_version(
+    td = create_ro_component(component_name, octo_space);
+    td += create_ro_release_version(
       component_name,
       release_version,
       octo_space
     );
-    td += create_assembled(assembled);
-    td += create_environments(environments);
-    td += create_latest(release_version, latest);
-    td += create_issues(issues);
+    td += create_ro_assembled(assembled);
+    td += create_ro_environments(environments);
+    td += create_ro_latest(release_version, latest);
+    td += create_ro_issues(issues);
     tr = "<tr>" + td + "</tr>";
     $("#ro-table").append(tr);
   }
 }
-function create_component(component_name, octo_space) {
+function create_ro_component(component_name, octo_space) {
   octo_project_name = component_name.replace("_", "-");
   td =
     '\
@@ -238,7 +235,7 @@ function create_component(component_name, octo_space) {
   </td>";
   return td;
 }
-function create_release_version(
+function create_ro_release_version(
   component_name,
   release_version,
   octo_space
@@ -259,7 +256,7 @@ function create_release_version(
 </td>";
   return td;
 }
-function create_assembled(assembled) {
+function create_ro_assembled(assembled) {
   assembled = assembled.replace("T", "<br>");
   td =
     '\
@@ -268,7 +265,7 @@ function create_assembled(assembled) {
     "</td>";
   return td;
 }
-function create_environments(environments) {
+function create_ro_environments(environments) {
   for (name in environments) {
     if (environments[name] == "Success") {
       environments[name] = 'style="background-color:#21BA45"';
@@ -311,7 +308,7 @@ function create_environments(environments) {
 </td>";
   return td;
 }
-function create_latest(release_version, latest) {
+function create_ro_latest(release_version, latest) {
   result = "false";
   td =
     '<td class="text-muted" style="background-color:#ffebe6; font-size: 0.72rem">' +
@@ -326,7 +323,7 @@ function create_latest(release_version, latest) {
   }
   return td;
 }
-function create_issues(issues) {
+function create_ro_issues(issues) {
   br = "<br>";
   spans = "";
   for (name in issues) {
@@ -553,6 +550,7 @@ function get_release_process_state() {
 function update_step_buttons(tracker) {
   var attr_display;
   var css_color;
+  var css_opacity = 1;
   var color_blue = "#206bc4";
   var color_green = "#21BA45";
   var color_gray = "#767676";
@@ -574,6 +572,7 @@ function update_step_buttons(tracker) {
     } else {
       attr_display = true;
       css_color = color_gray;
+      css_opacity = 0.65;
     }
     attr_desc = tracker[key]["title"];
     $(button_id).attr("disabled", attr_display);
@@ -581,6 +580,7 @@ function update_step_buttons(tracker) {
     $(button_id).css({
       "background-color": css_color,
       "border-color": css_color,
+      opacity: css_opacity,
     });
     //data-bs-toggle="offcanvas" href="#offcanvasStart" role="button" aria-controls="offcanvasStart"
     if (!key.includes("-test")) {
