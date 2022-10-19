@@ -1,7 +1,7 @@
 env = "PIE";
 state_timeId = "";
 running_id = "";
-bux_test = {
+bux_envs = {
   PIE: "",
   STG: "",
   PROD: "",
@@ -103,7 +103,7 @@ function create_rmp_ro() {
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
   $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "none" });
-  update_progress_bar(
+  set_progress_bar(
     "running",
     "Creating RMP Release Object <strong>" + ro_name + "</strong>"
   );
@@ -116,7 +116,7 @@ function create_rmp_ro() {
     },
     dataType: "JSON",
     success: function (res) {
-      update_progress_bar(
+      set_progress_bar(
         "done",
         "RMP Release Object <strong>" +
           ro_name +
@@ -159,7 +159,7 @@ function load_rmp_ro(orgunit, fix_version) {
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
   $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "none" });
-  update_progress_bar(
+  set_progress_bar(
     "running",
     "Loading RMP Release Object <strong>" + ro_name + "</strong>"
   );
@@ -173,14 +173,14 @@ function load_rmp_ro(orgunit, fix_version) {
     dataType: "JSON",
     success: function (res) {
       create_ro_table(res);
-      update_offcanvas_deploy_details_component(res);
-      update_progress_bar(
+      set_offcanvas_deploy_details_component(res);
+      set_progress_bar(
         "done",
         "RMP Release Object <strong>" +
           ro_name +
           "</strong> has been loaded"
       );
-      show_release_process_table(orgunit);
+      show_rp_table();
       $("#title_details").text(details_text);
       $("#title_release_process").text(release_process);
       $("#start-release").attr("disabled", false);
@@ -190,7 +190,7 @@ function load_rmp_ro(orgunit, fix_version) {
       $("#load-ro-button").attr("disabled", false);
       $("#create-ro-button").attr("disabled", false);
       $("#load-close").attr("disabled", false);
-      get_release_process_state_all();
+      get_release_process_state_init();
     },
   });
 }
@@ -354,7 +354,7 @@ function create_ro_issues(issues) {
 <td class="ro-issue-td">' + spans + "</td>";
   return td;
 }
-function update_progress_bar(step, progress_bar_html) {
+function set_progress_bar(step, progress_bar_html) {
   running_progress =
     '\
 <div class="progress" style="margin-top: 10px; margin-bottom: 10px">\
@@ -376,7 +376,7 @@ function update_progress_bar(step, progress_bar_html) {
   $("#ro_progress_text").html(progress_bar_html);
   $("#ro_progress_bar").html(ro_progress_bar);
 }
-function update_modal_info_for_test() {
+function set_modal_info_for_test() {
   if (orgunit == "BUX") {
     $("#modal-info-title").text(env + " testing");
     $("#modal-info-text").html(
@@ -391,7 +391,7 @@ function update_modal_info_for_test() {
     $("#modal-info").modal("show");
   }
 }
-function update_modal_info_for_release() {
+function set_modal_info_for_release() {
   if (orgunit == "BUX") {
     if (env == "PIE") {
       $("#modal-info-title").text("Ready to release");
@@ -434,14 +434,14 @@ function update_modal_info_for_release() {
     }
   }
 }
-function show_release_process_table(orgunit) {
+function show_rp_table() {
   if (orgunit == "BUX") {
     $("#accordion").css({ display: "block" });
   }
   $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "block" });
   $("#" + orgunit.toLowerCase() + "-accordion").css({ display: "block" });
 }
-function update_start_release_button(env) {
+function set_start_release_button(env) {
   if (env == "RELEASED") {
     $("#start-release").text("Release closed");
     $("#start-release").attr("disabled", false);
@@ -458,8 +458,37 @@ function update_start_release_button(env) {
     $("#start-release").attr("disabled", true);
   }
 }
+function set_start_release_button_after_test(cur_env) {
+  var start_button_text;
+  var test_button;
+  var test_button_text;
+  if (env == "PIE") {
+    start_button_text = "Start Release on STG";
+    env = "STG";
+  } else if (env == "STG") {
+    start_button_text = "Start Release on PROD";
+    env = "PROD";
+  } else if (env == "PROD") {
+    start_button_text = "Close Release";
+    env = "RELEASED";
+  }
+  test_button = "#" + orgunit.toLowerCase() + "-" + cur_env.toLowerCase() + "-test";
+  test_button_text = cur_env + " tested";
+  if (bux_envs[cur_env] == "") {
+    $("#start-release").text(start_button_text);
+    $("#start-release").attr("disabled", false);
+    $(test_button).text(test_button_text);
+    $(test_button).css({
+      "background-color": "#21BA45",
+      "border-color": "#21BA45",
+    });
+    $(test_button).attr("data-bs-toggle", "");
+    $(test_button).attr("data-bs-target", "");
+    bux_envs[cur_env] = "tested";
+  }
+}
 function release_process_bux(env, state) {
-  update_start_release_button(env);
+  set_start_release_button(env);
   $.ajax({
     url: "/releaseobject/process/run/",
     type: "GET",
@@ -473,14 +502,14 @@ function release_process_bux(env, state) {
     success: function (res) {
       // start_state_timeId runs only once to get/update status quickly
       start_state_timeId = setInterval(function () {
-        get_release_process_state();
+        get_release_process_state_running();
         clearInterval(start_state_timeId);
       }, 2000);
-      state_timeId = setInterval(get_release_process_state, 5000);
+      state_timeId = setInterval(get_release_process_state_running, 5000);
     },
   });
 }
-function get_release_process_state_all() {
+function get_release_process_state_init() {
   $.ajax({
     url: "/releaseobject/process/get/",
     type: "GET",
@@ -491,41 +520,18 @@ function get_release_process_state_all() {
     },
     success: function (res) {
       if (orgunit == "BUX") {
-        for (var state_env in bux_test) {
+        for (var state_env in bux_envs) {
           var state_env_steps = res[orgunit][state_env];
-          update_step_buttons(state_env_steps);
-          check_state_env_steps(state_env, state_env_steps);
-          update_offcanvas_deploy_details_state(state_env_steps);
+          get_running_env(state_env, state_env_steps);
+          set_step_buttons(state_env_steps);
+          //set_for_test_step(state_env, state_env_steps);
+          set_offcanvas_deploy_details_state(state_env_steps);
         }
       }
     },
   });
 }
-function check_state_env_steps(state_env, state_env_steps) {
-  if (orgunit == "BUX") {
-    for (step in state_env_steps) {
-      if (state_env_steps[step]["state"] == "running") {
-        env = state_env;
-        update_start_release_button(state_env);
-        if (!step.includes("-test")) {
-          state_timeId = setInterval(get_release_process_state, 5000);
-        }
-      }
-    }
-    if (
-      state_env_steps[state_env.toLowerCase() + "-test"]["state"] ==
-      "running"
-    ) {
-      update_modal_info_for_test();
-      update_start_release_button(state_env);
-    } else if (
-      state_env_steps[state_env.toLowerCase() + "-test"]["state"] == "done"
-    ) {
-      update_start_release_button_after_test(state_env);
-    }
-  }
-}
-function get_release_process_state() {
+function get_release_process_state_running() {
   $.ajax({
     url: "/releaseobject/process/get/",
     type: "GET",
@@ -535,19 +541,50 @@ function get_release_process_state() {
       fixversion: fix_version,
     },
     success: function (res) {
-      update_step_buttons(res[orgunit][env]);
-      update_offcanvas_deploy_details_state(res[orgunit][env]);
+      set_step_buttons(res[orgunit][env]);
+      set_offcanvas_deploy_details_state(res[orgunit][env]);
       if (
         res[orgunit][env][env.toLowerCase() + "-test"]["state"] == "running"
       ) {
         clearInterval(state_timeId);
-        update_modal_info_for_test();
+        set_modal_info_for_test();
       }
     },
   });
 }
-
-function update_step_buttons(tracker) {
+function get_running_env(state_env, state_env_steps) {
+  if (orgunit == "BUX") {
+    for (step in state_env_steps) {
+      if (state_env_steps[step]["state"] == "running") {
+        env = state_env;
+        set_start_release_button(state_env);
+        // test step is not running, start interval
+        if (!step.includes("-test")) {
+          state_timeId = setInterval(get_release_process_state_running, 5000);
+        }
+      }
+    }
+  }
+}
+function set_for_test_step(state_env, state_env_steps) {
+  if (orgunit == "BUX") {
+    // test step is running
+    if (
+      state_env_steps[state_env.toLowerCase() + "-test"]["state"] ==
+      "running"
+    ) {
+      set_modal_info_for_test();
+      set_start_release_button(state_env);
+    }
+    // test step is done
+    else if (
+      state_env_steps[state_env.toLowerCase() + "-test"]["state"] == "done"
+    ) {
+      set_start_release_button_after_test(state_env);
+    }
+  }
+}
+function set_step_buttons(tracker) {
   var attr_display;
   var css_color;
   var css_opacity = 1;
@@ -588,7 +625,7 @@ function update_step_buttons(tracker) {
     }
   }
 }
-function update_test_success() {
+function set_test_success() {
   $.ajax({
     url: "/releaseobject/process/test/update/",
     type: "GET",
@@ -599,38 +636,9 @@ function update_test_success() {
       env: env,
     },
   });
-  update_start_release_button_after_test(env);
+  set_start_release_button_after_test(env);
 }
-function update_start_release_button_after_test(cur_env) {
-  var start_button_text;
-  var test_button;
-  var test_button_text;
-  if (env == "PIE") {
-    start_button_text = "Start Release on STG";
-    env = "STG";
-  } else if (env == "STG") {
-    start_button_text = "Start Release on PROD";
-    env = "PROD";
-  } else if (env == "PROD") {
-    start_button_text = "Close Release";
-    env = "RELEASED";
-  }
-  test_button = "#" + orgunit.toLowerCase() + "-" + cur_env.toLowerCase() + "-test";
-  test_button_text = cur_env + " tested";
-  if (bux_test[cur_env] == "") {
-    $("#start-release").text(start_button_text);
-    $("#start-release").attr("disabled", false);
-    $(test_button).text(test_button_text);
-    $(test_button).css({
-      "background-color": "#21BA45",
-      "border-color": "#21BA45",
-    });
-    $(test_button).attr("data-bs-toggle", "");
-    $(test_button).attr("data-bs-target", "");
-    bux_test[cur_env] = "tested";
-  }
-}
-function update_success_text() {
+function set_success_text() {
   if (env == "PIE") {
     $("#test-pass").html("Test done on <strong>BUX PIE</strong>");
   } else if (env == "STG") {
@@ -681,7 +689,7 @@ function set_step_offcanvas(button_id, tracker) {
   $("#rop-step-details-title").html(details_title);
   $("#rop-step-details-body").html(details_body);
 }
-function update_offcanvas_deploy_details_component(ro) {
+function set_offcanvas_deploy_details_component(ro) {
   for (var index = 0; index < bux_deployment_sub_env.length; index++) {
     var detail_element =
       "#rp_step_detail_" +
@@ -721,7 +729,7 @@ function update_offcanvas_deploy_details_component(ro) {
     }
   }
 }
-function update_offcanvas_deploy_details_state(tracker) {
+function set_offcanvas_deploy_details_state(tracker) {
   for (key in tracker) {
     if (key.includes("-deploy")) {
       var index = key.indexOf("-");
@@ -744,7 +752,7 @@ function update_offcanvas_deploy_details_state(tracker) {
     }
   }
 }
-function hide_all_detail_element() {
+function hide_detail_elements() {
   $("#rp_step_detail_pie_deploy").css({ display: "none" });
   $("#rp_step_detail_stg2_deploy").css({ display: "none" });
   $("#rp_step_detail_stg1_deploy").css({ display: "none" });
@@ -763,8 +771,8 @@ function hide_all_detail_element() {
   $("#rp_step_detail_dc2_drain_nonprt").css({ display: "none" });
   $("#rp_step_detail_dc1_drain_nonprt").css({ display: "none" });
 }
-function show_running_env_deploy_detail(running_env) {
-  hide_all_detail_element();
+function show_deployment_detail(running_env) {
+  hide_detail_elements();
   var table_header =
     "<tr><th>Component</th><th>State</th><th>Duration</th></tr>";
   $("#rp_step_detail_theader").html(table_header);
@@ -772,16 +780,16 @@ function show_running_env_deploy_detail(running_env) {
     "#rp_step_detail_" + running_env.toLowerCase() + "_deploy";
   $(detail_element).css({ display: "table-row-group" });
 }
-function show_running_env_disable_detail(prt, running_env) {
-  hide_all_detail_element();
+function show_disable_f5_detail(prt, running_env) {
+  hide_detail_elements();
   var table_header = "<tr><th>Pool</th><th>State</th></tr>";
   $("#rp_step_detail_theader").html(table_header);
   var detail_element =
     "#rp_step_detail_" + running_env.toLowerCase() + "_disable_" + prt;
   $(detail_element).css({ display: "table-row-group" });
 }
-function show_running_env_drain_detail(prt, running_env) {
-  hide_all_detail_element();
+function show_drain_f5_detail(prt, running_env) {
+  hide_detail_elements();
   var table_header = "<tr><th>Member</th><th>Connection</th></tr>";
   $("#rp_step_detail_theader").html(table_header);
   var detail_element =
