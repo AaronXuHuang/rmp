@@ -80,6 +80,10 @@ function read_rmp_fix_version() {
   });
 }
 function create_rmp_ro() {
+  // if an interval is running, clear it before creating ro
+  if (typeof state_timeId != "undefined") {
+    clearInterval(state_timeId);
+  }
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
@@ -102,7 +106,7 @@ function create_rmp_ro() {
   $("#modal-load-bar").modal("show");
   $("#detail-table").css({ display: "none" });
   $("#ro-process-title").css({ display: "none" });
-  $("#" + orgunit.toLowerCase() + "ro-process-flow").css({ display: "none" });
+  $("#" + jira_project.toLowerCase() + "ro-process-flow").css({ display: "none" });
   set_progress_bar(
     "running",
     "Creating RMP Release Object <strong>" + ro_name + "</strong>"
@@ -132,6 +136,10 @@ function create_rmp_ro() {
   });
 }
 function load_rmp_ro(orgunit, fix_version) {
+  // if an interval is running, clear it before loading ro
+  if (typeof state_timeId != "undefined") {
+    clearInterval(state_timeId);
+  }
   env = "RELEASED"
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
@@ -455,7 +463,6 @@ function set_start_release_button_not_running(env) {
   } else if (env == "PROD") {
     text = "Start Release on PROD";
   }
-  console.log('set for not running')
   $("#start-release").text(text);
   $("#start-release").attr("disabled", disabled_value);
 }
@@ -472,7 +479,6 @@ function set_start_release_button_running(env) {
   } else if (env == "PROD") {
     text = "Release on PROD running";
   }
-  console.log('set for running')
   $("#start-release").text(text);
   $("#start-release").attr("disabled", disabled_value);
 }
@@ -589,6 +595,7 @@ function get_running_env(state_env, state_env_steps) {
         if (!step.includes("-test")) {
           state_timeId = setInterval(get_release_process_state_running, 5000);
         }
+        break
       }
     }
   }
