@@ -1,4 +1,4 @@
-env = "PIE";
+env = "";
 state_timeId = "";
 running_id = "";
 bux_envs = {
@@ -132,6 +132,7 @@ function create_rmp_ro() {
   });
 }
 function load_rmp_ro(orgunit, fix_version) {
+  env = "RELEASED"
   $("#load-ro-button").attr("disabled", true);
   $("#create-ro-button").attr("disabled", true);
   $("#load-close").attr("disabled", true);
@@ -441,22 +442,39 @@ function show_rp_table() {
   $("#" + orgunit.toLowerCase() + "-ro-process-flow").css({ display: "block" });
   $("#" + orgunit.toLowerCase() + "-accordion").css({ display: "block" });
 }
-function set_start_release_button(env) {
+function set_start_release_button_not_running(env) {
+  var text = '';
+  var disabled_value = false;
   if (env == "RELEASED") {
-    $("#start-release").text("Release closed");
-    $("#start-release").attr("disabled", false);
-    return;
-  }
-  if (env == "PIE") {
-    $("#start-release").text("Release on PIE running");
-    $("#start-release").attr("disabled", true);
+    text = "Release closed";
+    disabled_value = true;
+  } else if (env == "PIE") {
+    text = "Start Release on PIE";
   } else if (env == "STG") {
-    $("#start-release").text("Release on STG running");
-    $("#start-release").attr("disabled", true);
+    text = "Start Release on STG";
   } else if (env == "PROD") {
-    $("#start-release").text("Release on PROD running");
-    $("#start-release").attr("disabled", true);
+    text = "Start Release on PROD";
   }
+  console.log('set for not running')
+  $("#start-release").text(text);
+  $("#start-release").attr("disabled", disabled_value);
+}
+function set_start_release_button_running(env) {
+  var text = '';
+  var disabled_value = true;
+  if (env == "RELEASED") {
+    text = "Release closed";
+    disabled_value = false;
+  } else if (env == "PIE") {
+    text = "Release on PIE running";
+  } else if (env == "STG") {
+    text = "Release on STG running";
+  } else if (env == "PROD") {
+    text = "Release on PROD running";
+  }
+  console.log('set for running')
+  $("#start-release").text(text);
+  $("#start-release").attr("disabled", disabled_value);
 }
 function set_start_release_button_after_test(cur_env) {
   var start_button_text;
@@ -488,7 +506,7 @@ function set_start_release_button_after_test(cur_env) {
   }
 }
 function release_process_bux(env, state) {
-  set_start_release_button(env);
+  set_start_release_button_running(env);
   $.ajax({
     url: "/releaseobject/process/run/",
     type: "GET",
@@ -520,6 +538,8 @@ function get_release_process_state_init() {
     },
     success: function (res) {
       if (orgunit == "BUX") {
+        //init start release button
+        set_start_release_button_not_running('RELEASED')
         for (var state_env in bux_envs) {
           var state_env_steps = res[orgunit][state_env];
           get_running_env(state_env, state_env_steps);
@@ -555,10 +575,17 @@ function get_release_process_state_running() {
 function get_running_env(state_env, state_env_steps) {
   if (orgunit == "BUX") {
     for (step in state_env_steps) {
+      if (state_env_steps[step]["state"] == "notstart" && env == 'RELEASED'){
+        env = state_env
+        set_start_release_button_not_running(env)
+        break
+      }
+    }
+    for (step in state_env_steps) {
       if (state_env_steps[step]["state"] == "running") {
         env = state_env;
-        set_start_release_button(state_env);
-        // test step is not running, start interval
+        set_start_release_button_running(env);
+        // if a step which is not test step is running, start interval to check
         if (!step.includes("-test")) {
           state_timeId = setInterval(get_release_process_state_running, 5000);
         }
@@ -574,7 +601,7 @@ function set_for_test_step(state_env, state_env_steps) {
       "running"
     ) {
       set_modal_info_for_test();
-      set_start_release_button(state_env);
+      set_start_release_button_running(state_env);
     }
     // test step is done
     else if (
