@@ -627,6 +627,7 @@ function set_step_buttons(tracker) {
   var color_gray = "#767676";
   for (key in tracker) {
     var button_id = "#" + orgunit.toLowerCase() + "-" + key;
+    css_opacity = 1;
     $(button_id).text(tracker[key]["text"]);
     if (tracker[key]["state"] == "running") {
       attr_display = false;
